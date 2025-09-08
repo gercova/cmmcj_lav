@@ -1,3 +1,6 @@
-<div>
-    <!-- Simplicity is the consequence of refined emotions. - Jean D'Alembert -->
-</div>
+@extends('layouts.skeleton')
+
+@section('title', $enterprise[0]->nombre_comercial. ' - Crear Historia') <!-- Título dinámico -->
+@section('content')
+
+@endsection
