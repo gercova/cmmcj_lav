@@ -12,17 +12,17 @@ class LoginValidate extends FormRequest
 
     public function rules(): array {
         return [
-            'email' => 'required|email',
+            'username' => 'required|string|regex:/^[a-zA-Z]+$/',
             'password' => 'required|min:8',
         ];
     }
 
     public function messages(): array {
         return [
-            'email.required'    => 'El campo correo electrónico es requerido',
-            'email.email'       => 'El campo correo electrónico debe ser válido',
-            'password.required' => 'El campo contraseña es requerido',
-            'password.min'      => 'La contraseña debe tener al menos 8 caracteres',
+            'username.required'    => 'El campo nombre de usuario es requerido',
+            'username.regex'       => 'El campo nombre de usuario solo puede contener letras',
+            'password.required'    => 'El campo contraseña es requerido',
+            'password.min'         => 'La contraseña debe tener al menos 8 caracteres',
         ];
     }
 }

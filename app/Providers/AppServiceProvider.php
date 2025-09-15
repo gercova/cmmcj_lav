@@ -23,8 +23,8 @@ class AppServiceProvider extends ServiceProvider
     {
         setlocale(LC_TIME, 'es_ES.utf8', 'es_ES', 'es');
         // Usar un View Composer para compartir variables
-        View::composer('layouts.app', function ($view) {
-            $enterprise = Enterprise::where('id', 1)->get();
+        View::composer('layouts.skelenton', function ($view) {
+            $enterprise = Enterprise::first();
             $view->with(['enterprise' => $enterprise]);
         });
     }

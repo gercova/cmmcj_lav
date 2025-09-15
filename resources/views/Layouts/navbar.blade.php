@@ -2,7 +2,7 @@
     <!-- Left navbar links -->
     <ul class="navbar-nav">
         <li class="nav-item" id="toggleMenuIcon">
-            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="bi bi-list"></i></a>
+            <a class="nav-link" data-widget="pushmenu" href="{{ route('home') }}" role="button"><i class="bi bi-list"></i></a>
         </li>
     </ul>
     <!-- Right navbar links -->

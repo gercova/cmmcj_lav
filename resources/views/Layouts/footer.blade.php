@@ -7,8 +7,8 @@
     <strong><a href="#"> Saibatsu</a>.</strong> Todos los derechos reservados.
 </footer>
 <script>
-    /*$(function () {
+    $(function () {
         // Summernote
         $('.summernote').summernote()
-    });*/
+    });
 </script>

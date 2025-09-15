@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginValidate;
+use App\Models\Enterprise;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
@@ -12,12 +13,13 @@ use Illuminate\Support\Str;
 class AuthController extends Controller {
     
     public function showLoginForm() {
-        return view('auth.login');
+        $enterprise = Enterprise::first();
+        return view('auth.login', compact('enterprise'));
     }
 
     public function login(LoginValidate $request) {
         $validated = $request->validated();
-        $this->checkTooManyFailedAttempts();
+        $this->checkTooManyFailedAttempts($request);
 
         $remember = $request->has('remember');
 
@@ -32,28 +34,30 @@ class AuthController extends Controller {
                 ], 403);
             }
 
-            RateLimiter::clear($this->throttleKey());
-            
+            // Autenticación exitosa
+            $request->session()->regenerate();
+            RateLimiter::clear($this->throttleKey($request));
+
             return response()->json([
-                'success' => true,
-                'redirect' => $user->isAdmin() ? '/admin/dashboard' : '/dashboard'
-            ]);
+                'status'    => true,
+                'message'   => 'Inicio de sesión exitoso.',
+                'redirect'  => route('home')
+            ], 200);
         }
 
-        RateLimiter::hit($this->throttleKey(), 60);
-
+        RateLimiter::hit($this->throttleKey($request), 60);
         return response()->json([
-            'success' => false,
+            'status' => false,
             'message' => 'Credenciales inválidas'
         ], 401);
     }
 
-    public function throttleKey() {
-        return Str::lower(request('email')) . '|' . request()->ip();
+    protected function throttleKey(Request $request): string {
+        return Str::transliterate(Str::lower($request->input('email')).'|'.$request->ip());
     }
 
-    public function checkTooManyFailedAttempts() {
-        if (!RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
+    public function checkTooManyFailedAttempts(Request $request) {
+        if (!RateLimiter::tooManyAttempts($this->throttleKey($request), 5)) {
             return;
         }
 
@@ -64,6 +68,9 @@ class AuthController extends Controller {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/');
+        return response()->json([
+            'status' => true,
+            'redirect' => route('login')
+        ], 200);
     }
 }

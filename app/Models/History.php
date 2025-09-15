@@ -47,5 +47,21 @@ class History extends Model
         'deleted_at'                => 'datetime'
     ];
 
+    public function typeDocument() {
+        return $this->belongsTo(DocumentType::class, 'tipo_documento_id');
+    }
+
+    public function groupSanguineo() {
+        return $this->belongsTo(BloodGroup::class, 'grupo_sanguineo_id');
+    }
+
+    public function degreeInstruccion() {
+        return $this->belongsTo(DegreesInstruction::class, 'grado_instruccion_id');
+    }
+
+    public function occupation() {
+        return $this->belongsTo(Occupation::class, 'ocupacion_id');
+    }
+
     
 }
