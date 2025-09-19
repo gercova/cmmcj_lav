@@ -22,10 +22,34 @@ class DiagnosticsController extends Controller
         return view('maintenance.diagnostics.index');
     }
 
+    public function list(Request $request): JsonResponse {
+
+		$startIndex = $request->input('jtStartIndex', 0);
+		$pageSize 	= $request->input('jtPageSize', 10);
+		$itemSearch = $request->input('search');
+		// Obtener los datos filtrados
+		list($data, $count) = Diagnosis::getAllDiagnostics($startIndex, $pageSize, $itemSearch);
+		// Agregar permisos al resultado para el frontend
+        $permissions = [];
+
+		$data = $data->map(function ($record) use ($permissions) {
+			$record->Permissions = $permissions;
+			return $record;
+		});
+	
+		$jTableResult = [
+			'Result'            => 'OK',
+			'Records'           => $data,
+			'TotalRecordCount'  => $count,
+		];
+	
+		return response()->json($jTableResult);
+	}
+
     public function store(DiagnosticValidate $request): JsonResponse {
         $validated      = $request->validated();
         $proccessData   = [
-            'codigo'        => $this->generateCode(),
+            'codigo'        => isset($request->codigo) ? $request->codigo : $this->generateCode(),
             'descripcion'   => strtoupper($validated['descripcion']),
         ];
 
@@ -36,8 +60,9 @@ class DiagnosticsController extends Controller
             $result = Diagnosis::updateOrCreate(['id' => $request->id], $data);
             DB::commit();
             return response()->json([
-                'success' => true,
-                'message' => $result->wasChanged() ? 'Diagnóstico actualizado correctamente' : 'Diagnóstico guardado correctamente',
+                'status'    => true,
+                'type'      => 'success',
+                'message'   => $result->wasChanged() ? 'Diagnóstico actualizado correctamente' : 'Diagnóstico guardado correctamente',
             ], 200);
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -51,12 +76,12 @@ class DiagnosticsController extends Controller
     }
 
     public function show(Diagnosis $diagnosis) {
-        return DiagnosisResource::make($diagnosis);
+        return response()->json($diagnosis);
     }
 
     public function search (Request $request) {
-        $diagnostics = Diagnosis::where('descripcion', 'like', '%'.$request->query.'%')
-            ->orWhere('codigo', 'like', '%'.$request->query.'%')
+        $diagnostics = Diagnosis::where('descripcion', 'like', '%'.$request->input('q').'%')
+            ->orWhere('codigo', 'like', '%'.$request->input('q').'%')
             ->limit(5)
             ->get();
         return DiagnosisResource::collection($diagnostics);
@@ -64,18 +89,19 @@ class DiagnosticsController extends Controller
 
     public function generateCode(): string {
         $newCode = strtoupper(Str::random(4));
-        $exists = Diagnosis::where('code', $newCode)->count();
+        $exists = Diagnosis::where('codigo', $newCode)->count();
         if ($exists > 1) {
             $newCode = $newCode . '1';
         }
         return $newCode;
     }
 
-    public function destroy(Diagnosis $diagnosis) {
+    public function destroy(Diagnosis $diagnosis): JsonResponse {
         $diagnosis->delete();
         return response()->json([
-            'success' => true,
-            'message' => 'Diagnóstico eliminado correctamente',
+            'status'    => true,
+            'type'      => 'success',
+            'message'   => 'Diagnóstico eliminado correctamente',
         ], 200);
     }
 }

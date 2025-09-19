@@ -12,7 +12,7 @@ class Diagnosis extends Model
 
     protected $table        = 'diagnosticos';
     protected $primaryKey   = 'id';
-    protected $fillable     = ['codigo', 'descripcion','tipo',  'created_at', 'updated_at', 'deleted_at'];
+    protected $guarded      = [];
     protected $casts        = [
         'codigo'        => 'string',
         'descripcion'   => 'string',
@@ -21,4 +21,15 @@ class Diagnosis extends Model
         'updated_at'    => 'datetime',
         'deleted_at'    => 'datetime',
     ];
+
+    public static function getAllDiagnostics($startIndex, $pageSize, $itemSearch) {
+        $query = Diagnosis::where('codigo', 'like', "%{$itemSearch}%")
+            ->orWhere('descripcion', 'like', "%{$itemSearch}%");
+        
+        $count      = $query->count();
+        $results    = $query->offset($startIndex)
+            ->limit($pageSize)
+            ->get();
+        return [$results, $count];
+    }
 }

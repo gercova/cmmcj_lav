@@ -64,7 +64,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <a href="" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Agregar nueva historia</a>
+                            <a href="{{ route('emr.histories.new') }}" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Agregar nueva historia</a>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">

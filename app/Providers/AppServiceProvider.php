@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Enterprise;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -27,5 +28,7 @@ class AppServiceProvider extends ServiceProvider
             $enterprise = Enterprise::first();
             $view->with(['enterprise' => $enterprise]);
         });
+
+        Carbon::setLocale('es'); // Español global
     }
 }

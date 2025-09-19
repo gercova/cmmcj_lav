@@ -3,16 +3,19 @@
 namespace App\Http\Controllers\Business;
 
 use App\Http\Controllers\Controller;
+use App\Models\Enterprise;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
-class EnterpriseController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+class EnterpriseController extends Controller {
+    
+    public function __construct() {
+        $this->middleware(['auth', 'prevent.back']);
+    }
+
+    public function index(): View {
+        $etp = Enterprise::first();
+        return view('enterprise.index', compact('etp'));
     }
 
     /**

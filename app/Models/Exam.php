@@ -10,10 +10,10 @@ class Exam extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'examenes';
-    protected $primaryKey = 'id';
-    protected $guarded = [];
-    protected $casts = [
+    protected $table        = 'examenes';
+    protected $primaryKey   = 'id';
+    protected $guarded      = [];
+    protected $casts        = [
         'historia_id'       => 'integer',
         'examen_tipo_id'    => 'integer',
         'pa'                => 'string',
@@ -74,4 +74,8 @@ class Exam extends Model
         'updated_at'        => 'datetime',
         'deleted_at'        => 'datetime',
     ];
+
+    public function medicationExams() {
+        return $this->hasMany(MedicationExam::class, 'examen_id');
+    }
 }

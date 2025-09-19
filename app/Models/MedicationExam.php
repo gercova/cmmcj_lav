@@ -10,11 +10,12 @@ class MedicationExam extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'examen_medicacion';
-    protected $primaryKey = 'id';
-    protected $fillable = [
+    protected $table        = 'examen_medicacion';
+    protected $primaryKey   = 'id';
+    public $timestamps      = true;
+    protected $fillable     = [
         'examen_id',
-        'medicacion_id',
+        'historia_id',
         'farmaco_id',
         'descripcion',
         'dosis',
@@ -24,7 +25,7 @@ class MedicationExam extends Model
 
     protected $casts = [
         'examen_id'     => 'integer',
-        'medicacion_id' => 'integer',
+        'historia_id'   => 'integer',
         'farmaco_id'    => 'integer',
         'descripcion'   => 'string',
         'dosis'         => 'string',
@@ -34,6 +35,10 @@ class MedicationExam extends Model
         'updated_at'    => 'datetime',
         'deleted_at'    => 'datetime',
     ];
+
+    public function histories(){
+        return $this->belongsTo(History::class, 'historia_id');
+    }
 
     public function exams(){
         return $this->belongsTo(Exam::class, 'examen_id');

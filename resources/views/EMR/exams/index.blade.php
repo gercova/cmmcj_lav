@@ -21,11 +21,11 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">
-                        @can('historia_crear')
+                        
                             <div class="card-header">
-                                <a href="{{ route('hcl.histories.add') }}" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Agregar nueva historia</a>
+                                <a href="{{ route('emr.histories.new') }}" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Agregar nueva historia</a>
                             </div>
-                        @endcan
+                        
                         <div class="card-body">
                             <div class="table-responsive">
                                 <div class="table-responsive" id="histories"></div>
@@ -37,5 +37,5 @@
         </div>
     </section>
 </div>
-<script src="{{ asset('js/forms/exams.js') }}"></script>
+<script src="{{ asset('js/exams.js') }}"></script>
 @endsection

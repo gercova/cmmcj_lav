@@ -30,14 +30,14 @@ const DeleteHandler = (() => {
             });
 
             if (result.isConfirmed) {
-                const { data } = await axios.delete(`${config.baseUrl}/${endpoint}/delete/${id}`);
+                const { data } = await axios.delete(`${config.baseUrl}/sys/${endpoint}/delete/${id}`);
                 
-                alertNotify(data.type, data.messages);
+                alertNotify(data.type, data.message);
                 if (table) table.ajax.reload();
                 if (onSuccess) onSuccess(data);
             }
         } catch (error) {
-            const msg = error.response?.data?.messages || 'Error al procesar';
+            const msg = error.response?.data?.message || 'Error al procesar';
             alertNotify('error', msg);
             if (onError) onError(error);
         }

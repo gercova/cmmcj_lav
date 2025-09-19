@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class HistoryValidate extends FormRequest {
     
@@ -13,31 +14,41 @@ class HistoryValidate extends FormRequest {
     public function rules(): array {
         return [
             'tipo_documento_id'         => 'required',
-            'dni'                       => 'requited|digits:8|unique:historias,dni,'.$this->dni ?? NULL,
+            'dni'                       => [
+                'required',
+                'unique:historias,dni,'.$this->id,
+                Rule::when($this->id_td === 1, [
+                    'digits:8',
+                    Rule::unique('historias', 'dni')->ignore($this->id),
+                ]),
+                Rule::when($this->id_td === 3, [
+                    'size:9',
+                    Rule::unique('historias', 'dni')->ignore($this->id),
+                ]),
+            ],
             'nombres'                   => 'required|regex:/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ\s.,-]+$/',
-            'apellidos'                 => 'required|regex:/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ\s.,-]+$/',
-            'sexo'                      => 'required|enum:F,M',
+            'sexo'                      => 'required',
             'fecha_nacimiento'          => 'required|date',
-            'telefono'                  => 'required|digits:11|regex:/^[0-9\-]+$/',
+            'telefono'                  => 'required|max:11|regex:/^[0-9\-]+$/',
             'email'                     => 'required|email',
             'direccion'                 => 'required|string',
             'grupo_sanguineo_id'        => 'required|integer',
             'grado_instruccion_id'      => 'required|integer',
-            'ubigeo_nacimiento'         => 'required|string',
-            'ubigeo_residencia'         => 'required|string',
-            'ocupacion_id'              => 'required|integer',
+            'ubigeo_nacimiento'         => 'required',
+            'ubigeo_residencia'         => 'required',
+            'ocupacion_id'              => 'required',
             'estado_civil_id'           => 'required|integer',
-            'acompanante'               => 'nullable|regex:/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚs.,-/*="]+$/',
-            'acompanante_telefono'      => 'nullable|regex:/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚs.,-/*="]+$/',
-            'acompanante_direccion'     => 'nullable|regex:/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ\s.,-/*="]+$/',
-            'vinculo'                   => 'nullable|in:Padre,Madre,Hijo,Hija,Abuelo,Abuela,Tio,Tia,Nieto,Nieta,Cuñado,Vecino,Conocido',
+            'acompanante'               => 'nullable|regex:/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ\s.,-]+$/',
+            'acompanante_telefono'      => 'nullable|regex:/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ\s.,-]+$/',
+            'acompanante_direccion'     => 'nullable|regex:/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ\s.,-]+$/',
+            'vinculo'                   => 'nullable|regex:/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ\s.,-]+$/',
             'seguro_id'                 => 'nullable|integer',
-            'seguro_descripcion'        => 'nullable|regex:/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚs.,-/*="]+$/',
-            'antecedentes_quirurgicos'  => 'nullable|regex:/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚs.,-/*="]+$/',
-            'antecedentes_patologicos'  => 'nullable|regex:/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚs.,-/*="]+$/',
-            'antecedentes_familiares'   => 'nullable|regex:/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚs.,-/*="]+$/',
-            'antecedentes_medicos'      => 'nullable|regex:/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚs.,-/*="]+$/',
-            'rams'                      => 'nullable|regex:/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚs.,-/*="]+$/',
+            'seguro_descripcion'        => 'nullable|regex:/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ\s.,-]+$/',
+            'ant_quirurgicos'           => 'nullable|regex:/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ\s.,-]+$/',
+            'ant_patologicos'           => 'nullable|regex:/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ\s.,-]+$/',
+            'ant_familiares'            => 'nullable|regex:/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ\s.,-]+$/',
+            'ant_medicos'               => 'nullable|regex:/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ\s.,-]+$/',
+            'rams'                      => 'nullable|regex:/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ\s.,-]+$/',
         ];
     }
 
@@ -47,14 +58,13 @@ class HistoryValidate extends FormRequest {
             'dni.required'                      => 'El DNI es requerido',
             'dni.digits'                        => 'El DNI debe tener 8 dígitos',
             'dni.unique'                        => 'El DNI ya está registrado',
+            'dni.size'                          => 'El DNI debe tener 9 dígitos',
             'nombres.required'                  => 'Los nombres son requeridos',
             'nombres.regex'                     => 'Los nombres solo pueden contener letras, números y espacios',
-            'apellidos.required'                => 'Los apellidos son requeridos',
-            'apellidos.regex'                   => 'Los apellidos solo pueden contener letras, números y espacios',
             'sexo.required'                     => 'El sexo es requerido',
             'fecha_nacimiento.required'         => 'La fecha de nacimiento es requerida',
             'telefono.required'                 => 'El teléfono es requerido',
-            'telefono.digits'                   => 'El teléfono debe tener 11 dígitos',
+            'telefono.max'                      => 'El teléfono solo puede tener máximo 11 caracteres',
             'telefono.regex'                    => 'El teléfono solo puede contener números y guiones',
             'email.required'                    => 'El email es requerido',
             'email.email'                       => 'El email no es válido',

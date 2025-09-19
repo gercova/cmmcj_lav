@@ -1,5 +1,7 @@
 $(document).ready(function(){
-
+    //ID examen
+    const examId = document.getElementById('examId').value;
+    
     $('.exit-system').on('click', async function(e){
         e.preventDefault();
         try {
@@ -30,11 +32,11 @@ $(document).ready(function(){
         source: async function(request, response){
             try {
                 // Realizar la solicitud con Axios
-                const result = await axios.post(`${API_URL}/diagnostics/search`, {
+                const result = await axios.post(`${API_URL}/sys/diagnostics/search`, {
                     q: request.term // Término de búsqueda
                 });
                 // Procesar la respuesta y pasar los datos al autocomplete
-                response(result.data);
+                response(result.data.data);
             } catch (error) {
                 console.error('Error en la búsqueda:', error);
                 response([]); // Enviar un array vacío en caso de error
@@ -42,52 +44,78 @@ $(document).ready(function(){
         },
         minLength: 2,
         select: function(event, ui){
-            data = `${ui.item.id}*${ui.item.label}`;
+            data = `${ui.item.id}*${ui.item.cod}*${ui.item.label}`;
             $('#btn-add-diagnostic').val(data);
         },
     });
 	//Funciones para agregar diagnostico
-    $('#btn-add-diagnostic').on('click', function(){
+    $('#btn-add-diagnostic').on('click', async function(){
         const data = $(this).val();
-        if(data != ''){
-            const diagnostic        = data.split('*');
-            const diagnosticId      = diagnostic[0];
-            const diagnosticName    = diagnostic[1];
-            if ($(`input[value="${diagnosticId}"]`).length > 0) {
-                Swal.fire('¡Duplicado!', 'El diagnóstico ya está en la lista.', 'warning');
-                $('#diagnostics').val(null);
+        if(!data) {
+            Swal.fire('¡Vacío!', 'Escribe algo', 'error');
+            return;
+        }
+
+        const [id, code, name] = data.split('*');
+        const formattedName = name?.includes(' - ') ? name.split(' - ')[1] : name;
+
+        const dataMatch = {
+            examId: examId,
+            diagnosticId: id,
+        }
+
+        try {
+            const validateMatch = await axios.post(`${API_URL}/sys/ex-dx/validate-match`, dataMatch);
+
+            if (validateMatch.status === 200 && validateMatch.data.status === true) {
+                Swal.fire({
+                    title: '¡Duplicado!',
+                    text: validateMatch.data.message,
+                    icon: 'warning',
+                    confirmButtonText: 'Aceptar'
+                });
+
+                $('#diagnostics, #btn-add-diagnostic').val(null);
                 return;
             }
-            const html_data = `
-                <tr>
-                    <td><input type="hidden" name="diagnostic_id[]" value="${diagnosticId}">${diagnosticName}</td>
-                    <td>
-                        <button type="button" class="btn btn-danger btn-xs btn-remove-diagnosis" value="${diagnosticId}"><i class="bi bi-x-lg"></i></button>
-                    </td>
-                </tr>
-            `;
-            $('#tableDiagnostics tbody').append(html_data);
-            $('#diagnostics').val(null);
-            $('#btn-add-diagnostic').val(null);
-            alertNotify('success', `<h5>${diagnosticName} agregado</h5>`);
-        }else{
-            Swal.fire('¡Vacío!', 'Escribe algo', 'error');
+        } catch (error) {
+            Swal.fire(
+                'Error',
+                'Ocurrió un error al validar la coincidencia. Intente nuevamente.',
+                'error'
+            );
         }
+
+        if ($(`input[value="${id}"]`).length) {
+            Swal.fire('¡Duplicado!', 'El diagnóstico ya está en la lista.', 'warning');
+            $('#diagnostics, #btn-add-diagnostic').val(null);
+            return;
+        }
+
+        $('#tableDiagnostics tbody').append(`
+            <tr>
+                <td><input type="hidden" name="diagnostic_id[]" value="${id}">${code}</td>
+                <td>${formattedName}</td>
+                <td><button type="button" class="btn btn-danger btn-xs btn-remove-diagnosis" value="${id}">
+                    <i class="bi bi-trash"></i></button>
+                </td>
+            </tr>
+        `);
+
+        $('#diagnostics, #btn-add-diagnostic').val(null);
+        alertNotify('success', `<h5><b>${formattedName}</b> agregado</h5>`);
     });
-    //Función para quitar las filas de la table de diagnósticos
-    $(document).on('click','.btn-remove-diagnosis', function(){
-        $(this).closest('tr').remove();
-    });
+    
     //Funciones para agregar diagnostico
 	$('#drugs').autocomplete({
         source: async function (request, response) {
             try {
                 // Realizar la solicitud con Axios
-                const result = await axios.post(`${API_URL}/drugs/search`, {
+                const result = await axios.post(`${API_URL}/sys/drugs/search`, {
                     q: request.term // Término de búsqueda
                 });
                 // Procesar la respuesta y pasar los datos al autocomplete
-                response(result.data);
+                response(result.data.data);
             } catch (error) {
                 console.error('Error en la búsqueda:', error);
                 response([]); // Enviar un array vacío en caso de error
@@ -101,24 +129,52 @@ $(document).ready(function(){
         }
     });
     //Función para agregar el diagnóstico a la lista
-    $('#btn-add-drug').on('click', function(){
+    $('#btn-add-drug').on('click', async function(){
         data = $(this).val();
         if(data){
             const drug = data.split('*');
             const drugId = drug[0];
             const drugName = drug[1];
+
+            const dataMatch = {
+                examId: examId,
+                drugId: drugId,
+            }
+
+            try {
+                const validateMatch = await axios.post(`${API_URL}/sys/ex-mx/validate-match`, dataMatch);
+
+                if (validateMatch.status === 200 && validateMatch.data.status === true) {
+                    Swal.fire({
+                        title: '¡Duplicado!',
+                        text: validateMatch.data.message,
+                        icon: 'warning',
+                        confirmButtonText: 'Aceptar'
+                    });
+
+                    $('#drugs, #btn-add-drug').val(null);
+                    return;
+                }
+            } catch (error) {
+                Swal.fire(
+                    'Error',
+                    'Ocurrió un error al validar la coincidencia. Intente nuevamente.',
+                    'error'
+                );
+            }
+            
             if ($(`input[value="${drugId}"]`).length > 0) {
                 Swal.fire('¡Duplicado!', 'El fármaco ya está en la lista.', 'warning');
                 $('#drugs').val(null);
                 return;
             }
+
             const html_data = `
                 <tr>
                     <td><input type="hidden" name="drug_id[]" value="${drugId}">${drugName}</td>
                     <td><input type="text" class="form-control" name="description[]" placeholder="Ingrese descripción"></td>
-                    <td>
-                        <button type="button" class="btn btn-danger btn-xs btn-remove-drug" value="${drugId}"><i class="bi bi-x-lg"></i></button>
-                    </td>
+                    <td><input type="text" class="form-control" name="dosis[]" placeholder="Ingrese dosis"></td>
+                    <td><button type="button" class="btn btn-danger btn-xs btn-remove-drug" value="${drugId}"><i class="bi bi-trash"></i></button></td>
                 </tr>
             `;
             $('#tableDrugs tbody').append(html_data);
@@ -149,8 +205,6 @@ function alertNotify(icon, messages){
     })  
     Toast.fire({
         icon: icon,
-        //title: 'Operación realizada',
-        //html: messages,
         title: messages,
     })
 }

@@ -13,6 +13,9 @@ class Occupation extends Model
     protected $table        = 'ocupaciones';
     protected $primaryKey   = 'id';
     protected $fillable     = ['descripcion'];
+
+    protected $hidden       = ['created_at', 'updated_at', 'deleted_at'];
+
     protected $casts        = [
         'descripcion'   => 'string',
         'created_at'    => 'datetime',
