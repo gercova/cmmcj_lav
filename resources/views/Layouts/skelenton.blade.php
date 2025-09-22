@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('storage/'.$enterprise->logo) }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('storage/'.$enterprise->logo_miniatura) }}">
     <title>@yield('title', $enterprise->nombre_comercial)</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" rel="stylesheet">
     <!-- JQuery UI -->
@@ -31,6 +30,8 @@
     <!-- Select2 -->
     <link href="{{ asset('plugins/select2/css/select2.min.css') }}" rel="stylesheet">
     <link href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}" rel="stylesheet">
+    <!-- Slim Select -->
+    <link href="{{ asset('css/slimselect.min.css') }}" rel="stylesheet">
     <!-- SweetAlert 2 -->
     <link href="{{ asset('plugins/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet">
     <!-- Bootstrap Icon -->
@@ -83,9 +84,14 @@
     <script src="{{ asset('js/funciones.js') }}"></script>
     <script src="{{ asset('js/modalDetails.js') }}"></script>
     <script src="{{ asset('js/deleteHandler.js') }}"></script>
+    <script src="{{ asset('js/logout.js') }}"></script>
 </head>
 <body class="sidebar-mini sidebar-mini-md layout-fixed">
     <div class="wrapper">
+        <!-- Preloader -->
+        <div class="preloader flex-column justify-content-center align-items-center">
+            <img class="animation__wobble" src="{{ asset('storage/'.$enterprise->logo_miniatura) }}" alt="AdminLTELogo" height="100" width="100">
+        </div>
         <!-- Navbar -->
         @include('layouts.navbar', $enterprise)
         <!-- Sidebar -->

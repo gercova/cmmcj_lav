@@ -37,11 +37,13 @@ class AuthController extends Controller {
             // Autenticación exitosa
             $request->session()->regenerate();
             RateLimiter::clear($this->throttleKey($request));
-
+            // Obtener permisos
+            $permissions = Auth::user()->getAllPermissions()->pluck('name');
             return response()->json([
-                'status'    => true,
-                'message'   => 'Inicio de sesión exitoso.',
-                'redirect'  => route('home')
+                'status'        => true,
+                'message'       => 'Inicio de sesión exitoso.',
+                'redirect'      => route('home'),
+                'permissions'   => $permissions,
             ], 200);
         }
 

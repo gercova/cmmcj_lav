@@ -138,7 +138,6 @@ class ExamsController extends Controller {
         ]);
 
         $exists = MedicationExam::where('examen_id', $request->examId)->where('farmaco_id', $request->drugId)->exists();
-
         return response()->json([
             'status'    => $exists,
             'message'   => $exists ? 'El fármaco ya está en la lista' : 'Puede agregarlo',
@@ -225,7 +224,7 @@ class ExamsController extends Controller {
             return response()->json([
                 'status'    => true,
                 'type'      => 'success',
-                'message'   => 'Examen guardado con éxito',
+                'message'   => $result->wasChanged() ? 'Examen actualizado correctamente' : 'Examen guardado correctamente',
                 'redirect'  => route('emr.exams.see', $result->historia_id),
             ], 200);
         } catch (\Throwable $th) {

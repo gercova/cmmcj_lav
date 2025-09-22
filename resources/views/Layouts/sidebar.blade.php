@@ -1,9 +1,11 @@
 <!-- Main Sidebar Container -->
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<!--<aside class="main-sidebar sidebar-dark-primary elevation-4">-->
+<aside class="main-sidebar elevation-4 sidebar-light-navy">
+
     <!-- Brand Logo -->
     <a href="{{ route('home') }}" class="brand-link">
         <img src="{{ asset('storage/'.$enterprise->logo_miniatura) }}" class="brand-image img-circle elevation-3">
-        <span class="brand-text font-weight-light">{{ $enterprise->nombre_comercial }}</span>
+        <span class="brand-text font-weight-light"><b>{{ config('global.name') }}</b></span>
     </a>
     <!-- Sidebar -->
     <div class="sidebar">
@@ -13,8 +15,8 @@
             </div>
             <div class="info">
                 <!-- info usuario -->
-                <a href="#" class="d-block summary-names">{{ auth()->user()->formatted_name }}</a>
-                <p class="d-block text-white profile" style="margin-bottom: 0px;"></p>
+                <a href="" class="d-block summary-names">{{ auth()->user()->formatted_name }}</a>
+                <p class="d-block profile" style="margin-bottom: 0px;">{{ auth()->user()->roles[0]->name }}</p>
             </div>
         </div>
         <!-- Sidebar Menu -->
@@ -134,10 +136,15 @@
                         </a>
                         <ul class="nav nav-treeview">
                             
-                                
+                                <li class="nav-item">
+                                    <a href="{{ route('security.specialties.home') }}" class="nav-link {{ request()->routeIs('security.specialties.*') ? 'active' : '' }}">
+                                        <i class="bi bi-chevron-right"></i>
+                                        <p>Especialidades</p>
+                                    </a>
+                                </li>
 
                                 <li class="nav-item">
-                                    <a href="{{ route('security.permissions') }}" class="nav-link {{ request()->routeIs('security.permissions') ? 'active' : '' }}">
+                                    <a href="{{ route('security.permissions.home') }}" class="nav-link {{ request()->routeIs('security.permissions.*') ? 'active' : '' }}">
                                         <i class="bi bi-chevron-right"></i>
                                         <p>Permisos</p>
                                     </a>

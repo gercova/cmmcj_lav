@@ -22,7 +22,7 @@
             <div class="card card-primary">
                 <div class="card-header">
                 </div>
-                <form id="examForm" method="post">
+                <form id="examForm" method="post" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" id="id" name="id" value="{{ $exam->id }}">
                     <div class="card-body">

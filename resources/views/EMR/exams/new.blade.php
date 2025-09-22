@@ -22,7 +22,7 @@
             <div class="card card-primary">
                 <div class="card-header">
                 </div>
-                <form id="examForm" method="post">
+                <form id="examForm" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="card-body">
                         <div class="row">
@@ -605,6 +605,17 @@
                                                     </thead>
                                                     <tbody></tbody>
                                                 </table>
+                                                <!--<table id="tableDrugs2" class="table table-hover hide">
+                                                    <thead>
+                                                        <tr>
+                                                            <th style="width:30%;">Fármaco</th>
+                                                            <th style="width:45%;">Receta</th>
+                                                            <th style="width:25%">Dosis</th>
+                                                            <th style="width:10%;"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>-->
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-group row">

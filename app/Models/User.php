@@ -7,39 +7,48 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
-{
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+class User extends Authenticatable {
+    
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    protected $guarded  = [];
+    protected $hidden   = ['password', 'remember_token'];
+    protected $casts    = ['email_verified_at' => 'datetime'];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    public function getProfilePhotoUrlAttribute() {
+        // URL externa
+        if ($this->avatar && filter_var($this->avatar, FILTER_VALIDATE_URL)) {
+            return $this->avatar;
+        }
+        // Imagen local existe
+        if ($this->avatar && Storage::disk('public')->exists($this->avatar)) {
+            return Storage::url($this->avatar);
+        }
+        // Imagen por defecto
+        return asset('storage/photos/anonymous.png');
+    }
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public function getFormattedNameAttribute() {
+        if (empty($this->name)) return '';
+        $parts = array_filter(explode(' ', $this->name));
+        
+        switch (count($parts)) {
+            case 0:
+                return '';
+            case 1:
+                return $this->name;
+            case 2:
+            case 3:
+                return $this->name;
+            default:
+                $firstName      = $parts[0];
+                $middleInitial  = strlen($parts[1]) > 0 ? substr($parts[1], 0, 1) . '.' : '';
+                $lastName       = $parts[count($parts) - 2];
+                return trim("{$firstName} {$middleInitial} {$lastName}");
+        }
+    }
 }

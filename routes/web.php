@@ -10,6 +10,7 @@ use App\Http\Controllers\Maintenance\DiagnosticsController;
 use App\Http\Controllers\Maintenance\DrugsController;
 use App\Http\Controllers\Maintenance\OccupationsController;
 use App\Http\Controllers\Security\PermissionsController;
+use App\Http\Controllers\Security\SpecialtiesController;
 use App\Http\Controllers\Security\UsersController;
 use Illuminate\Support\Facades\Route;
 
@@ -83,13 +84,24 @@ Route::middleware(['auth', 'prevent.back'])->group(function(){
     Route::get('/sys/occupations/search',           [OccupationsController::class, 'search']);
     // Empresa
     Route::get('/sys/enterprise',                   [EnterpriseController::class, 'index'])->name('business.enterprise');
-    Route::post('/sys/enterprise',                  [EnterpriseController::class, 'store']);
+    Route::post('/sys/enterprise/store',            [EnterpriseController::class, 'store']);
+    Route::get('/sys/enterprise/images',            [EnterpriseController::class, 'getImages']);
+    // Especialidades
+    Route::get('/sys/specialties',                  [SpecialtiesController::class, 'index'])->name('security.specialties.home');
+    Route::get('/sys/specialties/list',             [SpecialtiesController::class, 'list']);
+    Route::get('/sys/specialties/{specialty}',      [SpecialtiesController::class, 'show']);
+    Route::post('/sys/specialties/store',           [SpecialtiesController::class, 'store']);
+    Route::delete('/sys/specialties/delete',        [SpecialtiesController::class, 'destroy']);
     // Permisos
-    Route::get('/sys/permissions',                  [PermissionsController::class, 'index'])->name('security.permissions');
+    Route::get('/sys/permissions',                  [PermissionsController::class, 'index'])->name('security.permissions.home');
+    Route::get('/sys/permissions/list',             [PermissionsController::class, 'list']);
+    Route::get('/sys/permissions/store',            [PermissionsController::class, 'store']);
+    Route::delete('/sys/permissions/delete',        [PermissionsController::class, 'destroy']);
     // Usuarios
     Route::get('/sys/users',                        [UsersController::class, 'index'])->name('security.users.home');
     Route::get('/sys/users/new',                    [UsersController::class, 'new'])->name('security.users.new');
     Route::get('/sys/users/edit/{user}',            [UsersController::class, 'edit'])->name('security.users.edit');
-    Route::post('/sys/users',                       [UsersController::class, 'store']);
+    Route::get('/sys/users/list',                   [UsersController::class, 'list']);
+    Route::post('/sys/users/store',                 [UsersController::class, 'store']);
     Route::delete('/sys/users/{user}',              [UsersController::class, 'destroy']);
 });
