@@ -68,7 +68,6 @@
     <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
     <!-- SweetAlert 2 -->
     <script src={{ asset('plugins/sweetalert2/sweetalert2.min.js') }}></script>
-
     <script>
         const API_URL = "{{ url('/') }}";
         const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');

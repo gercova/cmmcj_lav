@@ -605,17 +605,6 @@
                                                     </thead>
                                                     <tbody></tbody>
                                                 </table>
-                                                <!--<table id="tableDrugs2" class="table table-hover hide">
-                                                    <thead>
-                                                        <tr>
-                                                            <th style="width:30%;">Fármaco</th>
-                                                            <th style="width:45%;">Receta</th>
-                                                            <th style="width:25%">Dosis</th>
-                                                            <th style="width:10%;"></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody></tbody>
-                                                </table>-->
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-group row">
@@ -642,9 +631,10 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
-                                                <table id="tabletest" class="table table-hover">
+                                                <table id="tableTest" class="table table-hover">
                                                     <thead>
                                                         <tr>
+                                                            <th>Nombre examen</th>
                                                             <th>Examen</th>
                                                             <th>Fecha</th>
                                                             <th>Resultado</th>

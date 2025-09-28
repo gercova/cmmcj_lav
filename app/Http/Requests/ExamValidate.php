@@ -160,7 +160,7 @@ class ExamValidate extends FormRequest {
             'spp.string'                  => '',
             'lcf.string'                  => '',
             'du.string'                   => '',
-            'mac.string'                  => '',
+            'mac_id.required'             => 'MAC es requerido',
             'oh.string'                   => '',
             'psc_prox_1.string'           => '',
             'psc_prox_2.string'           => '',

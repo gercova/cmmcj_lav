@@ -95,12 +95,14 @@ Route::middleware(['auth', 'prevent.back'])->group(function(){
     // Permisos
     Route::get('/sys/permissions',                  [PermissionsController::class, 'index'])->name('security.permissions.home');
     Route::get('/sys/permissions/list',             [PermissionsController::class, 'list']);
-    Route::get('/sys/permissions/store',            [PermissionsController::class, 'store']);
-    Route::delete('/sys/permissions/delete',        [PermissionsController::class, 'destroy']);
+    Route::get('/sys/permissions/{permission}',     [PermissionsController::class, 'show']);
+    Route::post('/sys/permissions/store',           [PermissionsController::class, 'store']);
+    Route::delete('/sys/px/delete/{permission}',    [PermissionsController::class, 'destroy']);
     // Usuarios
     Route::get('/sys/users',                        [UsersController::class, 'index'])->name('security.users.home');
     Route::get('/sys/users/new',                    [UsersController::class, 'new'])->name('security.users.new');
     Route::get('/sys/users/edit/{user}',            [UsersController::class, 'edit'])->name('security.users.edit');
+    Route::get('/sys/users/role/{user}',            [UsersController::class, 'role'])->name('security.users.role');
     Route::get('/sys/users/list',                   [UsersController::class, 'list']);
     Route::post('/sys/users/store',                 [UsersController::class, 'store']);
     Route::delete('/sys/users/{user}',              [UsersController::class, 'destroy']);

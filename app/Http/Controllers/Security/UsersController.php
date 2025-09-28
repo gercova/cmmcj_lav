@@ -13,13 +13,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class UsersController extends Controller {
 
     public function __construct() {
         $this->middleware(['auth', 'prevent.back']);
-        
     }
     
     public function index(): View {
@@ -39,6 +39,21 @@ class UsersController extends Controller {
         return view('security.user.edit', compact('user', 'rl', 'ur', 'sp'));   
     }
 
+    public function role(User $user): View {
+        $user                   = User::with(['permissions', 'roles.permissions'])->findOrFail($user->id);
+        // Obtener todos los permisos del sistema
+        $allPermissions         = Permission::all();
+        // Permisos directos del usuario
+        $directPermissions      = $user->permissions;
+        // Permisos heredados de roles
+        $rolePermissions        = $user->getPermissionsViaRoles();
+        // Combinar todos los permisos asignados (directos y por roles)
+        $allAssignedPermissions = $directPermissions->merge($rolePermissions)->unique('id');
+        // Permisos disponibles (no asignados ni directos ni por roles)
+        $availablePermissions   = $allPermissions->diff($allAssignedPermissions);
+        return view('security.user.role', compact('user', 'availablePermissions', 'directPermissions', 'rolePermissions', 'allAssignedPermissions'));
+    }
+
     public function list(): JsonResponse {
         $results    = DB::table('view_user_roles_last_login')->get();
         $data       = $results->map(function ($item, $index) {
@@ -49,7 +64,7 @@ class UsersController extends Controller {
                     '<a href="%s" class="btn btn-sm btn-info assign-roles btn-md" title="Asignar roles">
                         <i class="bi bi-person-gear"></i>
                     </a>&nbsp;',
-                    htmlspecialchars(route('security.users.role', ['id' => $item->id]), ENT_QUOTES, 'UTF-8')
+                    htmlspecialchars(route('security.users.role', ['user' => $item->id]), ENT_QUOTES, 'UTF-8')
                 );
             }
             if ($currentUser->can('usuario_editar')) {
@@ -116,14 +131,13 @@ class UsersController extends Controller {
             'especialidad_id'   => $validated['especialidad_id'],
         ];
         // Preparar campos procesados
-        $nickname   = $this->createNickname($validated['name']);
+        $nickname   = $validated['role_id'] == 1 ? $request->input('username') : $this->createNickname($validated['name']);
         $domain     = Enterprise::findOrFail(1)->pagina_web;
-
         $proccessFields = [
-            'username' =>  $nickname,
-            'email' => $nickname . '@' . $domain,
-            'password' => $request->filled('password') ? Hash::make($request->password) : Hash::make('password'),
-            'avatar' => $path ?? ($id ? User::find($id)->avatar : null), // Usa null coalescing (más limpio)
+            'username'  => $nickname,
+            'email'     => $nickname.'@'.$domain,
+            'password'  => $request->filled('password') ? Hash::make($request->password) : Hash::make('password'),
+            'avatar'    => $path ?? ($id ? User::find($id)->avatar : null),
         ];
 
         $data = array_merge($fields, $proccessFields);

@@ -227,40 +227,40 @@
                                 </div>
                             </div>
                             <hr>
-                            
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label for="ant_quirurgicos">Antecedentes quirúrgicos</label>
-                                        <textarea class="form-control" name="ant_quirurgicos" id="ant_quirurgicos">{{ $history->ant_quirurgicos }}</textarea>
+                            @role('Administrador|Especialista')
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="ant_quirurgicos">Antecedentes quirúrgicos</label>
+                                            <textarea class="form-control" name="ant_quirurgicos" id="ant_quirurgicos">{{ $history->ant_quirurgicos }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="ant_patologicos">Antecedentes patológicos</label>
+                                            <textarea class="form-control" name="ant_patologicos" id="ant_patologicos">{{ $history->ant_patologicos }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="ant_familiares">Antecedentes familiares</label>
+                                            <textarea class="form-control" name="ant_familiares" id="ant_familiares">{{ $history->ant_familiares }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="ant_medicos">Antecedentes médicos</label>
+                                            <textarea class="form-control" name="ant_medicos" id="ant_medicos">{{ $history->ant_medicos }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="rams">RAMS</label>
+                                            <textarea class="form-control" name="rams" id="rams">{{ $history->rams }}</textarea>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label for="ant_patologicos">Antecedentes patológicos</label>
-                                        <textarea class="form-control" name="ant_patologicos" id="ant_patologicos">{{ $history->ant_patologicos }}</textarea>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label for="ant_familiares">Antecedentes familiares</label>
-                                        <textarea class="form-control" name="ant_familiares" id="ant_familiares">{{ $history->ant_familiares }}</textarea>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label for="ant_medicos">Antecedentes médicos</label>
-                                        <textarea class="form-control" name="ant_medicos" id="ant_medicos">{{ $history->ant_medicos }}</textarea>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label for="rams">RAMS</label>
-                                        <textarea class="form-control" name="rams" id="rams">{{ $history->rams }}</textarea>
-                                    </div>
-                                </div>
-                            </div>
-
+                            @endrole
                         </div>
                         <div class="card-footer">
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">

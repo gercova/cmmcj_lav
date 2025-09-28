@@ -12,7 +12,9 @@ class DocumentExam extends Model
 
     protected $table        = 'examen_documento';
     protected $primaryKey   = 'id';
-    protected $fillable     = ['examen_id', 'historia_id', 'nombre_examen', 'documento', 'fecha_examen', 'created_at', 'updated_at', 'deleted_at'];
+    //protected $guarded      = [];
+    protected $fillable     = ['examen_id', 'historia_id', 'nombre_examen', 'documento', 'fecha_examen'];
+    protected $hidden       = ['created_at', 'updated_at', 'deleted_at'];
     protected $casts        = [
         'examen_id'         => 'integer',
         'historia_id'       => 'integer',

@@ -48,29 +48,26 @@ class ExamsController extends Controller {
     public function listExams(History $history): JsonResponse {
         $results 		= DB::select('CALL PA_getExamsbyMedicalHistory(?)', [$history->id]);
 		$data 			= collect($results)->map(function ($item, $index) {
-			//$user   	= auth()->user();
+			$user   	= auth()->user();
 			$buttons 	= '';
-
-			//if($user->can('informe_ver')){
+			if($user->can('examen_ver')){
                 $buttons .= sprintf(
                     '<button type="button" class="btn btn-info view-exam btn-xs" value="%s"><i class="bi bi-eye"></i> Ver receta</button>&nbsp;',
                     htmlspecialchars($item->id, ENT_QUOTES, 'UTF-8')
                 );
-            //}
-
-			//if($user->can('informe_actualizar')){
+            }
+			if($user->can('examen_editar')){
                 $buttons .= sprintf(
                     '<a type="button" class="btn btn-warning btn-xs" href="%s"><i class="bi bi-pencil-square"></i> Editar</a>&nbsp;',
                     htmlspecialchars(route('emr.exams.edit', ['exam' => $item->id]), ENT_QUOTES, 'UTF-8'),
                 );
-            //}
-
-			//if($user->can('informe_borrar')){
+            }
+			if($user->can('examen_borrar')){
                 $buttons .= sprintf(
                     '<button type="button" class="btn btn-danger delete-exam btn-xs" value="%s"><i class="bi bi-trash"></i> Eliminar</button>',
                     htmlspecialchars($item->id, ENT_QUOTES, 'UTF-8')
                 );
-            //}
+            }
 
 			return [
 				$index + 1,
@@ -92,14 +89,14 @@ class ExamsController extends Controller {
     public function listDiagnostics(Exam $exam): JsonResponse {
         $results 		= DB::select('CALL PA_getDiagnosticsByExam(?)', [$exam->id]);
 		$data 			= collect($results)->map(function ($item, $index) {
-			//$user 		= auth()->user();
+			$user 		= auth()->user();
 			$buttons 	= '';
-			//if($user->can('examen_borrar')){
+			if($user->can('examen_borrar')){
 				$buttons .= sprintf(
 					'<button type="button" class="btn btn-danger delete-diagnostic btn-xs" value="%s"><i class="bi bi-trash"></i></button>',
 					$item->id,
 				);
-			//}
+			}
 			return [
                 $item->codigo,
 				$item->diagnostico,
@@ -116,7 +113,6 @@ class ExamsController extends Controller {
     }
 
     public function validateMatchDx (Request $request): JsonResponse {
-
         $request->validate([
             'examId'        => 'required|integer',
             'diagnosticId'  => 'required|integer',
@@ -143,7 +139,6 @@ class ExamsController extends Controller {
             'message'   => $exists ? 'El fármaco ya está en la lista' : 'Puede agregarlo',
             'type'      => $exists ? 'warning' : 'success',
         ], 200);
-
     }
 
     public function listMedications(Exam $exam): JsonResponse {
@@ -208,18 +203,26 @@ class ExamsController extends Controller {
 		$drugs 			= $request->input('drug_id');
 		$descriptions 	= $request->input('description');
         $dosis          = $request->input('dosis');
-        $nombreDoc      = $request->input('nombreDocumento');
-		$document 		= $request->file('documents');
-		$dateDoc 	    = $request->input('fecha_documento');
+        $nombreDoc      = $request->input('nombre_examen');
+		$document 		= $request->file('documento');
+		$dateDoc 	    = $request->input('fecha_examen');
         $id 			= $request->input('id');
+
+        /*dd([
+            'documents' => $request->file('documento'),
+            'nombres'   => $request->input('nombre_examen'),
+            'fechas'    => $request->input('fecha_examen'),
+        ]);
+        die;*/
 
         DB::beginTransaction();
         try {
-            $result = Exam::updateOrCreate(['id' => $request->input('id')], $validated);
+            $result     = Exam::updateOrCreate(['id' => $request->input('id')], $validated);
+            $history    = History::find($request->input('historia_id'));
             // Guardar diagnóstico, medicación y subir documentos si existen
             if ($diagnostics) 	$this->saveDiagnosis($result->id, $result->historia_id, $diagnostics);
             if ($drugs) 		$this->saveMedicacion($result->id, $result->historia_id, $drugs, $descriptions, $dosis);
-            if ($document)      $this->saveDocument($document, $result->historia_id, $result->dni, $nombreDoc, $dateDoc, $id);
+            if ($document)      $this->saveDocument($document, $result->historia_id, $history->dni, $nombreDoc, $dateDoc, $id);
             DB::commit();
             return response()->json([
                 'status'    => true,
@@ -236,16 +239,17 @@ class ExamsController extends Controller {
                 'errors'    => $th->getMessage(),
             ], 500);
         }
-
     }
 
     private function saveDiagnosis($id, $history, $diagnosticId): void {
         if (empty($diagnosticId)) return;
 
         $data = collect($diagnosticId)->map(fn ($diagnosticId) => [
-            'examen_id'      => $id,
-            'historia_id'    => $history,
-            'diagnostico_id' => $diagnosticId,
+            'examen_id'         => $id,
+            'historia_id'       => $history,
+            'diagnostico_id'    => $diagnosticId,
+            'created_at'        => now(),
+            'updated_at'        => now(),
         ])->toArray();
 
         DiagnosticExam::insert($data);
@@ -261,7 +265,9 @@ class ExamsController extends Controller {
 				'historia_id'   => $history,
 				'farmaco_id' 	=> $drugId[$i],
 				'descripcion'   => $description[$i],
-                'dosis'         => $dosis[$i]
+                'dosis'         => $dosis[$i],
+                'created_at'    => now(),
+                'created_at'    => now(),
 			];
 		}
 
@@ -296,10 +302,9 @@ class ExamsController extends Controller {
         }
     }*/
 
-    private function saveDocument($documents, $history, $dni, $nombreDocumento, $fechaDocument, $id) {
+    private function saveDocument($documents, $history, $dni, $nombreDocumento, $fechaDocument, $id): void {
         // Validar que se recibieron documentos
         if (!$documents || !is_array($documents)) return;
-
         // Definir tipos de archivos permitidos
         $allowedMimeTypes = [
             'image/jpeg',
@@ -316,30 +321,24 @@ class ExamsController extends Controller {
         if (!Storage::disk('public')->exists($directorio)) {
             Storage::disk('public')->makeDirectory($directorio);
         }
-
         // Procesar cada documento
         foreach ($documents as $index => $document) {
             // Validar que el archivo es válido
             if (!$document || !$document->isValid()) continue;
-
             // Validar tipo MIME
             $mimeType = $document->getMimeType();
             if (!in_array($mimeType, $allowedMimeTypes)) {
                 Log::warning("Tipo de archivo no permitido: {$mimeType} - Archivo: {$document->getClientOriginalName()}");
                 continue; // Saltar archivo no permitido
             }
-
             // Generar nombre único seguro
             $extension = $document->getClientOriginalExtension();
             $fileName = uniqid('doc_', true) . '.' . $extension; // Más seguro que mt_rand()
-
             // Ruta relativa para guardar en DB (NO la ruta absoluta)
             $relativePath = "{$directorio}/{$fileName}";
-
             try {
                 // Subir el archivo al disco público
                 $uploaded = $document->storeAs($directorio, $fileName, 'public');
-
                 if (!$uploaded) {
                     Log::error("Falló la subida del archivo: {$document->getClientOriginalName()}");
                     continue;
@@ -350,11 +349,9 @@ class ExamsController extends Controller {
                     'historia_id'       => $history,
                     'nombre_examen'     => $nombreDocumento[$index] ?? 'Documento sin nombre',
                     'documento'         => $relativePath, // Solo la ruta relativa
-                    'fecha_documento'   => $fechaDocument[$index] ?? now()->toDateString(),
+                    'fecha_examen'      => $fechaDocument[$index] ?? now()->toDateString(),
                 ]);
-
                 Log::info("Archivo subido exitosamente: {$fileName}");
-
             } catch (\Exception $e) {
                 Log::error("Error al subir archivo: {$e->getMessage()} - Archivo: {$document->getClientOriginalName()}");
                 continue;
@@ -371,13 +368,13 @@ class ExamsController extends Controller {
         ],200);
     }
 
-    public function destroyDocument (DocumentExam $document): JsonResponse {
-        $document->delete();
+    public function destroyDocument (DocumentExam $doc): JsonResponse {
+        $doc->delete();
         return response()->json([
-            'status'    => (bool) $document,
-            'type'      => $document ? 'success' : 'error',
-            'message'   => $document ? 'Documento eliminado' : 'Error al eliminar el documento'
-        ],200);
+            'status'    => (bool) $doc,
+            'type'      => $doc ? 'success' : 'error',
+            'message'   => $doc ? 'Documento eliminado' : 'Error al eliminar el documento'
+        ], $doc ? 200 : 500);
     }
 
     public function destroyDiagnostics(DiagnosticExam $dx): JsonResponse {
@@ -386,7 +383,7 @@ class ExamsController extends Controller {
             'status'    => (bool) $dx,
             'type'      => $dx ? 'success' : 'error',
             'message'   => $dx ? 'Diagnostico eliminado': 'Error al eliminar el diagnóstico'
-        ], 200);
+        ], $dx ? 200 : 500);
     }
 
     public function destroyMedications(MedicationExam $mx): JsonResponse {
@@ -395,6 +392,6 @@ class ExamsController extends Controller {
             'status'    => (bool) $mx,
             'type'      => $mx ? 'succes' : 'error',
             'message'   => $mx ? 'Medicación eliminada' : 'Error al eliminar medicación'
-        ], 200);
+        ], $mx ? 200 : 500);
     }
 }

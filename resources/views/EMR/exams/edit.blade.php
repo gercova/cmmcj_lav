@@ -626,15 +626,41 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="row">
+                                            <div class="col-md-12">
+                                                <table id="document_data" class="table table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Nombre Examen</th>
+                                                            <th>Examen</th>
+                                                            <th>Fecha</th>
+                                                            <th>Resultado</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    <thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="card card-info">
+                                    <div class="card-header">
+                                        <h5 class="card-title">Exámenes auxiliares</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
                                             <div class="col-md-4">
                                                 <div class="form-group row">
                                                     <button id="btn-add-test" type="button" class="btn btn-primary btn-block"><i class="bi bi-plus-circle"></i> Agregar campo</button>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
-                                                <table id="tabletest" class="table table-hover">
+                                                <table id="tableTest" class="table table-hover">
                                                     <thead>
                                                         <tr>
+                                                            <th>Nombre Examen</th>
                                                             <th>Examen</th>
                                                             <th>Fecha</th>
                                                             <th>Resultado</th>
