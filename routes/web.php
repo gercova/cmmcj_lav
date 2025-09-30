@@ -50,6 +50,7 @@ Route::middleware(['auth', 'prevent.back'])->group(function(){
     Route::get('/sys/exams/new/{history}',          [ExamsController::class, 'new'])->name('emr.exams.new');
     Route::get('/sys/exams/edit/{exam}',            [ExamsController::class, 'edit'])->name('emr.exams.edit');
     Route::get('/sys/exams/see/{history}',          [ExamsController::class, 'see'])->name('emr.exams.see');
+    Route::get('/sys/exams/view/{exam}',            [ExamsController::class, 'view']);
     Route::post('/sys/exams/store',                 [ExamsController::class, 'store']);
     Route::get('/sys/exams/list/{history}',         [ExamsController::class, 'listExams']);
     Route::get('/sys/exams/list-dx/{exam}',         [ExamsController::class, 'listDiagnostics']);

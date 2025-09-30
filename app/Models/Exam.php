@@ -6,8 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Exam extends Model
-{
+class Exam extends Model {
     use HasFactory, SoftDeletes;
 
     protected $table        = 'examenes';
@@ -41,6 +40,7 @@ class Exam extends Model
         'aparato_respiratorio' => 'string',
         'cardio_vascular'   => 'string',
         'abdomen'           => 'string',
+        'd_abm'             => 'string',
         'i_abm'             => 'string',
         'ap_abm'            => 'string',
         'c_abm'             => 'string',
@@ -64,7 +64,7 @@ class Exam extends Model
         'psc_prox_1'        => 'string',
         'nutricion'         => 'string',
         'psicologia_1'      => 'string',
-        'psicologia_2'      => 'sttring',
+        'psicologia_2'      => 'string',
         'psicologia_3'      => 'string',
         'psicologia_4'      => 'string',
         'pezon'             => 'string',

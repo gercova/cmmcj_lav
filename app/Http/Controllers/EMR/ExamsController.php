@@ -22,6 +22,12 @@ class ExamsController extends Controller {
 
     public function __construct() {
         $this->middleware(['auth', 'prevent.back']);
+        $this->middleware('permission:examen_acceder')->only('index');
+		$this->middleware('permission:examen_ver')->only('see', 'view', 'listExams', 'listDiagnostics', 'listMedications');
+		$this->middleware('permission:examen_crear')->only('new');
+		$this->middleware('permission:examen_editar')->only('edit');
+        $this->middleware('permission:examen_guardar')->only('store');
+		$this->middleware('permission:examen_borrar')->only('destroy', 'destroyDiagnostics', 'destroyMedications', 'destroyDocument');
     }
 
     public function index(): View {
@@ -44,6 +50,13 @@ class ExamsController extends Controller {
     public function see(History $history): View {
         return view('emr.exams.see', compact('history'));
     }
+
+    public function view(Exam $exam): JsonResponse {
+        $hc			= History::findOrFail($exam->historia_id);
+		$diagnostic = DB::select('CALL PA_getDiagnosticsByExam(?)', [$exam->id]);
+		$medication = DB::select('CALL PA_getMedicationByExam(?)', [$exam->id]);
+		return response()->json(compact('exam', 'hc', 'diagnostic', 'medication'), 200);
+	}
 
     public function listExams(History $history): JsonResponse {
         $results 		= DB::select('CALL PA_getExamsbyMedicalHistory(?)', [$history->id]);
@@ -112,6 +125,34 @@ class ExamsController extends Controller {
 		], 200);
     }
 
+    public function listDocuments(Exam $exam): JsonResponse {
+        $results 		= DB::select('CALL PA_getDocumentsByExam(?)', [$exam->id]);
+		$data 			= collect($results)->map(function ($item, $index) {
+            $user 		= auth()->user();
+			$buttons 	= '';
+			if($user->can('examen_borrar')){
+				$buttons .= sprintf(
+					'<button type="button" class="btn btn-danger delete-doc btn-xs" value="%s"><i class="bi bi-trash"></i> Eliminar</button>',
+					$item->id
+				);
+			}
+			return [
+				$index + 1,
+                $item->documento,
+				$item->fecha_examen,
+				$item->created_at,
+                $buttons ?: '<span class="text-muted">No autorizado</span>',
+			];
+		});
+
+		return response()->json([
+			"sEcho"					=> 1,
+			"iTotalRecords"			=> $data->count(),
+			"iTotalDisplayRecords"	=> $data->count(),
+			"aaData"				=> $data ?? [],
+		], 200);
+    }
+
     public function validateMatchDx (Request $request): JsonResponse {
         $request->validate([
             'examId'        => 'required|integer',
@@ -169,34 +210,6 @@ class ExamsController extends Controller {
 		], 200);
     }
 
-    public function listDocuments(Exam $exam): JsonResponse {
-        $results 		= DB::select('CALL PA_getDocumentsByExam(?)', [$exam->id]);
-		$data 			= collect($results)->map(function ($item, $index) {
-            $user 		= auth()->user();
-			$buttons 	= '';
-			//if($user->can('examen_borrar')){
-				$buttons .= sprintf(
-					'<button type="button" class="btn btn-danger delete-doc btn-xs" value="%s"><i class="bi bi-trash"></i> Eliminar</button>',
-					$item->id
-				);
-			//}
-			return [
-				$index + 1,
-                $item->documento,
-				$item->fecha_examen,
-				$item->created_at,
-                $buttons ?: '<span class="text-muted">No autorizado</span>',
-			];
-		});
-
-		return response()->json([
-			"sEcho"					=> 1,
-			"iTotalRecords"			=> $data->count(),
-			"iTotalDisplayRecords"	=> $data->count(),
-			"aaData"				=> $data ?? [],
-		], 200);
-    }
-
     public function store (ExamValidate $request): JsonResponse {
         $validated      = $request->validated();
         $diagnostics 	= $request->input('diagnostic_id');
@@ -207,13 +220,6 @@ class ExamsController extends Controller {
 		$document 		= $request->file('documento');
 		$dateDoc 	    = $request->input('fecha_examen');
         $id 			= $request->input('id');
-
-        /*dd([
-            'documents' => $request->file('documento'),
-            'nombres'   => $request->input('nombre_examen'),
-            'fechas'    => $request->input('fecha_examen'),
-        ]);
-        die;*/
 
         DB::beginTransaction();
         try {
@@ -368,15 +374,6 @@ class ExamsController extends Controller {
         ],200);
     }
 
-    public function destroyDocument (DocumentExam $doc): JsonResponse {
-        $doc->delete();
-        return response()->json([
-            'status'    => (bool) $doc,
-            'type'      => $doc ? 'success' : 'error',
-            'message'   => $doc ? 'Documento eliminado' : 'Error al eliminar el documento'
-        ], $doc ? 200 : 500);
-    }
-
     public function destroyDiagnostics(DiagnosticExam $dx): JsonResponse {
         $dx->delete();
         return response()->json([
@@ -393,5 +390,14 @@ class ExamsController extends Controller {
             'type'      => $mx ? 'succes' : 'error',
             'message'   => $mx ? 'Medicación eliminada' : 'Error al eliminar medicación'
         ], $mx ? 200 : 500);
+    }
+
+    public function destroyDocument (DocumentExam $doc): JsonResponse {
+        $doc->delete();
+        return response()->json([
+            'status'    => (bool) $doc,
+            'type'      => $doc ? 'success' : 'error',
+            'message'   => $doc ? 'Documento eliminado' : 'Error al eliminar el documento'
+        ], $doc ? 200 : 500);
     }
 }

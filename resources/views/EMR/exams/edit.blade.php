@@ -47,7 +47,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-4 col-form-label">Fecha:</label>
                                     <div class="col-sm-8">
-                                        <input type="date" class="form-control form-control-sm" name="fechaM">
+                                        <input type="text" class="form-control form-control-sm" name="created_at" value="{{ $exam->created_at->format('Y-m-d') }}" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -241,44 +241,44 @@
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="fpp">Fecha estimada del parto:</label>
-                                                    <input type="text" class="form-control form-control-sm" id="fpp" name="fpp" value="{{ $exam->fpp }}">
+                                                    <input type="text" class="form-control form-control-sm" id="fpp" name="fpp" value="@if($exam->fpp) {{ $exam->fpp->format('Y-m-d') }} @else {{ '' }} @endif">
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="eg">Edad gestacional:</label>
-                                                    <input type="text" class="form-control form-control-sm" id="eg" name="eg" value="{{ $exam->eg }}">
+                                                    <label for="edad_gestacional">Edad gestacional:</label>
+                                                    <input type="text" class="form-control form-control-sm" id="edad_gestacional" name="edad_gestacional" value="{{ $exam->edad_gestacional }}">
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-group row">
-                                                    <label class="col-sm-2 col-form-label" for="ag">Apreciación general:</label>
+                                                    <label class="col-sm-2 col-form-label" for="apreciacion_general">Apreciación general:</label>
                                                     <div class="col-sm-10">
-                                                        <textarea class="form-control form-control-sm" id="ag" name="ag" rows="1">{{ $exam->ag }}</textarea>
+                                                        <textarea class="form-control form-control-sm" id="apreciacion_general" name="apreciacion_general" rows="1">{{ $exam->apreciacion_general }}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-group row">
-                                                    <label class="col-sm-2 col-form-label" for="pym">Piel y mucosas:</label>
+                                                    <label class="col-sm-2 col-form-label" for="piel_mucosas">Piel y mucosas:</label>
                                                     <div class="col-sm-10">
-                                                        <textarea class="form-control form-control-sm" id="pym" name="pym" rows="1">{{ $exam->pym }}</textarea>
+                                                        <textarea class="form-control form-control-sm" id="piel_mucosas" name="piel_mucosas" rows="1">{{ $exam->piel_mucosas }}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-group row">
-                                                    <label class="col-sm-2 col-form-label" for="ap">Aparato respiratorio:</label>
+                                                    <label class="col-sm-2 col-form-label" for="aparato_respiratorio">Aparato respiratorio:</label>
                                                     <div class="col-sm-10">
-                                                        <textarea class="form-control form-control-sm" id="ap" name="ap" rows="1">{{ $exam->ap }}</textarea>
+                                                        <textarea class="form-control form-control-sm" id="aparato_respiratorio" name="aparato_respiratorio" rows="1">{{ $exam->aparato_respiratorio }}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-group row">
-                                                    <label class="col-sm-2 col-form-label" for="cv">Cardio-vascular:</label>
+                                                    <label class="col-sm-2 col-form-label" for="cardio_vascular">Cardio-vascular:</label>
                                                     <div class="col-sm-10">
-                                                        <textarea class="form-control form-control-sm" id="cv" name="cv" rows="1">{{ $exam->cv }}</textarea>
+                                                        <textarea class="form-control form-control-sm" id="cardio_vascular" name="cardio_vascular" rows="1">{{ $exam->cardio_vascular }}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -292,16 +292,16 @@
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-group row">
-                                                    <label class="col-sm-2 col-form-label" for="gu">Génito urinario:</label>
+                                                    <label class="col-sm-2 col-form-label" for="genito_urinario">Génito urinario:</label>
                                                     <div class="col-sm-10">
-                                                        <textarea class="form-control form-control-sm" id="gu" name="gu" rows="1">{{ $exam->gu }}</textarea>
+                                                        <textarea class="form-control form-control-sm" id="genito_urinario" name="genito_urinario" rows="1">{{ $exam->genito_urinario }}</textarea>
                                                         <hr>
                                                         <div class="col-md-12 row">
                                                             <div class="col-md-3">
                                                                 <div class="form-group row">
                                                                     <label class="col-sm-2 col-form-label" for="c_abm">D:</label>
                                                                     <div class="col-sm-8">
-                                                                        <input type="text" class="form-control form-control-sm" id="c_abm" name="c_abm" value="{{ $exam->c_abm }}">
+                                                                        <input type="text" class="form-control form-control-sm" id="d_abm" name="d_abm" value="{{ $exam->d_abm }}">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -445,28 +445,28 @@
                                                 <div class="form-group row">
                                                     <label class="col-sm-12 col-form-label">Psicoprofilaxis:&nbsp;
                                                         <div class="icheck-primary d-inline">
-                                                            <input type="checkbox" id="checkboxPrimary1" name="psico1" value="ok" {{ $exam->psico1 == 'ok' ? 'checked' : '' }}>
-                                                            <label for="checkboxPrimary1"></label>
+                                                            <input type="checkbox" id="psc_prox_1" name="psc_prox_1" value="ok" {{ $exam->psc_prox_1 == 'ok' ? 'checked' : '' }}>
+                                                            <label for="psc_prox_1"></label>
                                                         </div>
                                                         <div class="icheck-primary d-inline">
-                                                            <input type="checkbox" id="checkboxPrimary2" name="psico2" value="ok" {{ $exam->psico2 == 'ok' ? 'checked' : '' }}>
-                                                            <label for="checkboxPrimary2"></label>
-                                                        </div>
-                                                        <div class="icheck-primary d-inline" name="psico3">
-                                                            <input type="checkbox" id="checkboxPrimary3" name="psico3" value="ok" {{ $exam->psico3 == 'ok' ? 'checked' : '' }}>
-                                                            <label for="checkboxPrimary3"></label>
+                                                            <input type="checkbox" id="psc_prox_2" name="psc_prox_2" value="ok" {{ $exam->psc_prox_2 == 'ok' ? 'checked' : '' }}>
+                                                            <label for="psc_prox_2"></label>
                                                         </div>
                                                         <div class="icheck-primary d-inline">
-                                                            <input type="checkbox" id="checkboxPrimary4" name="psico4" value="ok" {{ $exam->psico4 == 'ok' ? 'checked' : '' }}>
-                                                            <label for="checkboxPrimary4"></label>
+                                                            <input type="checkbox" id="psc_prox_3" name="psc_prox_3" value="ok" {{ $exam->psc_prox_3 == 'ok' ? 'checked' : '' }}>
+                                                            <label for="psc_prox_3"></label>
                                                         </div>
                                                         <div class="icheck-primary d-inline">
-                                                            <input type="checkbox" id="checkboxPrimary5" name="psico5" value="ok" {{ $exam->psico5 == 'ok' ? 'checked' : '' }}>
-                                                            <label for="checkboxPrimary5"></label>
+                                                            <input type="checkbox" id="psc_prox_4" name="psc_prox_4" value="ok" {{ $exam->psc_prox_4 == 'ok' ? 'checked' : '' }}>
+                                                            <label for="psc_prox_4"></label>
                                                         </div>
                                                         <div class="icheck-primary d-inline">
-                                                            <input type="checkbox" id="checkboxPrimary6" name="psico6" value="ok" {{ $exam->psico6 == 'ok' ? 'checked' : '' }}>
-                                                            <label for="checkboxPrimary6"></label>
+                                                            <input type="checkbox" id="psc_prox_5" name="psc_prox_5" value="ok" {{ $exam->psc_prox_5 == 'ok' ? 'checked' : '' }}>
+                                                            <label for="psc_prox_5"></label>
+                                                        </div>
+                                                        <div class="icheck-primary d-inline">
+                                                            <input type="checkbox" id="psc_prox_6" name="psc_prox_6" value="ok" {{ $exam->psc_prox_6 == 'ok' ? 'checked' : '' }}>
+                                                            <label for="psc_prox_6"></label>
                                                         </div>
                                                     </label>
                                                 </div>
@@ -485,20 +485,20 @@
                                                 <div class="form-group row">
                                                     <label class="col-sm-12 col-form-label">Psicología:&nbsp;
                                                         <div class="icheck-primary d-inline">
-                                                            <input type="checkbox" id="psico1" name="psicol1" value="ok" {{ $exam->psicol1 == 'ok' ? 'checked' : '' }}>
-                                                            <label for="psico1"></label>
+                                                            <input type="checkbox" id="psicologia_1" name="psicologia_1" value="ok" {{ $exam->psicologia_1 == 'ok' ? 'checked' : '' }}>
+                                                            <label for="psicologia_1"></label>
                                                         </div>
                                                         <div class="icheck-primary d-inline">
-                                                            <input type="checkbox" id="psicol2" name="psicol2" value="ok" {{ $exam->psicol2 == 'ok' ? 'checked' : '' }}>
-                                                            <label for="psicol2"></label>
+                                                            <input type="checkbox" id="psicologia_2" name="psicologia_2" value="ok" {{ $exam->psicologia_2 == 'ok' ? 'checked' : '' }}>
+                                                            <label for="psicologia_2"></label>
                                                         </div>
                                                         <div class="icheck-primary d-inline">
-                                                            <input type="checkbox" id="psicol3" name="psicol3" value="ok" {{ $exam->psicol3 == 'ok' ? 'checked' : '' }}>
-                                                            <label for="psicol3"></label>
+                                                            <input type="checkbox" id="psicologia_3" name="psicologia_3" value="ok" {{ $exam->psicologia_3 == 'ok' ? 'checked' : '' }}>
+                                                            <label for="psicologia_3"></label>
                                                         </div>
                                                         <div class="icheck-primary d-inline">
-                                                            <input type="checkbox" id="psicol4" name="psicol4" value="ok" {{ $exam->psicol4 == 'ok' ? 'checked' : '' }}>
-                                                            <label for="psicol4"></label>
+                                                            <input type="checkbox" id="psicologia_4" name="psicologia_4" value="ok" {{ $exam->psicologia_4 == 'ok' ? 'checked' : '' }}>
+                                                            <label for="psicologia_4"></label>
                                                         </div>
                                                     </label>
                                                 </div>

@@ -16,6 +16,10 @@ class DrugsController extends Controller {
 
     public function __construct() {
         $this->middleware(['auth', 'prevent.back']);
+        $this->middleware('permission:farmaco_acceder')->only('index');
+		$this->middleware('permission:farmaco_ver')->only('see', 'list', 'show', 'search');
+        $this->middleware('permission:farmaco_guardar')->only('store');
+		$this->middleware('permission:farmaco_borrar')->only('destroy');
     }
 
     public function index(): View {
@@ -27,23 +31,23 @@ class DrugsController extends Controller {
         $results 	= DB::table('view_active_drugs')->get();
         $data       = $results->map(function ($item, $index) {
             $buttons = '';
-            //$user = auth()->user();
-            //if ($user->can('ocupacion_actualizar')) {
+            $user = auth()->user();
+            if ($user->can('ocupacion_actualizar')) {
                 $buttons .= sprintf(
                     '<button type="button" class="btn btn-sm btn-warning update-row btn-md" value="%s" title="Editar">
                         <i class="bi bi-pencil-square"></i>
                     </button> ',
                     htmlspecialchars($item->id, ENT_QUOTES, 'UTF-8')
                 );
-            //}
-            //if ($user->can('ocupacion_borrar')) {
+            }
+            if ($user->can('ocupacion_borrar')) {
                 $buttons .= sprintf(
                     '<button type="button" class="btn btn-sm btn-danger delete-occupation btn-md" value="%s" title="Eliminar">
                         <i class="bi bi-trash"></i>
                     </button>',
                     htmlspecialchars($item->id, ENT_QUOTES, 'UTF-8')
                 );
-            //}
+            }
             
             return [
                 $index + 1,
@@ -64,7 +68,6 @@ class DrugsController extends Controller {
 
     public function store(DrugValidate $request): JsonResponse {
         $validated = $request->validated();
-        
         DB::beginTransaction();
         try {
             $result = Drug::updateOrCreate(['id' => $request->input('id')], $validated);

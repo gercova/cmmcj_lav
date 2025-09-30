@@ -16,6 +16,12 @@ class SpecialtiesController extends Controller {
 
     public function __construct(){
         $this->middleware(['auth', 'prevent.back']);
+        $this->middleware('permission:permiso_acceder')->only('index');
+		$this->middleware('permission:permiso_ver')->only('list', 'show');
+		$this->middleware('permission:permiso_crear')->only('new');
+		$this->middleware('permission:permiso_editar')->only('edit');
+        $this->middleware('permission:permiso_guardar')->only('store');
+		$this->middleware('permission:permiso_borrar')->only('destroy');
     }
 
     public function index(): View {
@@ -30,24 +36,25 @@ class SpecialtiesController extends Controller {
             ->where('ocupaciones.deleted_at', NULL)
             ->get();
         $data       = $results->map(function ($item, $index) {
-            //$user   = auth()->user();
+            $user   = auth()->user();
             $buttons = '';
-            //if($user->can('especialidad_actualizar')){
+            if($user->can('especialidad_actualizar')){
                 $buttons .= sprintf(
                     '<button type="button" class="btn btn-sm btn-warning update-row btn-md" value="%s">
                         <i class="bi bi-pencil-square"></i>
                     </button>&nbsp;',
                     htmlspecialchars($item->id, ENT_QUOTES, 'UTF-8')
                 );
-            //}
-            //if($user->can('especialidad_borrar')){
+            }
+            if($user->can('especialidad_borrar')){
                 $buttons .= sprintf(
                     '<button type="button" class="btn btn-sm btn-danger delete-specialty btn-md" value="%s">
                         <i class="bi bi-trash"></i>
                     </button>',
                     htmlspecialchars($item->id, ENT_QUOTES, 'UTF-8')
                 );
-            //}
+            }
+
             return [
                 $index + 1,
                 $item->ocupacion,
@@ -67,7 +74,6 @@ class SpecialtiesController extends Controller {
 
     public function store(SpecialtyValidate $request): JsonResponse {
         $validated = $request->validated();
-
         DB::beginTransaction();
         try {
             $result = Specialty::updateOrCreate(['id' => $request->input('id')], $validated);

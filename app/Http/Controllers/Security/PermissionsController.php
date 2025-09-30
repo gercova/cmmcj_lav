@@ -15,6 +15,10 @@ class PermissionsController extends Controller {
 
     public function __contruct(){
         $this->middleware(['auth', 'prevent.back']);
+        $this->middleware('permission:especialidad_acceder')->only('index');
+		$this->middleware('permission:especialidad_ver')->only('list', 'show');
+        $this->middleware('permission:especialidad_guardar')->only('store');
+		$this->middleware('permission:especialidad_borrar')->only('destroy');
     }
 
     public function index(): View {

@@ -46,7 +46,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-4 col-form-label">Fecha:</label>
                                     <div class="col-sm-8">
-                                        <input type="date" class="form-control form-control-sm" name="fechaM">
+                                        <input type="text" class="form-control form-control-sm date" name="created_at" value="{{ now()->format('Y-m-d') }}" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -244,39 +244,39 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="eg">Edad gestacional:</label>
-                                                    <input type="text" class="form-control form-control-sm" id="eg" name="eg">
+                                                    <label for="edad_gestacional">Edad gestacional:</label>
+                                                    <input type="text" class="form-control form-control-sm" id="edad_gestacional" name="edad_gestacional">
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-group row">
-                                                    <label class="col-sm-2 col-form-label" for="ag">Apreciación general:</label>
+                                                    <label class="col-sm-2 col-form-label" for="apreciacion_general">Apreciación general:</label>
                                                     <div class="col-sm-10">
-                                                        <textarea class="form-control form-control-sm" id="ag" name="ag" rows="1"></textarea>
+                                                        <textarea class="form-control form-control-sm" id="apreciacion_general" name="apreciacion_general" rows="1"></textarea>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-group row">
-                                                    <label class="col-sm-2 col-form-label" for="pym">Piel y mucosas:</label>
+                                                    <label class="col-sm-2 col-form-label" for="piel_mucosas">Piel y mucosas:</label>
                                                     <div class="col-sm-10">
-                                                        <textarea class="form-control form-control-sm" id="pym" name="pym" rows="1"></textarea>
+                                                        <textarea class="form-control form-control-sm" id="piel_mucosas" name="piel_mucosas" rows="1"></textarea>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-group row">
-                                                    <label class="col-sm-2 col-form-label" for="ap">Aparato respiratorio:</label>
+                                                    <label class="col-sm-2 col-form-label" for="aparato_respiratorio">Aparato respiratorio:</label>
                                                     <div class="col-sm-10">
-                                                        <textarea class="form-control form-control-sm" id="ap" name="ap" rows="1"></textarea>
+                                                        <textarea class="form-control form-control-sm" id="aparato_respiratorio" name="aparato_respiratorio" rows="1"></textarea>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-group row">
-                                                    <label class="col-sm-2 col-form-label" for="cv">Cardio-vascular:</label>
+                                                    <label class="col-sm-2 col-form-label" for="cardio_vascular">Cardio-vascular:</label>
                                                     <div class="col-sm-10">
-                                                        <textarea class="form-control form-control-sm" id="cv" name="cv" rows="1"></textarea>
+                                                        <textarea class="form-control form-control-sm" id="cardio_vascular" name="cardio_vascular" rows="1"></textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -291,16 +291,16 @@
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-group row">
-                                                    <label class="col-sm-2 col-form-label" for="gu">Génito urinario:</label>
+                                                    <label class="col-sm-2 col-form-label" for="genito_urinario">Génito urinario:</label>
                                                     <div class="col-sm-10">
-                                                        <textarea class="form-control form-control-sm" id="gu" name="gu" rows="1"></textarea>
+                                                        <textarea class="form-control form-control-sm" id="genito_urinario" name="genito_urinario" rows="1"></textarea>
                                                         <hr>
                                                         <div class="col-md-12 row">
                                                             <div class="col-md-3">
                                                                 <div class="form-group row">
-                                                                    <label class="col-sm-2 col-form-label" for="c_abm">D:</label>
+                                                                    <label class="col-sm-2 col-form-label" for="d_abm">D:</label>
                                                                     <div class="col-sm-8">
-                                                                        <input type="text" class="form-control form-control-sm" id="c_abm" name="c_abm">
+                                                                        <input type="text" class="form-control form-control-sm" id="d_abm" name="d_abm">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -363,9 +363,9 @@
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-group row">
-                                                    <label class="col-sm-2 col-form-label" for="neu">Neurológico:</label>
+                                                    <label class="col-sm-2 col-form-label" for="neurologico">Neurológico:</label>
                                                     <div class="col-sm-10">
-                                                        <textarea class="form-control form-control-sm" id="neu" name="neu" rows="1"></textarea>
+                                                        <textarea class="form-control form-control-sm" id="neurologico" name="neurologico" rows="1"></textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -444,28 +444,28 @@
                                                 <div class="form-group row">
                                                     <label class="col-sm-12 col-form-label">Psicoprofilaxis:&nbsp;
                                                         <div class="icheck-primary d-inline">
-                                                            <input type="checkbox" id="checkboxPrimary1" name="psico1" value="ok">
-                                                            <label for="checkboxPrimary1"></label>
+                                                            <input type="checkbox" id="psc_prox_1" name="psc_prox_1" value="ok">
+                                                            <label for="cpsc_prox_1"></label>
                                                         </div>
                                                         <div class="icheck-primary d-inline">
-                                                            <input type="checkbox" id="checkboxPrimary2" name="psico2" value="ok">
-                                                            <label for="checkboxPrimary2"></label>
-                                                        </div>
-                                                        <div class="icheck-primary d-inline" name="psico3">
-                                                            <input type="checkbox" id="checkboxPrimary3" name="psico3" value="ok">
-                                                            <label for="checkboxPrimary3"></label>
+                                                            <input type="checkbox" id="psc_prox_2" name="psc_prox_2" value="ok">
+                                                            <label for="psc_prox_2"></label>
                                                         </div>
                                                         <div class="icheck-primary d-inline">
-                                                            <input type="checkbox" id="checkboxPrimary4" name="psico4" value="ok">
-                                                            <label for="checkboxPrimary4"></label>
+                                                            <input type="checkbox" id="psc_prox_3" name="psc_prox_3" value="ok">
+                                                            <label for="psc_prox_3"></label>
                                                         </div>
                                                         <div class="icheck-primary d-inline">
-                                                            <input type="checkbox" id="checkboxPrimary5" name="psico5" value="ok">
-                                                            <label for="checkboxPrimary5"></label>
+                                                            <input type="checkbox" id="psc_prox_4" name="psc_prox_4" value="ok">
+                                                            <label for="psc_prox_4"></label>
                                                         </div>
                                                         <div class="icheck-primary d-inline">
-                                                            <input type="checkbox" id="checkboxPrimary6" name="psico6" value="ok">
-                                                            <label for="checkboxPrimary6"></label>
+                                                            <input type="checkbox" id="psc_prox_5" name="psc_prox_5" value="ok">
+                                                            <label for="psc_prox_5"></label>
+                                                        </div>
+                                                        <div class="icheck-primary d-inline">
+                                                            <input type="checkbox" id="psc_prox_6" name="psc_prox_6" value="ok">
+                                                            <label for="psc_prox_6"></label>
                                                         </div>
                                                     </label>
                                                 </div>
@@ -484,20 +484,20 @@
                                                 <div class="form-group row">
                                                     <label class="col-sm-12 col-form-label">Psicología:&nbsp;
                                                         <div class="icheck-primary d-inline">
-                                                            <input type="checkbox" id="psico1" name="psicol1" value="ok">
-                                                            <label for="psico1"></label>
+                                                            <input type="checkbox" id="psicologia_1" name="psicologia_1" value="ok">
+                                                            <label for="psicologia_1"></label>
                                                         </div>
                                                         <div class="icheck-primary d-inline">
-                                                            <input type="checkbox" id="psicol2" name="psicol2" value="ok">
-                                                            <label for="psicol2"></label>
+                                                            <input type="checkbox" id="psicologia_2" name="psicologia_2" value="ok">
+                                                            <label for="psicologia_2"></label>
                                                         </div>
                                                         <div class="icheck-primary d-inline">
-                                                            <input type="checkbox" id="psicol3" name="psicol3" value="ok">
-                                                            <label for="psicol3"></label>
+                                                            <input type="checkbox" id="psicologia_3" name="psicologia_3" value="ok">
+                                                            <label for="psicologia_3"></label>
                                                         </div>
                                                         <div class="icheck-primary d-inline">
-                                                            <input type="checkbox" id="psicol4" name="psicol4" value="ok">
-                                                            <label for="psicol4"></label>
+                                                            <input type="checkbox" id="psicologia_4" name="psicologia_4" value="ok">
+                                                            <label for="psicologia_4"></label>
                                                         </div>
                                                     </label>
                                                 </div>

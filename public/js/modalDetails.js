@@ -12,23 +12,22 @@ const ModalDetails = (function() {
             second: '2-digit'
         });
     };
-
     // Función privada para construir el HTML del modal
     const buildModalContent = (data, type) => {
         const { hc, diagnostic, medication } = data;
-        const record = type == 'appointments' ? data.ap : data.ex;
+        const record = type == 'appointments' ? data.ap : data.exam;
         return `
             <div class="row">
                 <div class="col-12">
                     <table class="table table-hover table-condensed">
                         <thead>
                             <tr>
-                                <th width="70%">DNI: ${hc[0].dni}</th>
+                                <th width="70%">DNI: ${hc.dni}</th>
                                 <th>Fecha: ${formatDate(record.created_at)}</th>
                             </tr>
                         </thead>
                     </table>
-                    <p class="text-uppercase"><strong>Nombres y Apellidos:</strong> ${hc[0].nombres}</p>
+                    <p class="text-uppercase"><strong>Nombres y Apellidos:</strong> ${hc.nombres}</p>
                     <p><strong>Diagnóstico:</strong></p>
                     <div class="col-12" style="float: none; margin: 0 auto;">
                         <table class="table table-hover">
@@ -42,7 +41,7 @@ const ModalDetails = (function() {
                                 ${diagnostic.map((value, i) => `
                                     <tr>
                                         <td>${i + 1}</td>
-                                        <td>${value.diagnostic}</td>
+                                        <td>${value.codigo + ' - ' + value.diagnostico}</td>
                                     </tr>
                                 `).join('')}
                             </tbody>
@@ -56,6 +55,7 @@ const ModalDetails = (function() {
                                     <th>#</th>
                                     <th>Fármaco</th>
                                     <th>Receta</th>
+                                    <th>Dosis</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -64,6 +64,7 @@ const ModalDetails = (function() {
                                         <td>${i + 1}</td>
                                         <td>${value.drug}</td>
                                         <td>${value.rp || ''}</td>
+                                        <td>${value.dosis || ''}</td>
                                     </tr>
                                 `).join('')}
                             </tbody>
@@ -73,18 +74,16 @@ const ModalDetails = (function() {
             </div>
         `;
     };
-
     // Función privada para construir los botones
     const buildModalButtons = (id, type) => {
         const endpoint = type === 'appointments' ? 'appointments' : 'exams';
         return `
             <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cerrar</button>
-            <a class="btn btn-primary pull-right" href="${API_BASE_URL}/${endpoint}/print/${id}" target="_blank">
+            <a class="btn btn-primary pull-right" href="${API_URL}/sys/${endpoint}/print/${id}" target="_blank">
                 <i class="bi bi-file-earmark-pdf"></i> Imprimir
             </a>
         `;
     };
-
     // Función pública para mostrar detalles
     const showDetails = async (options) => {
         const { id, type, selector, titlePrefix } = options;
@@ -92,11 +91,10 @@ const ModalDetails = (function() {
         $('.modal-body').empty();
         $('.modal-footer').empty();
         $('.modal-title').empty();
-
         try {
-            const response = await axios.get(`${API_BASE_URL}/${type}/viewDetail/${id}`);
+            const response = await axios.get(`${API_URL}/sys/${type}/view/${id}`);
             if (response.status === 200 && response.data) {
-                const record = type === 'appointments' ? response.data.ap : response.data.ex;
+                const record = type === 'appointments' ? response.data.ap : response.data.exam;
                 $('.modal-title').text(`${titlePrefix} ${record.dni}-${record.id}`);
                 $('.modal-body').append(buildModalContent(response.data, type));
                 $('.modal-footer').append(buildModalButtons(id, type));

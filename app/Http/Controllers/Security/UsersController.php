@@ -20,6 +20,12 @@ class UsersController extends Controller {
 
     public function __construct() {
         $this->middleware(['auth', 'prevent.back']);
+        $this->middleware('permission:usuario_acceder')->only('index');
+		$this->middleware('permission:usuario_ver')->only('list');
+		$this->middleware('permission:usuario_crear')->only('new');
+		$this->middleware('permission:usuario_editar')->only('edit', 'role');
+        $this->middleware('permission:usuario_guardar')->only('store');
+		$this->middleware('permission:usuario_borrar')->only('destroy');
     }
     
     public function index(): View {

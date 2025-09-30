@@ -15,6 +15,10 @@ class OccupationsController extends Controller {
 
     public function __construct() {
         $this->middleware(['auth', 'prevent.back']);
+        $this->middleware('permission:ocupacion_acceder')->only('index');
+		$this->middleware('permission:ocupacion_ver')->only('see', 'list', 'show');
+        $this->middleware('permission:ocupacion_guardar')->only('store');
+		$this->middleware('permission:ocupacion_borrar')->only('destroy');
     }
 
     public function index(): View {
@@ -25,23 +29,23 @@ class OccupationsController extends Controller {
         $results 	= Occupation::all();
         $data       = $results->map(function ($item, $index) {
             $buttons = '';
-            //$user = auth()->user();
-            //if ($user->can('ocupacion_actualizar')) {
+            $user = auth()->user();
+            if ($user->can('ocupacion_actualizar')) {
                 $buttons .= sprintf(
                     '<button type="button" class="btn btn-sm btn-warning update-row btn-md" value="%s" title="Editar">
                         <i class="bi bi-pencil-square"></i>
                     </button> ',
                     htmlspecialchars($item->id, ENT_QUOTES, 'UTF-8')
                 );
-            //}
-            //if ($user->can('ocupacion_borrar')) {
+            }
+            if ($user->can('ocupacion_borrar')) {
                 $buttons .= sprintf(
                     '<button type="button" class="btn btn-sm btn-danger delete-occupation btn-md" value="%s" title="Eliminar">
                         <i class="bi bi-trash"></i>
                     </button>',
                     htmlspecialchars($item->id, ENT_QUOTES, 'UTF-8')
                 );
-            //}
+            }
             
             return [
                 $index + 1,
@@ -61,7 +65,6 @@ class OccupationsController extends Controller {
 
     public function store(OccupationValidate $request): JsonResponse {
         $validated = $request->validated();
-
         DB::beginTransaction();
         try {
             $result = Occupation::updateOrCreate(['id' => $request->input('id')], $validated);

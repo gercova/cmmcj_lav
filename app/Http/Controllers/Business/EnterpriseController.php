@@ -15,6 +15,9 @@ class EnterpriseController extends Controller {
     
     public function __construct() {
         $this->middleware(['auth', 'prevent.back']);
+        $this->middleware('permission:empresa_acceder')->only('index');
+		$this->middleware('permission:empresa_ver')->only('getEnterprise', 'getImages');
+        $this->middleware('permission:empresa_guardar')->only('store');
     }
 
     public function index(): View {
@@ -33,7 +36,6 @@ class EnterpriseController extends Controller {
         
         $response = ['status' => false, 'type' => 'error', 'message' => 'No se pudo actualizar'];
         DB::beginTransaction();
-
         try {
             switch ($op) {
                 case 1:

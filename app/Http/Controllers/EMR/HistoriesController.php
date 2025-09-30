@@ -24,6 +24,12 @@ class HistoriesController extends Controller
 {
     public function __construct() {
         $this->middleware(['auth', 'prevent.back']);
+        $this->middleware('permission:historia_acceder')->only('index');
+		$this->middleware('permission:historia_ver')->only('list');
+		$this->middleware('permission:historia_crear')->only('new');
+		$this->middleware('permission:historia_editar')->only('edit');
+        $this->middleware('permission:historia_guardar')->only('store');
+		$this->middleware('permission:historia_borrar')->only('destroy');
     }
 
     public function index(): View {
@@ -52,7 +58,6 @@ class HistoriesController extends Controller
     }
 
     public function list(Request $request): JsonResponse {
-		
 		$startIndex = $request->input('jtStartIndex', 0);
 		$pageSize 	= $request->input('jtPageSize', 10);
 		$itemSearch = $request->input('search');
@@ -60,18 +65,12 @@ class HistoriesController extends Controller
 		list($data, $count) = History::getAllHistories($startIndex, $pageSize, $itemSearch);
 		// Agregar permisos al resultado para el frontend
         $permissions = [];
-		/*$permissions = [
-			'update' 	=> auth()->user()->can('historia_actualizar'), 	// actualizar una historia clínica
-			'delete' 	=> auth()->user()->can('historia_borrar'), 		// borrar una historia clinica
+		$permissions = [
+			'update_hc' => auth()->user()->can('historia_editar'), 	// actualizar una historia clínica
+			'delete_hc' => auth()->user()->can('historia_borrar'), 		// borrar una historia clinica
 			'add_exm' 	=> auth()->user()->can('examen_crear'), 		// añadir un nuevo examen
 			'view_exm' 	=> auth()->user()->can('examen_ver'), 			// ver exámenes de un paciente
-			'add_ctrl' 	=> auth()->user()->can('control_crear'), 		// añadir nuevo control
-			'view_ctrl' => auth()->user()->can('control_ver'), 			// ver controles de un paciente
-			'add_rpt'	=> auth()->user()->can('informe_ver'), 			// añadir nuevo reporte
-			'view_rpt' 	=> auth()->user()->can('informe_ver'), 			// ver reportes de un paciente
-			'add_rsk' 	=> auth()->user()->can('riesgo_crear'), 		// añadir nuevo informe de riesgo
-			'view_rsk' 	=> auth()->user()->can('riesgo_ver'), 			// ver informes de riesgo de un paciente
-		];*/
+		];
 
 		$data = $data->map(function ($record) use ($permissions) {
 			$record->Permissions = $permissions; // Agregar permisos al registro

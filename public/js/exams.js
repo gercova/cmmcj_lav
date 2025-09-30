@@ -98,28 +98,39 @@ $(document).ready(function(){
                 edit:false,
                 create:false,
                 display: (data) => {
-                    return `
-                        <button type="button" class="btn btn-info view-row btn-xs" value="${data.record.id}"><i class="bi bi-folder"></i> Ver</button>&nbsp;
-                        <button type="button" class="btn btn-success add-new btn-xs" value="${data.record.id}"><i class="bi bi-plus-square-fill"></i> Nuevo</button>
-                    `;
+                    const permissions = data.record.Permissions || {}; // Obtenemos los permisos del registro
+                    let buttons = '';
+                    if (permissions.view_exm) {
+                        buttons += `
+                            <button type="button" class="btn btn-info view-row btn-xs" value="${data.record.id}">
+                                <i class="bi bi-folder"></i> Ver
+                            </button>&nbsp;
+                        `;
+                    }
+                    if (permissions.add_exm) {
+                        buttons += `
+                            <button type="button" class="btn btn-success add-new btn-xs" value="${data.record.id}">
+                                <i class="bi bi-plus-square-fill"></i> Nuevo
+                            </button>&nbsp;
+                        `;
+                    }
+                    
+                    return buttons;
                 }
             },
         },
         recordsLoaded: (event, data) => {
-            //if(permissions.insert == 1){
-                $('.add-new').click(function(e){
-                    e.preventDefault();
-                    let id = $(this).attr('value');
-                    window.location.href = `${API_URL}/sys/exams/new/${id}`;
-                });
-            //}
-            //if(permissions.view == 1){
-                $('.view-row').click(function(e) {
-                    e.preventDefault();
-                    let id = $(this).attr('value');
-                    window.location.href = `${API_URL}/sys/exams/see/${id}`;
-                });
-            //}
+            $('.add-new').click(function(e){
+                e.preventDefault();
+                let id = $(this).attr('value');
+                window.location.href = `${API_URL}/sys/exams/new/${id}`;
+            });
+            
+            $('.view-row').click(function(e) {
+                e.preventDefault();
+                let id = $(this).attr('value');
+                window.location.href = `${API_URL}/sys/exams/see/${id}`;
+            });
         }
     });
     LoadRecordsButton = $('#LoadRecordsButton');
@@ -186,7 +197,6 @@ $(document).ready(function(){
             submitButton.prop('disabled', false).html(originalButtonText);
         }
     });
-
     //Función para buscar  un diagnóstico 
     $('#diagnostics').autocomplete({
         source: async function(request, response){
@@ -376,5 +386,5 @@ function getFpp(dateString){
     // Mostrar la FPP
     $('#fpp').addClass('is-valid').val(fppDate.toLocaleDateString());
     // Mostrar la edad gestacional
-    $('#eg').addClass('is-valid').val(gestationalWeeks + ' semanas (' + gestationalDays + ' días)');
+    $('#edad_gestacional').addClass('is-valid').val(gestationalWeeks + ' semanas (' + gestationalDays + ' días)');
 }

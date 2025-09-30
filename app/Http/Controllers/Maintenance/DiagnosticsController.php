@@ -12,10 +12,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-class DiagnosticsController extends Controller
-{
+class DiagnosticsController extends Controller {
+    
     public function __construct() {
         $this->middleware(['auth', 'prevent.back']);
+        $this->middleware('permission:diagnostico_acceder')->only('index');
+		$this->middleware('permission:diagnostico_ver')->only('see', 'list', 'show', 'search');
+        $this->middleware('permission:diagnostico_guardar')->only('store');
+		$this->middleware('permission:diagnostico_borrar')->only('destroy');
     }
 
     public function index(): View {
