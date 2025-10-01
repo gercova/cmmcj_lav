@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es_PE">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,8 +37,14 @@
     <!-- Bootstrap Icon -->
     <link href="{{ asset('css/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css') }}" rel="stylesheet">
     <!-- Hightcharts -->
-    <script src="{{ asset('highcharts/highcharts.js') }}"></script>
-	<script src="{{ asset('highcharts/exporting.js') }}"></script>
+    <!--<script src="{{ asset('plugins/highcharts/highcharts.js') }}"></script>
+	<script src="{{ asset('plugins/highcharts/dashboards.js') }}"></script>
+    <script src="{{ asset('plugins/highcharts/layout.js') }}"></script>-->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+    <script src="https://code.highcharts.com/themes/adaptive.js"></script>
     <!-- jQuery -->
     <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
     <!-- Bootstrap 4 -->

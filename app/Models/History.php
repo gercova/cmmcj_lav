@@ -6,14 +6,41 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
+use  Database\Factories\HistoryFactory;
 
-class History extends Model
-{
+class History extends Model {
     use HasFactory, SoftDeletes;
 
     protected $table        = 'historias';
     protected $primaryKey   = 'id';
-    protected $guarded      = [];
+    //protected $guarded      = [];
+    protected $fillable     = [
+        'tipo_documento_id',
+        'dni',
+        'nombres',
+        'sexo',
+        'fecha_nacimiento',
+        'telefono',
+        'email',
+        'direccion',
+        'grupo_sanguineo_id',
+        'grado_instruccion_id',
+        'ubigeo_nacimiento',
+        'ubigeo_residencia',
+        'ocupacion_id',
+        'estado_civil_id',
+        'acompanante',
+        'acompanante_telefono',
+        'acompanante_direccion',
+        'vinculo',
+        'seguro_id',
+        'seguro_descripcion',
+        'ant_quirurgicos',
+        'ant_patologicos',
+        'ant_familiares',
+        'ant_medicos',
+        'rams',
+    ];
 
     protected $casts = [
         'tipo_documento_id'         => 'integer',
@@ -36,10 +63,10 @@ class History extends Model
         'vinculo'                   => 'string',
         'seguro_id'                 => 'integer',
         'seguro_descripcion'        => 'string',
-        'antecedentes_quirurgicos'  => 'string',
-        'antecedentes_patologicos'  => 'string',
-        'antecedentes_familiares'   => 'string',
-        'antecedentes_medicos'      => 'string',
+        'ant_quirurgicos'           => 'string',
+        'ant_patologicos'           => 'string',
+        'ant_familiares'            => 'string',
+        'ant_medicos'               => 'string',
         'rams'                      => 'string',
         'is_active'                 => 'boolean',
         'created_at'                => 'datetime',
@@ -105,5 +132,8 @@ class History extends Model
         return $this->belongsTo(Occupation::class, 'ocupacion_id');
     }
 
-    
+    // Especificar el factory personalizado
+    protected static function newFactory() {
+        return HistoryFactory::new();
+    }
 }
