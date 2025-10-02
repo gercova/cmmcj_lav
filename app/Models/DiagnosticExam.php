@@ -12,7 +12,7 @@ class DiagnosticExam extends Model
 
     protected $table        = 'examen_diagnostico';
     protected $primaryKey   = 'id';
-    protected $fillable     = ['examen_id', 'historia_id', 'diagnostico_id', 'created_at', 'updated_at', 'deleted_at'];
+    protected $fillable     = ['examen_id', 'historia_id', 'diagnostico_id'];
     protected $casts        = [
         'examen_id'         => 'integer',
         'historia_id'       => 'integer',

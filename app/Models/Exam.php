@@ -11,7 +11,6 @@ class Exam extends Model {
 
     protected $table        = 'examenes';
     protected $primaryKey   = 'id';
-    //protected $guarded      = [];
     protected $fillable     = [
         'historia_id',
         'examen_tipo_id',

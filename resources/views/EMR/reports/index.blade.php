@@ -75,12 +75,12 @@
                             <div class="col-md-12">
                                 <div id="histories" style="margin: 0 auto"></div>
                             </div>
-                            <div class="col-md-12">
+                            <!--<div class="col-md-12">
                                 <div id="exams" style="margin: 0 auto"></div>
                             </div>
                             <div class="col-md-12">
                                 <div id="appointments" style="margin: 0 auto"></div>
-                            </div>
+                            </div>-->
                         </div>
                     </div>
                 </div>
@@ -102,7 +102,7 @@
                             <h3 class="card-title">Reporte de Recetas</h3>
                         </div>
                         <div class="card-body">
-                            <div id="drugByExams" style="margin: 0 auto"></div>
+                            <div id="medicationsByExams" style="margin: 0 auto"></div>
                         </div>        
                     </div>
                 </div>

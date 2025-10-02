@@ -76,33 +76,66 @@ class ReportsController extends Controller {
     }
 
     public function getDiagnosticsByExam(){
-        return DiagnosticExam::selectRaw('d.descripcion as diagnostico, COUNT(examen_diagnostico.id_diagnostico) as cantidad')
-            ->join('diagnosticos as d', 'd.id', '=', 'examen_diagnostico.id_diagnostico')
+        $diagnostics = DiagnosticExam::selectRaw('d.descripcion as name, COUNT(examen_diagnostico.diagnostico_id) as y')
+            ->join('diagnosticos as d', 'd.id', '=', 'examen_diagnostico.diagnostico_id')
             ->whereNull('examen_diagnostico.deleted_at')
-            ->groupBy('diagnostico')
-            ->having('cantidad', '>', '0')
-            ->orderBy('cantidad', 'desc')
-            ->limit(15)
+            ->groupBy('d.descripcion')
+            ->having('y', '>', 0)
+            ->orderBy('y', 'desc')
+            ->limit(10)
             ->get();
+
+        // Transforma los resultados al formato que Highcharts espera
+        $data = $diagnostics->map(function ($item) {
+            return [
+                'name' => $item->name,
+                'y' => (int) $item->y, // Asegura que sea número entero
+            ];
+        })->toArray();
+
+        return response()->json([
+            'series' => [
+                [
+                    'name' => 'Diagnósticos',
+                    'data' => $data
+                ]
+            ]
+        ]);
     }
 
     public function getDrugsByExam(){
-        return MedicationExam::selectRaw('d.descripcion as droga, COUNT(*) as cantidad')
-            ->join('drogas as d', 'd.id', '=', 'examen_medicacion.id_droga')
+        $medications = MedicationExam::selectRaw('f.descripcion as name, COUNT(*) as y')
+            ->join('farmacos as f', 'f.id', '=', 'examen_medicacion.farmaco_id')
             ->whereNull('examen_medicacion.deleted_at')
-            ->groupBy('droga')
-            ->having('cantidad', '>', '0')
-            ->orderBy('cantidad', 'desc')
-            ->limit(15)
+            ->groupBy('name')
+            ->having('y', '>', '0')
+            ->orderBy('y', 'desc')
+            ->limit(10)
             ->get();
+        // Transforma los resultados al formato que Highcharts espera
+        $data = $medications->map(function ($item) {
+            return [
+                'name' => $item->name,
+                'y' => (int) $item->y, // Asegura que sea número entero
+            ];
+        })->toArray();
+
+        return response()->json([
+            'series' => [
+                [
+                    'name' => 'Farmacos',
+                    'data' => $data
+                ]
+            ]
+        ]);
     }
 
-    public function getHistoriesBySex(){
+    /*public function getHistoriesBySex(){
         return History::selectRaw('s.descripcion as sexo, COUNT(historias.id_sexo) as cantidad')
             ->join('sexo as s', 's.id', '=', 'historias.id_sexo')
             ->groupBy('sexo')
             ->get();
-    }
+    }*/
 
     public function getHistoriesByBloodingGroup(){
         return History::selectRaw('gs.descripcion grupo_sanguineo, COUNT(historias.id_gs) cantidad')

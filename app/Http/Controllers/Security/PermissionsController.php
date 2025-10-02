@@ -32,7 +32,7 @@ class PermissionsController extends Controller {
                 $index + 1,
                 $item->name,
                 $item->guard_name,
-                $item->created_at->format('Y-m-d H:i:s'),
+                $item->created_at ? $item->created_at->format('Y-m-d H:i:s') : '',
                 sprintf(
                     '<button type="button" class="btn btn-sm btn-warning update-row btn-md" value="%s">
                         <i class="bi bi-pencil-square"></i>

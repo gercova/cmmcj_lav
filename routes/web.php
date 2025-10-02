@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Business\EnterpriseController;
+use App\Http\Controllers\EMR\AppointmentsController;
 use App\Http\Controllers\EMR\ExamsController;
 use App\Http\Controllers\EMR\HistoriesController;
 use App\Http\Controllers\EMR\ReportsController;
@@ -72,6 +73,12 @@ Route::middleware(['auth', 'prevent.back'])->group(function(){
     Route::delete('/sys/ex-dc/delete/{id}',         [ExamsController::class, 'destroyDocuments']);
     Route::delete('/sys/ex-dx/delete/{id}',         [ExamsController::class, 'destroyDiagnostics']);
     Route::delete('/sys/ex-mx/delete/{id}',         [ExamsController::class, 'destroyMedications']);
+    // Citas
+    Route::get('/sys/appx',                         [AppointmentsController::class, 'index'])->name('emr.appointments.home');
+    Route::get('/sys/appx/{appointment}',           [AppointmentsController::class, 'show']);
+    Route::post('/sys/appx/store',                  [AppointmentsController::class, 'store']);
+    Route::post('/sys/appx/list',                   [AppointmentsController::class, 'list']);
+    Route::delete('/sys/appx/{appointment}',        [AppointmentsController::class, 'destroy']);
     // Fármacos 
     Route::get('/sys/drugs',                        [DrugsController::class, 'index'])->name('maintenance.drugs');
     Route::get('/sys/drugs/list',                   [DrugsController::class, 'list']);;
