@@ -42,10 +42,11 @@ Route::middleware(['auth', 'prevent.back'])->group(function(){
     Route::get('/sys/dashboard/dxByExam',           [ReportsController::class, 'getDiagnosticsByExam']);
     Route::get('/sys/dashboard/mxByExam',           [ReportsController::class, 'getDrugsByExam']);
     //Route::get('/sys/dashboard/hCBySex',          [ReportsController::class, 'getHistoriesBySex']);
-    //Route::get('/sys/dashboard/hcByMAC',          [ReportsController::class, 'getHistoriesBySmoking']);
+    Route::get('/sys/dashboard/hcByMS',             [ReportsController::class, 'getHistoriesByMaritalStatus']);
     Route::get('/sys/dashboard/hcByBG',             [ReportsController::class, 'getHistoriesByBloodingGroup']);
     Route::get('/sys/dashboard/hcByDI',             [ReportsController::class, 'getHistoriesByDegreeIntruction']);
-    Route::get('/sys/dashboard/hcByMS',             [ReportsController::class, 'getHistoriesByMaritalStatus']);
+    Route::get('/sys/dashboard/hcByMAC',            [ReportsController::class, 'getHistoriesByMAC']);
+    
     // Historias
     Route::get('/sys/histories',                    [HistoriesController::class, 'index'])->name('emr.histories.home');
     Route::get('/sys/histories/new',                [HistoriesController::class, 'new'])->name('emr.histories.new');

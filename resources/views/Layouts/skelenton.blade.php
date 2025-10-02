@@ -76,6 +76,7 @@
     <script src={{ asset('plugins/sweetalert2/sweetalert2.min.js') }}></script>
     <script>
         const API_URL = "{{ url('/') }}";
+        const NAME_ENTERPRISE = "{{ $enterprise->nombre_comercial }}";
         const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     </script>
     <!-- Hightcharts -->

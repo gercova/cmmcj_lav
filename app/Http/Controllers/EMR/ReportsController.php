@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\EMR;
 
 use App\Http\Controllers\Controller;
+use App\Models\Appointment;
 use App\Models\DiagnosticExam;
 use App\Models\Exam;
 use App\Models\History;
+use App\Models\MaritalStatus;
 use App\Models\MedicationExam;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -28,17 +30,19 @@ class ReportsController extends Controller {
         return view('emr.reports.index', compact('yr'));
     }
 
+    public function years(){
+        return History::selectRaw('YEAR(created_at) as year')->groupBy('year')->orderBy('year', 'desc')->get();
+    }
+
     public function getCountRows(): JsonResponse {
         $fechaActual    = now()->toDateString();
         $hc             = History::whereNull('deleted_at')->count();
         $ex             = Exam::whereNull('deleted_at')->count();
-        //$ap             = Appointment::whereNull('deleted_at')->count();
+        $ap             = Appointment::whereNull('deleted_at')->count();
         $cd             = History::whereNull('deleted_at')->whereDate('created_at', $fechaActual)->count();
-        return response()->json(compact('hc', 'ex', 'cd'), 200);
-    }
-
-    public function years(){
-        return History::selectRaw('YEAR(created_at) as year')->groupBy('year')->orderBy('year', 'desc')->get();
+        $dx             = DiagnosticExam::whereNull('deleted_at')->count();
+        $mx             = MedicationExam::whereNull('deleted_at')->count();
+        return response()->json(compact('hc', 'ex', 'ap', 'cd', 'dx', 'mx'), 200);    
     }
 
     public function getMonthlyCountsByYear($year, $model, $name) {
@@ -69,10 +73,10 @@ class ReportsController extends Controller {
     }
 
     public function getAnnualData($year) {
-        $histories = $this->getMonthlyCountsByYear($year, History::class, 'Historias');
-        $exams = $this->getMonthlyCountsByYear($year, Exam::class, 'Exámenes');
-
-        return array_merge($histories, $exams);
+        $histories      = $this->getMonthlyCountsByYear($year, History::class, 'Historias');
+        $exams          = $this->getMonthlyCountsByYear($year, Exam::class, 'Exámenes');
+        $appointments   = $this->getMonthlyCountsByYear($year, Appointment::class, 'Citas');
+        return array_merge($histories, $exams, $appointments);
     }
 
     public function getDiagnosticsByExam(){
@@ -137,35 +141,103 @@ class ReportsController extends Controller {
             ->get();
     }*/
 
-    public function getHistoriesByBloodingGroup(){
-        return History::selectRaw('gs.descripcion grupo_sanguineo, COUNT(historias.id_gs) cantidad')
-            ->join('grupo_sanguineo as gs', 'gs.id', '=', 'historias.id_gs')
-            ->groupBy('grupo_sanguineo')
-            ->orderBy('cantidad', 'desc')
+    public function getHistoriesByMaritalStatus(){
+        $maritalStatus = History::selectRaw('e.descripcion as name, COUNT(historias.estado_civil_id) as y')
+            ->join('estado_civil as e', 'e.id', '=', 'historias.estado_civil_id')
+            ->groupBy('name')
+            ->having('y', '>', '0')
+            ->orderBy('y', 'desc')
             ->get();
+        // Transforma los resultados al formato que Highcharts espera
+        $data = $maritalStatus->map(function ($item) {
+            return [
+                'name' => $item->name,
+                'y' => (int) $item->y, // Asegura que sea número entero
+            ];
+        })->toArray();
+
+        return response()->json([
+            'series' => [
+                [
+                    'name' => 'Estado',
+                    'data' => $data
+                ]
+            ]
+        ]);
     }
 
-    public function getHistoriesByMaritalStatus(){
-        return History::selectRaw('e.descripcion estado_civil, COUNT(historias.id_estado) cantidad')
-            ->join('estado_civil as e', 'e.id', '=', 'historias.id_estado')
-            ->groupBy('estado_civil')
-            ->orderBy('cantidad', 'desc')
+    public function getHistoriesByBloodingGroup(){
+        $bloodingGroups = History::selectRaw('gs.descripcion as name, COUNT(historias.grupo_sanguineo_id) as y')
+            ->join('grupos_sanguineos as gs', 'gs.id', '=', 'historias.grupo_sanguineo_id')
+            ->groupBy('name')
+            ->having('y', '>', '0')
+            ->orderBy('y', 'desc')
             ->get();
+        // Transforma los resultados al formato que Highcharts espera
+        $data = $bloodingGroups->map(function ($item) {
+            return [
+                'name'  => $item->name,
+                'y'     => (int) $item->y, // Asegura que sea número entero
+            ];
+        })->toArray();
+
+        return response()->json([
+            'series' => [
+                [
+                    'name' => 'Grupo Sanguíneo',
+                    'data' => $data
+                ]
+            ]
+        ]);
     }
 
     public function getHistoriesByDegreeIntruction(){
-        return History::selectRaw('di.descripcion grado_instruccion, COUNT(historias.id_gi) cantidad')
-            ->join('grado_instruccion as di', 'di.id', '=', 'historias.id_gi')
-            ->groupBy('grado_instruccion')
-            ->orderBy('cantidad', 'desc')
+        $degreesInstruccion = History::selectRaw('di.descripcion as name, COUNT(historias.grado_instruccion_id) as y')
+            ->join('grados_instruccion as di', 'di.id', '=', 'historias.grado_instruccion_id')
+            ->groupBy('name')
+            ->having('y', '>', 0)
+            ->orderBy('y', 'desc')
             ->get();
+        // Transforma los resultados al formato que Highcharts espera
+        $data = $degreesInstruccion->map(function ($item) {
+            return [
+                'name'  => $item->name,
+                'y'     => (int) $item->y, // Asegura que sea número entero
+            ];
+        })->toArray();
+
+        return response()->json([
+            'series' => [
+                [
+                    'name' => 'Grado',
+                    'data' => $data
+                ]
+            ]
+        ]);
     }
 
-    public function getHistoriesBySmoking(){
-        return Exam::selectRaw('t.consumo tabaquismo, COUNT(historias.id_ct) cantidad')
-            ->join('tabaquismo as t', 't.id', '=', 'historias.id_ct')
-            ->groupBy('t.consumo')
-            ->orderBy('cantidad', 'desc')
+    public function getHistoriesByMAC(){
+        $mac = Exam::selectRaw('m.descripcion as name, COUNT(examenes.mac_id) as y')
+            ->join('mac as m', 'm.id', '=', 'examenes.mac_id')
+            ->groupBy('name')
+            ->having('y', '>', 0)
+            ->orderBy('y', 'desc')
             ->get();
+        // Transforma los resultados al formato que Highcharts espera
+        $data = $mac->map(function ($item) {
+            return [
+                'name'  => $item->name,
+                'y'     => (int) $item->y, // Asegura que sea número entero
+            ];
+        })->toArray();
+
+        return response()->json([
+            'series' => [
+                [
+                    'name' => 'Método',
+                    'data' => $data
+                ]
+            ]
+        ]);
     }
 }

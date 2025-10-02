@@ -29,7 +29,7 @@
                         <div class="icon">
                             <i class="bi bi-file-medical-fill"></i>
                         </div>
-                        <a href="" class="small-box-footer">Ver más <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="{{ route('emr.histories.home') }}" class="small-box-footer">Ver más <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-6">
@@ -41,7 +41,7 @@
                         <div class="icon">
                             <i class="bi bi-file-medical-fill"></i>
                         </div>
-                        <a href="" class="small-box-footer">Ver más <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="{{ route('emr.exams.home') }}" class="small-box-footer">Ver más <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-6">
@@ -53,7 +53,7 @@
                         <div class="icon">
                             <i class="bi bi-people"></i>
                         </div>
-                        <a href="" class="small-box-footer">Ver más <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="{{ route('security.users.home') }}" class="small-box-footer">Ver más <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
             </div>

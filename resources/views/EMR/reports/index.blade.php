@@ -75,12 +75,6 @@
                             <div class="col-md-12">
                                 <div id="histories" style="margin: 0 auto"></div>
                             </div>
-                            <!--<div class="col-md-12">
-                                <div id="exams" style="margin: 0 auto"></div>
-                            </div>
-                            <div class="col-md-12">
-                                <div id="appointments" style="margin: 0 auto"></div>
-                            </div>-->
                         </div>
                     </div>
                 </div>
@@ -89,7 +83,7 @@
                 <div class="col-6">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Reporte de Diagnósticos</h3>
+                            <h3 class="card-title">Reporte de Diagnósticos <span class="badge bg-info dx"></span></h3>
                         </div>
                         <div class="card-body">
                             <div id="diagnosisByExams" style="margin: 0 auto"></div>
@@ -99,7 +93,7 @@
                 <div class="col-6">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Reporte de Recetas</h3>
+                            <h3 class="card-title">Reporte de Recetas <span class="badge bg-info mx"></span></h3>
                         </div>
                         <div class="card-body">
                             <div id="medicationsByExams" style="margin: 0 auto"></div>
@@ -108,15 +102,18 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-4">
+                <!--<div class="col-4">
                     <div class="card">
                         <div class="card-body">
                             <div id="historiesBySex" style="margin: 0 auto"></div>
                         </div>
                     </div> 
-                </div>
+                </div>-->
                 <div class="col-4">
                     <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Reporte de Estados civil <span class="badge bg-info ms"></span></h3>
+                        </div>
                         <div class="card-body">
                             <div id="historiesByMaritalStatus" style="margin: 0 auto"></div>
                         </div>
@@ -124,6 +121,9 @@
                 </div>
                 <div class="col-4">
                     <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Reporte de Grupos Sanguíneos</h3>
+                        </div>
                         <div class="card-body">
                             <div id="historiesByBloodingGroup" style="margin: 0 auto"></div>
                         </div>
@@ -131,6 +131,9 @@
                 </div>
                 <div class="col-4">
                     <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Reporte de Grados de Instrucción</h3>
+                        </div>
                         <div class="card-body">
                             <div id="historiesByDegreeIntruction" style="margin: 0 auto"></div>
                         </div>
@@ -138,8 +141,11 @@
                 </div>
                 <div class="col-4">
                     <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Reporte de Métodos anticonceptivos</h3>
+                        </div>
                         <div class="card-body">
-                            <div id="historiesBySmoking" style="margin: 0 auto"></div>
+                            <div id="historiesByMac" style="margin: 0 auto"></div>
                         </div>
                     </div>
                 </div>

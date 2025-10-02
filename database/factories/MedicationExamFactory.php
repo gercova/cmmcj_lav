@@ -29,9 +29,9 @@ class MedicationExamFactory extends Factory {
             'examen_id'         => $examen->id,
             'historia_id'       => $historia->id,
             'farmaco_id'        => $farmaco->id,
-            'descripcion'       => $this->faker->text(50),
-            'dosis'             => $this->faker->text(20),
-            'frecuencia' => $this->faker->text(20),
+            'descripcion'       => $this->faker->text(20),
+            'dosis'             => $this->faker->text(10),
+            'frecuencia'        => $this->faker->text(10),
             'created_at'        => $this->faker->dateTimeBetween('2010-01-01', '2025-12-31')->format('Y-m-d H:i:s'),
             'updated_at'        => now(),
         ];
