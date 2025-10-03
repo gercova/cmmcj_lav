@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Security;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ResetPasswordValidate;
 use App\Http\Requests\UserValidate;
 use App\Models\Enterprise;
 use App\Models\Specialty;
@@ -48,6 +49,7 @@ class UsersController extends Controller {
     public function role(User $user): View {
         $user                   = User::with(['permissions', 'roles.permissions'])->findOrFail($user->id);
         // Obtener todos los permisos del sistema
+        $modulesPermissions     = Permission::whereBetween('id', [1, 17])->get();
         $allPermissions         = Permission::all();
         // Permisos directos del usuario
         $directPermissions      = $user->permissions;
@@ -57,7 +59,7 @@ class UsersController extends Controller {
         $allAssignedPermissions = $directPermissions->merge($rolePermissions)->unique('id');
         // Permisos disponibles (no asignados ni directos ni por roles)
         $availablePermissions   = $allPermissions->diff($allAssignedPermissions);
-        return view('security.user.role', compact('user', 'availablePermissions', 'directPermissions', 'rolePermissions', 'allAssignedPermissions'));
+        return view('security.user.role', compact('user', 'modulesPermissions', 'availablePermissions', 'directPermissions', 'rolePermissions', 'allAssignedPermissions'));
     }
 
     public function list(): JsonResponse {
@@ -83,11 +85,11 @@ class UsersController extends Controller {
             }
             if ($currentUser->can('usuario_borrar')) {
                 $buttons .= sprintf(
-                    '<button type="button" class="btn btn-sm btn-danger delete-user btn-md" value="%s" title="Eliminar" %s>
+                    '<button type="button" class="btn btn-sm btn-danger delete-user btn-md" value="%s" title="Eliminar">
                         <i class="bi bi-trash"></i>
                     </button>',
                     htmlspecialchars($item->id, ENT_QUOTES, 'UTF-8'),
-                    auth()->user()->roles()->pluck('name')->implode(', ') == 'Administrador' ? 'disabled' : '',
+                    //auth()->user()->roles()->pluck('name')->implode(', ') === 'Administrador' ? 'disabled' : '',
                 );
             }
             return [
@@ -109,7 +111,12 @@ class UsersController extends Controller {
             'iTotalDisplayRecords'  => $data->count(),
             'aaData'                => $data,
         ]);
-    } 
+    }
+
+    public function listPermissionsByModule (Request $request): JsonResponse {
+        $result = Permission
+        return response()->json([]);
+    }
 
     public function store(UserValidate $request): JsonResponse {
         $validated  = $request->validated();
@@ -176,6 +183,49 @@ class UsersController extends Controller {
                 'type'      => 'error',
                 'message'   => 'Ocurrió un problema al intentar guardar',
                 'error'     => $th->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function storePassword(ResetPasswordValidate $request, User $user): JsonResponse {
+        $validated      = $request->validated();
+        $user->password = Hash::make($validated['password']);
+        $user->save();
+        
+        return response()->json([
+            'status'    => true,
+            'type'      => 'success',
+            'message'   => 'La contraseña ha sido actualizada',
+            'route'     => route('security.users.home'),
+        ], 200);
+    }
+
+    public function storePermission (User $user, Request $request): JsonResponse {
+        DB::beginTransaction();
+        try {
+            $request->validate([
+                'permissions' => 'nullable|string'
+            ]);
+
+            $permissionIds  = $request->permissions ? explode(',', $request->permissions) : [];
+            $permissions    = Permission::whereIn('id', $permissionIds)->get();
+            
+            $user->syncPermissions($permissions);
+            DB::commit();
+
+            return response()->json([
+                'status'    => true,
+                'type'      => 'success',
+                'message'   => 'Los permisos del usuario han sido actualizados',
+                'route'     => route('security.users.home'),
+            ], 200);
+            
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'status'    => false,
+                'type'      => 'error',
+                'message'   => 'Error al actualizar permisos: ' . $e->getMessage(),
             ], 500);
         }
     }

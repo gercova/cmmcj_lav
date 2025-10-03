@@ -124,5 +124,7 @@ Route::middleware(['auth', 'prevent.back'])->group(function(){
     Route::get('/sys/users/role/{user}',            [UsersController::class, 'role'])->name('security.users.role');
     Route::get('/sys/users/list',                   [UsersController::class, 'list']);
     Route::post('/sys/users/store',                 [UsersController::class, 'store']);
+    Route::post('/users/storePassword/{user}',      [UsersController::class, 'storePassword']);
+    Route::post('/sys/users/store/{user}',          [UsersController::class, 'storePermission']);
     Route::delete('/sys/users/{user}',              [UsersController::class, 'destroy']);
 });
