@@ -205,6 +205,6 @@ class HistoriesController extends Controller
             'status'    => (bool) $history,
             'type'      => $history ? 'success' : 'error',
             'message'   => $history ? 'Historia clínica eliminada correctamente' : 'Error al eliminar la historia clínica',
-        ]);
+        ], $history ? 200 : 400);
     }
 }

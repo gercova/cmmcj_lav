@@ -96,6 +96,6 @@ class OccupationsController extends Controller {
             'status'    => (bool) $occupation,
             'type'      => $occupation ? 'success' : 'error',
             'message'   => $occupation ? 'Ocupación eliminada' : 'Error al eliminar ocupación',
-        ], 200);
+        ], $occupation ? 200 : 400);
     }
 }

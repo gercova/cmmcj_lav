@@ -108,6 +108,6 @@ class DrugsController extends Controller {
             'status'    => (bool) $drug,
             'type'      => $drug ? 'success' : 'error',
             'message'   => $drug ? 'Registro eliminado correctamente' : 'Error al eliminar el registro',
-        ]);
+        ], $drug ? 200 : 400);
     }
 }

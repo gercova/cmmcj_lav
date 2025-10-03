@@ -380,7 +380,7 @@ class ExamsController extends Controller {
             'status'    => (bool) $dx,
             'type'      => $dx ? 'success' : 'error',
             'message'   => $dx ? 'Diagnostico eliminado': 'Error al eliminar el diagnóstico'
-        ], $dx ? 200 : 500);
+        ], $dx ? 200 : 400);
     }
 
     public function destroyMedications(MedicationExam $mx): JsonResponse {
@@ -389,7 +389,7 @@ class ExamsController extends Controller {
             'status'    => (bool) $mx,
             'type'      => $mx ? 'succes' : 'error',
             'message'   => $mx ? 'Medicación eliminada' : 'Error al eliminar medicación'
-        ], $mx ? 200 : 500);
+        ], $mx ? 200 : 400);
     }
 
     public function destroyDocument (DocumentExam $doc): JsonResponse {
@@ -398,6 +398,6 @@ class ExamsController extends Controller {
             'status'    => (bool) $doc,
             'type'      => $doc ? 'success' : 'error',
             'message'   => $doc ? 'Documento eliminado' : 'Error al eliminar el documento'
-        ], $doc ? 200 : 500);
+        ], $doc ? 200 : 400);
     }
 }

@@ -104,6 +104,6 @@ class SpecialtiesController extends Controller {
             'status'    => (bool) $specialty,
             'type'      => $specialty ? 'success' : 'error',
             'message'   => $specialty ? 'Especialidad eliminada correctamente' : 'Hubo un problema al intentar eliminar el registro',
-        ], $specialty ? 200 : 500);
+        ], $specialty ? 200 : 400);
     }
 }

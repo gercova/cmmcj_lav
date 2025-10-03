@@ -103,9 +103,9 @@ class DiagnosticsController extends Controller {
     public function destroy(Diagnosis $diagnosis): JsonResponse {
         $diagnosis->delete();
         return response()->json([
-            'status'    => true,
-            'type'      => 'success',
-            'message'   => 'Diagnóstico eliminado correctamente',
-        ], 200);
+            'status'    => (bool) $diagnosis,
+            'type'      => $diagnosis ? 'success' : 'error',
+            'message'   => $diagnosis->wasChanged() ? 'Diagnóstico eliminado correctamente' : 'Error al eliminar el diagnóstico',
+        ], $diagnosis ? 200 : 400);
     }
 }

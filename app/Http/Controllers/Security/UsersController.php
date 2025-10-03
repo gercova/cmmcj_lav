@@ -222,6 +222,6 @@ class UsersController extends Controller {
             'status'    => (bool) $user,
             'type'      => $user ? 'success' : 'error',
             'message'   => $user ? 'Usuario eliminado correctamente' : 'Ocurrió un error al intenter eliminar el usuario',
-        ], $user ? 200 : 500);
+        ], $user ? 200 : 400);
     }
 }

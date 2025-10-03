@@ -88,6 +88,6 @@ class PermissionsController extends Controller {
             'message'   => $permission ? 
                 'Permiso eliminado correctamente' : 
                 'Hubo un error al intentar eliminar', 
-        ], $permission ? 200 : 500);
+        ], $permission ? 200 : 400);
     }
 }
