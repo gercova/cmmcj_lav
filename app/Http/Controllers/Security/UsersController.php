@@ -83,10 +83,11 @@ class UsersController extends Controller {
             }
             if ($currentUser->can('usuario_borrar')) {
                 $buttons .= sprintf(
-                    '<button type="button" class="btn btn-sm btn-danger delete-user btn-md" value="%s" title="Eliminar">
+                    '<button type="button" class="btn btn-sm btn-danger delete-user btn-md" value="%s" title="Eliminar" %s>
                         <i class="bi bi-trash"></i>
                     </button>',
-                    htmlspecialchars($item->id, ENT_QUOTES, 'UTF-8')
+                    htmlspecialchars($item->id, ENT_QUOTES, 'UTF-8'),
+                    auth()->user()->roles()->pluck('name')->implode(', ') == 'Administrador' ? 'disabled' : '',
                 );
             }
             return [

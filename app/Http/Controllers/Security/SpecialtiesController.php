@@ -38,7 +38,7 @@ class SpecialtiesController extends Controller {
         $data       = $results->map(function ($item, $index) {
             $user   = auth()->user();
             $buttons = '';
-            if($user->can('especialidad_actualizar')){
+            if($user->can('especialidad_editar')){
                 $buttons .= sprintf(
                     '<button type="button" class="btn btn-sm btn-warning update-row btn-md" value="%s">
                         <i class="bi bi-pencil-square"></i>

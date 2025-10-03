@@ -61,7 +61,7 @@ class ReportsController extends Controller {
         $data = array_fill(0, 12, 0);
         // Asignamos los conteos reales a los meses correspondientes
         foreach ($records as $record) {
-            $data[$record->month - 1] = $record->count;
+            $data[$record->month - 1] = (int) $record->count;
         }
         // Retornamos en el formato solicitado: array de objetos con name y data
         return [

@@ -30,7 +30,7 @@ class OccupationsController extends Controller {
         $data       = $results->map(function ($item, $index) {
             $buttons = '';
             $user = auth()->user();
-            if ($user->can('ocupacion_actualizar')) {
+            if ($user->can('ocupacion_editar')) {
                 $buttons .= sprintf(
                     '<button type="button" class="btn btn-sm btn-warning update-row btn-md" value="%s" title="Editar">
                         <i class="bi bi-pencil-square"></i>

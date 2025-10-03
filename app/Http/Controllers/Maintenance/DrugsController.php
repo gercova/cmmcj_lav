@@ -32,7 +32,7 @@ class DrugsController extends Controller {
         $data       = $results->map(function ($item, $index) {
             $buttons = '';
             $user = auth()->user();
-            if ($user->can('ocupacion_actualizar')) {
+            if ($user->can('farmaco_editar')) {
                 $buttons .= sprintf(
                     '<button type="button" class="btn btn-sm btn-warning update-row btn-md" value="%s" title="Editar">
                         <i class="bi bi-pencil-square"></i>
@@ -40,7 +40,7 @@ class DrugsController extends Controller {
                     htmlspecialchars($item->id, ENT_QUOTES, 'UTF-8')
                 );
             }
-            if ($user->can('ocupacion_borrar')) {
+            if ($user->can('farmaco_borrar')) {
                 $buttons .= sprintf(
                     '<button type="button" class="btn btn-sm btn-danger delete-occupation btn-md" value="%s" title="Eliminar">
                         <i class="bi bi-trash"></i>
