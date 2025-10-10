@@ -114,7 +114,7 @@ class UsersController extends Controller {
     }
 
     public function listPermissionsByModule (Request $request): JsonResponse {
-        $result = Permission
+        //$result = Permission
         return response()->json([]);
     }
 
