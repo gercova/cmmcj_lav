@@ -14,6 +14,7 @@ class PermissionValidate extends FormRequest {
         return [
             'name'          => 'required|unique:permissions,name,'.$this->id,
             'guard_name'    => 'required',
+            'module_id'     => 'required|exists:modules,id',
         ];
     }
 
@@ -22,6 +23,8 @@ class PermissionValidate extends FormRequest {
             'name.required'         => 'El Nombre es requerido',
             'name.unique'           => 'El Nombre ya existe',
             'guard_name.required'   => 'El Nombre de Guardia es requerido',
+            'module_id.required'    => 'El Modulo es requerido',
+            'module_id.exists'      => 'El Modulo no existe',
         ];
     }
 }

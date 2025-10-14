@@ -80,29 +80,31 @@
                                         <div class="card">
                                             <div class="card-header bg-info">
                                                 <h3 class="card-title">Permisos Disponibles 
-                                                    <span class="badge badge-light counter-badge" id="availableCount">{{ $availablePermissions->count() }}</span>
+                                                    <!--<span class="badge badge-light counter-badge" id="availableCount">{{ $availablePermissions->count() }}</span>-->
+                                                    <span class="badge badge-light counter-badge" id="availableCount"></span>
                                                 </h3>
                                                 <div class="card-tools">
                                                     <div class="input-group input-group-sm search-box">
-                                                        <input type="text" id="availableSearch" class="form-control" placeholder="Buscar...">
+                                                        <!--<input type="text" id="availableSearch" class="form-control" placeholder="Buscar...">
                                                         <div class="input-group-append">
                                                             <button type="button" class="btn btn-default" id="clearAvailableSearch">
                                                                 <i class="fas fa-times"></i>
                                                             </button>
-                                                        </div>
+                                                        </div>-->
                                                     </div>
                                                 </div>
                                             </div>
                                             
                                             <div class="col-6">
                                                 <label for="moduleSelect">Módulos</label>
-                                                <select class="slim-select" id="moduleSelect">
+                                                <select class="slim-select" id="moduleSelect" name="moduleSelect">
+                                                    <option value="todos">todos</option>
                                                     @foreach($modulesPermissions as $module)
                                                         <option value="{{ $module->id }}">{{ $module->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            <div class="card-body permission-table">
+                                            <div class="card-body permission-table" id="loading">
                                                 <table id="availablePermissions" class="table table-striped table-hover table-sm">
                                                     <thead>
                                                         <tr>
@@ -111,7 +113,7 @@
                                                             <th width="25%">Acción</th>
                                                         </tr>
                                                     </thead>
-                                                    <tbody>
+                                                    <!--<tbody>
                                                         @forelse($availablePermissions as $index => $permission)
                                                             <tr data-id="{{ $permission->id }}">
                                                                 <td>{{ $index + 1 }}</td>
@@ -127,7 +129,7 @@
                                                                 <td colspan="3" class="text-center">No hay permisos disponibles</td>
                                                             </tr>
                                                         @endforelse
-                                                    </tbody>
+                                                    </tbody>-->
                                                 </table>
                                             </div>
                                         </div>

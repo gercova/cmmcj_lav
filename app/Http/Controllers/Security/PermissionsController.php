@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Security;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PermissionValidate;
 use App\Http\Resources\PermissionResource;
+use App\Models\Module;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
+//use App\Models\Permission;
 
 class PermissionsController extends Controller {
 
@@ -22,16 +24,22 @@ class PermissionsController extends Controller {
     }
 
     public function index(): View {
-        return view('security.permissions.index');
+        $md = Module::all();
+        return view('security.permissions.index', compact('md'));
     }
 
     public function list(): JsonResponse {
-        $results    = Permission::orderBy('name', 'asc')->get();
+        $results    = Permission::selectRaw('permissions.name as permission, permissions.guard_name, m.descripcion as module, permissions.created_at, permissions.id')
+            ->join('modules as m', 'permissions.module_id', '=', 'm.id')->orderBy('name', 'asc')->get();
         $data       = $results->map(function($item, $index){
             return [
                 $index + 1,
-                $item->name,
+                $item->permission,
                 $item->guard_name,
+                sprintf(
+                    '<span class="badge badge-success">%s</span>',
+                    $item->module
+                ),
                 $item->created_at ? $item->created_at->format('Y-m-d H:i:s') : '',
                 sprintf(
                     '<button type="button" class="btn btn-sm btn-warning update-row btn-md" value="%s">
@@ -56,6 +64,9 @@ class PermissionsController extends Controller {
 
     public function store(PermissionValidate $request): JsonResponse {
         $validated = $request->validated();
+
+        //dd($validated);
+
         DB::beginTransaction();
         try {
             $result = Permission::updateOrCreate(['id' => $request->input('id')], $validated);

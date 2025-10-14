@@ -33,8 +33,9 @@
                                     <thead>
                                         <tr>
                                             <th style="width:10px">#</th>
-                                            <th>Descrición</th>
+                                            <th>Permiso</th>
                                             <th>Guardia</th>
+                                            <th>Módulo</th>
                                             <th>Fecha</th>
                                             <th>Opciones</th>
                                         </tr>
@@ -62,6 +63,15 @@
                 <form id="permissionForm" method="post">
                     @csrf
                     <div class="modal-body">
+                        <div class="form-group">
+                            <label for="module_id">Módulo: </label>
+                            <select name="module_id" id="module_id">
+                                <option value="">-- Seleccione --</option>
+                                @foreach($md as $item)
+                                    <option value="{{ $item->id }}">{{ $item->descripcion }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         <div class="form-group">
                             <label for="name">Nombre: </label>
                             <input type="text" class="form-control" id="name" name="name">

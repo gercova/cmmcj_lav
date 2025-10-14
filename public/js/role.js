@@ -6,6 +6,73 @@ slimSelect = new SlimSelect({
     allowDeselect: true
 });
 
+cargarDatos('todos');
+
+$('#moduleSelect').on('change', function(){
+    const moduleId = $(this).val();
+    if(moduleId){
+        cargarDatos(moduleId);
+    }
+});
+
+function cargarDatos(moduleId) {
+    // Mostrar loading
+    $('#loading').removeClass('d-none');
+    $('#tabla-container').addClass('d-none');
+    // Hacer petición AJAX
+    axios.post('/sys/users/searchByModule', {
+        params: {
+            moduleId: moduleId
+        }
+    }).then(function(response) {
+        const datos = response.data.result;
+        const total = response.data.totalCount;
+        // Actualizar tabla
+        actualizarTabla(datos);
+        
+        // Actualizar contador
+        $('#availableCount').text(`Mostrando ${total} resultados`);
+    }).catch(function(error) {
+        console.error('Error al cargar datos:', error);
+        alert('¡Error al cargar los datos, papu!');
+    }).finally(function() {
+        // Ocultar loading
+        $('#loading').addClass('d-none');
+        $('#availablePermissions').removeClass('d-none');
+    });
+}
+
+function actualizarTabla(datos) {
+    const tablaBody = $('#availablePermissions');
+    tablaBody.empty();
+    
+    if (datos.length === 0) {
+        tablaBody.append(`
+            <tr>
+                <td colspan="5" class="text-center text-muted">
+                    No se encontraron resultados, papu 😢
+                </td>
+            </tr>
+        `);
+        return;
+    }
+    
+    datos.forEach(function(dato, index) {
+        const fila = `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${dato.name}</td>
+                <td>
+                    <button type="button" class="btn btn-default" id="clearAvailableSearch" data-id="${dato.id}">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+        tablaBody.append(fila);
+    });
+}
+
 // Módulo principal de gestión de permisos
 const PermissionManager = (function() {
     // Configuración

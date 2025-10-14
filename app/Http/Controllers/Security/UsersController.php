@@ -230,6 +230,21 @@ class UsersController extends Controller {
         }
     }
 
+    public function searchByModule(Request $request): JsonResponse {
+        $module = $request->input('moduleId');
+        $result = Permission::query();
+        if ($module && $module !== 'todos') {
+            $result->where('module_id', $module);
+        }
+
+        $data = $result->get();
+
+        return response()->json([
+            'result'        => $data,
+            'totalCount'    => $data->count()
+        ]);
+    }
+
     private function cleanFileName($filename) {
         // Remover caracteres especiales y espacios
         $clean = preg_replace('/[^a-zA-Z0-9._-]/', '_', $filename); 
