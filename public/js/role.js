@@ -57,14 +57,15 @@ function actualizarTabla(datos) {
     }
     
     datos.forEach(function(dato, index) {
+
         const fila = `
             <tr>
                 <td>${index + 1}</td>
                 <td>${dato.name}</td>
                 <td>
                     <div class="icheck-primary d-inline">
-                        <input type="checkbox" id="checkboxPrimary${dato.id}" >
-                        <label for="checkboxPrimary${dato.id}"></label>
+                        <input class="custom-control-input" type="checkbox" id="checkboxPrimary${index + 1}" >
+                        <label class="custom-control-label" for="checkboxPrimary${index + 1}" value="${dato.id}"></label>
                     </div>
                 </td>
             </tr>

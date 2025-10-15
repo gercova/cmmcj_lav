@@ -42,15 +42,18 @@ class PermissionsController extends Controller {
                 ),
                 $item->created_at ? $item->created_at->format('Y-m-d H:i:s') : '',
                 sprintf(
-                    '<button type="button" class="btn btn-sm btn-warning update-row btn-md" value="%s">
-                        <i class="bi bi-pencil-square"></i>
-                    </button>
-                    <button type="button" class="btn btn-sm btn-danger delete-permission btn-md" value="%s">
-                        <i class="bi bi-trash"></i>
-                    </button>',
+                    '<div class="btn-group">
+                        <button class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Acciones
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item update-row" type="button" value="%s"> <i class="bi bi-pencil-square"></i> Editar</a></li>
+                            <li><a class="dropdown-item delete-permission" type="button" value="%s"> <i class="bi bi-trash"></i> Eliminar</a></li>       
+                        </ul>
+				    </div>',
                     $item->id,
                     $item->id
-                )
+                ),
             ];
         });
 

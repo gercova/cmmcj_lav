@@ -76,22 +76,21 @@
                                 @csrf
                                 <div class="row">
                                     <!-- Columna de permisos disponibles -->
-                                    <div class="col-md-5">
+                                    <div class="col-8">
                                         <div class="card">
                                             <div class="card-header bg-info">
-                                                <h3 class="card-title">Permisos Disponibles 
-                                                    <!--<span class="badge badge-light counter-badge" id="availableCount">{{ $availablePermissions->count() }}</span>-->
+                                                <h3 class="card-title">Permisos Disponibles
                                                     <span class="badge badge-light counter-badge" id="availableCount"></span>
                                                 </h3>
                                                 <div class="card-tools">
-                                                    <div class="input-group input-group-sm search-box">
-                                                        <!--<input type="text" id="availableSearch" class="form-control" placeholder="Buscar...">
+                                                    <!--<div class="input-group input-group-sm search-box">
+                                                        <input type="text" id="availableSearch" class="form-control" placeholder="Buscar...">
                                                         <div class="input-group-append">
                                                             <button type="button" class="btn btn-default" id="clearAvailableSearch">
                                                                 <i class="fas fa-times"></i>
                                                             </button>
-                                                        </div>-->
-                                                    </div>
+                                                        </div>
+                                                    </div>-->
                                                 </div>
                                             </div>
                                             

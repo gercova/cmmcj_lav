@@ -27,34 +27,41 @@ class DrugsController extends Controller {
         return view('maintenance.drugs.index', compact('um'));
     }
 
-    public function list(){
+    /*public function list(){
         $results 	= DB::table('view_active_drugs')->get();
         $data       = $results->map(function ($item, $index) {
             $buttons = '';
             $user = auth()->user();
             if ($user->can('farmaco_editar')) {
                 $buttons .= sprintf(
-                    '<button type="button" class="btn btn-sm btn-warning update-row btn-md" value="%s" title="Editar">
-                        <i class="bi bi-pencil-square"></i>
-                    </button> ',
+                    '<li><a class="dropdown-item update-row" type="button" value="%s"> <i class="bi bi-pencil-square"></i> Editar</a></li>',
                     htmlspecialchars($item->id, ENT_QUOTES, 'UTF-8')
                 );
             }
             if ($user->can('farmaco_borrar')) {
                 $buttons .= sprintf(
-                    '<button type="button" class="btn btn-sm btn-danger delete-occupation btn-md" value="%s" title="Eliminar">
-                        <i class="bi bi-trash"></i>
-                    </button>',
+                    '<li><a class="dropdown-item delete-occupation" type="button" value="%s"> <i class="bi bi-trash"></i> Eliminar</a></li>',
                     htmlspecialchars($item->id, ENT_QUOTES, 'UTF-8')
                 );
             }
+
+            $button = sprintf(
+                '<div class="btn-group">
+                    <button class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Acciones
+                    </button>
+                    <ul class="dropdown-menu">'.
+                        $buttons ?: 'No hay acciones disponibles'
+                    .'</ul>
+                </div>',
+            );
             
             return [
                 $index + 1,
                 $item->unidad,
                 $item->farmaco,
                 $item->created_at,
-                $buttons ?: 'No hay acciones disponibles',
+                $button,
             ];
         });
 
@@ -63,7 +70,49 @@ class DrugsController extends Controller {
             "iTotalRecords"			=> $data->count(),
             "iTotalDisplayRecords"	=> $data->count(),
             "aaData"				=> $data,
-       ]);
+        ]);
+    }*/
+
+    public function list() {
+        $results    = DB::table('view_active_drugs')->get();
+        $user       = auth()->user();
+        $canEdit    = $user->can('farmaco_editar');
+        $canDelete  = $user->can('farmaco_borrar');
+        
+        $data = $results->map(function ($item, $index) use ($canEdit, $canDelete) {
+            return [
+                $index + 1,
+                $item->unidad,
+                $item->farmaco,
+                $item->created_at,
+                $this->buildActionDropdown($item->id, $canEdit, $canDelete),
+            ];
+        });
+
+        return response()->json([
+            "sEcho"					=> 1,
+            "iTotalRecords"			=> $data->count(),
+            "iTotalDisplayRecords"	=> $data->count(),
+            "aaData"				=> $data,
+        ]);
+    }
+
+    protected function buildActionDropdown($id, $canEdit, $canDelete): string {
+        if (!$canEdit && !$canDelete) return '<span class="text-muted">Sin acciones</span>';
+        
+        $buttons = [];
+        if ($canEdit) {
+            $buttons[] = '<li><a class="dropdown-item update-row" type="button" value="'.e($id).'"><i class="bi bi-pencil-square"></i> Editar</a></li>';
+        }
+        if ($canDelete) {
+            $buttons[] = '<li><a class="dropdown-item delete-occupation" type="button" value="'.e($id).'"><i class="bi bi-trash"></i> Eliminar</a></li>';
+            //'<li><a class="dropdown-item delete-occupation" type="button" value="%s"> <i class="bi bi-trash"></i> Eliminar</a></li>',
+        }
+        
+        return '<div class="btn-group">
+            <button class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">Acciones</button>
+            <ul class="dropdown-menu">'.implode('', $buttons).'</ul>
+        </div>';
     }
 
     public function store(DrugValidate $request): JsonResponse {

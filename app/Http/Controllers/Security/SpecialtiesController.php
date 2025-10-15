@@ -40,27 +40,33 @@ class SpecialtiesController extends Controller {
             $buttons = '';
             if($user->can('especialidad_editar')){
                 $buttons .= sprintf(
-                    '<button type="button" class="btn btn-sm btn-warning update-row btn-md" value="%s">
-                        <i class="bi bi-pencil-square"></i>
-                    </button>&nbsp;',
+                    '<li><a class="dropdown-item update-row" type="button" value="%s"> <i class="bi bi-pencil-square"></i> Editar</a></li>',
                     htmlspecialchars($item->id, ENT_QUOTES, 'UTF-8')
                 );
             }
             if($user->can('especialidad_borrar')){
                 $buttons .= sprintf(
-                    '<button type="button" class="btn btn-sm btn-danger delete-specialty btn-md" value="%s">
-                        <i class="bi bi-trash"></i>
-                    </button>',
+                    '<li><a class="dropdown-item delete-specialty" type="button" value="%s"> <i class="bi bi-trash"></i> Eliminar</a></li>',
                     htmlspecialchars($item->id, ENT_QUOTES, 'UTF-8')
                 );
             }
+            $button = sprintf(
+                '<div class="btn-group">
+                    <button class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Acciones
+                    </button>
+                    <ul class="dropdown-menu">'.
+                        $buttons ?: 'No hay acciones disponibles'
+                    .'</ul>
+                </div>',
+            );
 
             return [
                 $index + 1,
                 $item->ocupacion,
                 $item->descripcion,
                 $item->created_at->format('Y-m-d H:i:s'),
-                $buttons ?: 'No hay acciones disponibles'
+                $button
             ];
         });
 
