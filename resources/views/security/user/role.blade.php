@@ -100,12 +100,12 @@
                                                 <select class="slim-select" id="moduleSelect" name="moduleSelect">
                                                     <option value="todos">todos</option>
                                                     @foreach($modulesPermissions as $module)
-                                                        <option value="{{ $module->id }}">{{ $module->name }}</option>
+                                                        <option value="{{ $module->id }}">{{ $module->descripcion }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            <div class="card-body permission-table" id="loading">
-                                                <table id="availablePermissions" class="table table-striped table-hover table-sm">
+                                            <div class="card-body permission-table">
+                                                <table id="availablePermissions" class="table table-striped table-hover table-sm d-none">
                                                     <thead>
                                                         <tr>
                                                             <th width="5%">#</th>
@@ -113,29 +113,12 @@
                                                             <th width="25%">Acción</th>
                                                         </tr>
                                                     </thead>
-                                                    <!--<tbody>
-                                                        @forelse($availablePermissions as $index => $permission)
-                                                            <tr data-id="{{ $permission->id }}">
-                                                                <td>{{ $index + 1 }}</td>
-                                                                <td>{{ $permission->name }}</td>
-                                                                <td class="action-buttons">
-                                                                    <button type="button" class="btn btn-sm btn-primary add-permission btn-xs" data-id="{{ $permission->id }}">
-                                                                        <i class="fas fa-plus"></i> Agregar
-                                                                    </button>
-                                                                </td>
-                                                            </tr>
-                                                        @empty
-                                                            <tr>
-                                                                <td colspan="3" class="text-center">No hay permisos disponibles</td>
-                                                            </tr>
-                                                        @endforelse
-                                                    </tbody>-->
                                                 </table>
                                             </div>
                                         </div>
                                     </div>
                                     <!-- Columna de botones de acción -->
-                                    <div class="col-md-2">
+                                    <!--<div class="col-md-2">
                                         <div class="transfer-buttons">
                                             <button type="button" id="addAllPermissions" class="btn btn-info mb-2" title="Agregar todos los permisos">
                                                 <i class="fas fa-angle-double-right"></i> Todos
@@ -150,9 +133,9 @@
                                                 <i class="fas fa-angle-double-left"></i> Ninguno
                                             </button>
                                         </div>
-                                    </div>
+                                    </div>-->
                                     <!-- Columna de permisos asignados -->
-                                    <div class="col-md-5">
+                                    <!--<div class="col-md-5">
                                         <div class="card">
                                             <div class="card-header bg-success">
                                                 <h3 class="card-title">Permisos Asignados 
@@ -198,7 +181,7 @@
                                                 </table>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div>-->
                                 </div>
                                 <input type="hidden" name="user_id" id="userId" value="{{ $user->id }}">
                                 <!-- Input oculto para los permisos seleccionados -->

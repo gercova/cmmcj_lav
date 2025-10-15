@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ResetPasswordValidate;
 use App\Http\Requests\UserValidate;
 use App\Models\Enterprise;
+use App\Models\Module;
 use App\Models\Specialty;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
@@ -49,7 +50,8 @@ class UsersController extends Controller {
     public function role(User $user): View {
         $user                   = User::with(['permissions', 'roles.permissions'])->findOrFail($user->id);
         // Obtener todos los permisos del sistema
-        $modulesPermissions     = Permission::whereBetween('id', [1, 17])->get();
+        //$modulesPermissions     = Permission::whereBetween('id', [1, 17])->get();
+        $modulesPermissions     = Module::all();
         $allPermissions         = Permission::all();
         // Permisos directos del usuario
         $directPermissions      = $user->permissions;
@@ -232,9 +234,10 @@ class UsersController extends Controller {
 
     public function searchByModule(Request $request): JsonResponse {
         $module = $request->input('moduleId');
+
         $result = Permission::query();
-        if ($module && $module !== 'todos') {
-            $result->where('module_id', $module);
+        if ($module !== 'todos') {
+            $result->where('module_id', '=', $module);
         }
 
         $data = $result->get();

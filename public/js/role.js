@@ -11,19 +11,18 @@ cargarDatos('todos');
 $('#moduleSelect').on('change', function(){
     const moduleId = $(this).val();
     if(moduleId){
+        console.log(moduleId);
         cargarDatos(moduleId);
     }
 });
 
 function cargarDatos(moduleId) {
     // Mostrar loading
-    $('#loading').removeClass('d-none');
+    //$('#loading').removeClass('d-none');
     $('#tabla-container').addClass('d-none');
     // Hacer petición AJAX
     axios.post('/sys/users/searchByModule', {
-        params: {
-            moduleId: moduleId
-        }
+        moduleId: moduleId
     }).then(function(response) {
         const datos = response.data.result;
         const total = response.data.totalCount;
@@ -37,7 +36,7 @@ function cargarDatos(moduleId) {
         alert('¡Error al cargar los datos, papu!');
     }).finally(function() {
         // Ocultar loading
-        $('#loading').addClass('d-none');
+        // $('#loading').addClass('d-none');
         $('#availablePermissions').removeClass('d-none');
     });
 }
@@ -63,9 +62,10 @@ function actualizarTabla(datos) {
                 <td>${index + 1}</td>
                 <td>${dato.name}</td>
                 <td>
-                    <button type="button" class="btn btn-default" id="clearAvailableSearch" data-id="${dato.id}">
-                        <i class="fas fa-times"></i>
-                    </button>
+                    <div class="icheck-primary d-inline">
+                        <input type="checkbox" id="checkboxPrimary${dato.id}" >
+                        <label for="checkboxPrimary${dato.id}"></label>
+                    </div>
                 </td>
             </tr>
         `;
