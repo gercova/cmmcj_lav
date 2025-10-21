@@ -40,7 +40,7 @@ class DrugsController extends Controller {
             }
             if ($user->can('farmaco_borrar')) {
                 $buttons .= sprintf(
-                    '<li><a class="dropdown-item delete-occupation" type="button" value="%s"> <i class="bi bi-trash"></i> Eliminar</a></li>',
+                    '<li><a class="dropdown-item delete-drug" type="button" value="%s"> <i class="bi bi-trash"></i> Eliminar</a></li>',
                     htmlspecialchars($item->id, ENT_QUOTES, 'UTF-8')
                 );
             }
@@ -73,7 +73,7 @@ class DrugsController extends Controller {
         ]);
     }*/
 
-    public function list() {
+    public function list(): JsonResponse {
         $results    = DB::table('view_active_drugs')->get();
         $user       = auth()->user();
         $canEdit    = $user->can('farmaco_editar');
@@ -105,8 +105,7 @@ class DrugsController extends Controller {
             $buttons[] = '<li><a class="dropdown-item update-row" type="button" value="'.e($id).'"><i class="bi bi-pencil-square"></i> Editar</a></li>';
         }
         if ($canDelete) {
-            $buttons[] = '<li><a class="dropdown-item delete-occupation" type="button" value="'.e($id).'"><i class="bi bi-trash"></i> Eliminar</a></li>';
-            //'<li><a class="dropdown-item delete-occupation" type="button" value="%s"> <i class="bi bi-trash"></i> Eliminar</a></li>',
+            $buttons[] = '<li><a class="dropdown-item delete-drug" type="button" value="'.e($id).'"><i class="bi bi-trash"></i> Eliminar</a></li>';
         }
         
         return '<div class="btn-group">

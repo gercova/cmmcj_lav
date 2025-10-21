@@ -64,8 +64,8 @@ function actualizarTabla(datos) {
                 <td>${dato.name}</td>
                 <td>
                     <div class="icheck-primary d-inline">
-                        <input class="custom-control-input" type="checkbox" id="checkboxPrimary${index + 1}" >
-                        <label class="custom-control-label" for="checkboxPrimary${index + 1}" value="${dato.id}"></label>
+                        <input type="checkbox" id="checkboxPrimary${index + 1}" >
+                        <label for="checkboxPrimary${index + 1}" value="${dato.id}"></label>
                     </div>
                 </td>
             </tr>
