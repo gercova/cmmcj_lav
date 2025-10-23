@@ -91,7 +91,6 @@ class UsersController extends Controller {
                         <i class="bi bi-trash"></i>
                     </button>',
                     htmlspecialchars($item->id, ENT_QUOTES, 'UTF-8'),
-                    //auth()->user()->roles()->pluck('name')->implode(', ') === 'Administrador' ? 'disabled' : '',
                 );
             }
             return [
