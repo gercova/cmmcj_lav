@@ -74,6 +74,7 @@ Route::middleware(['auth', 'prevent.back'])->group(function(){
     Route::delete('/sys/ex-dc/delete/{id}',         [ExamsController::class, 'destroyDocuments']);
     Route::delete('/sys/ex-dx/delete/{id}',         [ExamsController::class, 'destroyDiagnostics']);
     Route::delete('/sys/ex-mx/delete/{id}',         [ExamsController::class, 'destroyMedications']);
+    Route::get('/sys/exams/print/{id}/{format}',    [ExamsController::class, 'printPrescriptionId'])->name('emr.exams.print');
     // Citas
     Route::get('/sys/appx',                         [AppointmentsController::class, 'index'])->name('emr.appointments.home');
     Route::get('/sys/appx/{appointment}',           [AppointmentsController::class, 'show']);
