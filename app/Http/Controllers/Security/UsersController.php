@@ -50,7 +50,6 @@ class UsersController extends Controller {
     public function role(User $user): View {
         $user                   = User::with(['permissions', 'roles.permissions'])->findOrFail($user->id);
         // Obtener todos los permisos del sistema
-        //$modulesPermissions     = Permission::whereBetween('id', [1, 17])->get();
         $modulesPermissions     = Module::all();
         $allPermissions         = Permission::all();
         // Permisos directos del usuario
@@ -112,11 +111,6 @@ class UsersController extends Controller {
             'iTotalDisplayRecords'  => $data->count(),
             'aaData'                => $data,
         ]);
-    }
-
-    public function listPermissionsByModule (Request $request): JsonResponse {
-        //$result = Permission
-        return response()->json([]);
     }
 
     public function store(UserValidate $request): JsonResponse {
@@ -201,34 +195,18 @@ class UsersController extends Controller {
         ], 200);
     }
 
-    public function storePermission (User $user, Request $request): JsonResponse {
-        DB::beginTransaction();
-        try {
-            $request->validate([
-                'permissions' => 'nullable|string'
-            ]);
+    z
 
-            $permissionIds  = $request->permissions ? explode(',', $request->permissions) : [];
-            $permissions    = Permission::whereIn('id', $permissionIds)->get();
-            
-            $user->syncPermissions($permissions);
-            DB::commit();
-
-            return response()->json([
-                'status'    => true,
-                'type'      => 'success',
-                'message'   => 'Los permisos del usuario han sido actualizados',
-                'route'     => route('security.users.home'),
-            ], 200);
-            
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json([
-                'status'    => false,
-                'type'      => 'error',
-                'message'   => 'Error al actualizar permisos: ' . $e->getMessage(),
-            ], 500);
-        }
+    public function updatePermissions(Request $request): JsonResponse {
+        $user = User::findOrFail($request->user_id);
+        $permissions = $request->permissions ?: [];
+        // Sincronizar permisos directos
+        $user->syncPermissions($permissions);
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Permisos actualizados correctamente'
+        ]);
     }
 
     public function searchByModule(Request $request): JsonResponse {
