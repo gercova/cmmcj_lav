@@ -7,13 +7,16 @@ use App\Http\Requests\ExamValidate;
 use App\Models\ContraceptiveMethod;
 use App\Models\DiagnosticExam;
 use App\Models\DocumentExam;
+use App\Models\Enterprise;
 use App\Models\Exam;
 use App\Models\ExamType;
 use App\Models\History;
 use App\Models\MedicationExam;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
@@ -130,6 +133,7 @@ class ExamsController extends Controller {
 		$data 			= collect($results)->map(function ($item, $index) {
             $user 		= auth()->user();
 			$buttons 	= '';
+            $file       = '<a href="'. asset('storage/'.$item->documento) .'" target="_blank"><i class="bi bi-file-earmark-pdf"></i> Ver archivo</a>';
 			if($user->can('examen_borrar')){
 				$buttons .= sprintf(
 					'<button type="button" class="btn btn-danger delete-doc btn-xs" value="%s"><i class="bi bi-trash"></i> Eliminar</button>',
@@ -137,8 +141,8 @@ class ExamsController extends Controller {
 				);
 			}
 			return [
-				$index + 1,
-                $item->documento,
+                $item->nombre_examen,
+                $file,
 				$item->fecha_examen,
 				$item->created_at,
                 $buttons ?: '<span class="text-muted">No autorizado</span>',
@@ -210,7 +214,7 @@ class ExamsController extends Controller {
 		], 200);
     }
 
-    public function store (ExamValidate $request): JsonResponse {
+    public function store(ExamValidate $request): JsonResponse {
         $validated      = $request->validated();
         $diagnostics 	= $request->input('diagnostic_id');
 		$drugs 			= $request->input('drug_id');
@@ -234,7 +238,9 @@ class ExamsController extends Controller {
                 'status'    => true,
                 'type'      => 'success',
                 'message'   => $result->wasChanged() ? 'Examen actualizado correctamente' : 'Examen guardado correctamente',
-                'redirect'  => route('emr.exams.see', $result->historia_id),
+                'route'     => route('emr.exams.see', $result->historia_id),
+                'print_a4' 	=> route('emr.exams.print', [$result->id, 'a4']),
+				'print_a5' 	=> route('emr.exams.print', [$result->id, 'a5']),
             ], 200);
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -365,7 +371,7 @@ class ExamsController extends Controller {
         }
     }
 
-    public function destroy (Exam $exam): JsonResponse {
+    public function destroy(Exam $exam): JsonResponse {
         $exam->delete();
         return response()->json([
             'status'    => (bool) $exam,
@@ -392,12 +398,85 @@ class ExamsController extends Controller {
         ], $mx ? 200 : 400);
     }
 
-    public function destroyDocument (DocumentExam $doc): JsonResponse {
+    public function destroyDocument(DocumentExam $doc): JsonResponse {
         $doc->delete();
         return response()->json([
             'status'    => (bool) $doc,
             'type'      => $doc ? 'success' : 'error',
             'message'   => $doc ? 'Documento eliminado' : 'Error al eliminar el documento'
         ], $doc ? 200 : 400);
+    }
+
+    public function printPrescriptionId(int $id, string $format = 'a5') {
+        // Validar y normalizar formato
+        $format     = in_array($format, ['a4', 'a5']) ? $format : 'a5';
+        // Obtener datos de manera más eficiente
+        $exam       = Exam::findOrFail($id);
+        $user       = Auth::user();
+        $enterprise = Enterprise::findOrFail(1);
+        // Ejecutar procedimientos almacenados de forma más limpia
+        $medicalHistory = DB::select('CALL PA_getMedicalHistoryByExam(?)', [$id]);
+        $diagnostics    = DB::select('CALL PA_getDiagnosticsByExam(?)', [$id]);
+        $medications    = DB::select('CALL PA_getMedicationByExam(?)', [$id]);
+        // Configurar PDF según formato
+        $pdf = $this->configurePdf($format, [
+            'hc' => $medicalHistory,
+            'ex' => $exam,
+            'dx' => $diagnostics,
+            'mx' => $medications,
+            'us' => $user,
+            'en' => $enterprise,
+            'format' => $format
+        ]);
+
+        $filename = "receta-medica-examen-{$id}-" . strtoupper($format) . ".pdf";
+        
+        return $pdf->stream($filename);
+    }
+
+    /**
+     * Configura el PDF según el formato especificado
+     */
+    private function configurePdf(string $format, array $data) {
+        $view   = $format === 'a4' ? 'EMR.exams.pdf-a4' : 'EMR.exams.pdf-a5';
+        $pdf    = PDF::loadView($view, $data);
+        $config = $this->getPdfConfig($format);
+        $pdf->setPaper($config['paper'], 'portrait')->setOptions($config['options']);
+        return $pdf;
+    }
+
+    /**
+     * Obtiene la configuración del PDF según el formato
+     */
+    private function getPdfConfig(string $format): array {
+        $baseOptions = [
+            'fontDefault'           => 'sans-serif',
+            'isHtml5ParserEnabled'  => true,
+            'isRemoteEnabled'       => false,
+            'isPhpEnabled'          => false,
+            'chroot'                => realpath(base_path()),
+        ];
+
+        if ($format === 'a4') {
+            return [
+                'paper'     => 'a4',
+                'options'   => array_merge($baseOptions, [
+                    'margin_top'    => 10,
+                    'margin_bottom' => 10,
+                    'margin_left'   => 15,
+                    'margin_right'  => 15,
+                ])
+            ];
+        }
+
+        return [
+            'paper'     => 'a5',
+            'options'   => array_merge($baseOptions, [
+                'margin_top'    => 0.5,
+                'margin_bottom' => 0.5,
+                'margin_left'   => 0.5,
+                'margin_right'  => 0.5,
+            ])
+        ];
     }
 }
