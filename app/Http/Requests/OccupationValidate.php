@@ -6,8 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class OccupationValidate extends FormRequest
 {
-    public function authorize(): bool
-    {
+    public function authorize(): bool {
         return true;
     }
 
@@ -24,5 +23,11 @@ class OccupationValidate extends FormRequest
             'descripcion.regex'     => 'La Descripción solo puede contener letras (con o sin tilde), números, espacios, y los siguientes símbolos: , / # - () .',
             'descripcion.unique'    => 'La Descripción ya existe.'
         ];
+    }
+
+    protected function prepareForValidation(): void {
+        $this->merge([
+            'descripcion' => trim(strip_tags($this->descripcion)),
+        ]);
     }
 }

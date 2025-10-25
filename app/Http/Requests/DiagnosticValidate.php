@@ -31,4 +31,12 @@ class DiagnosticValidate extends FormRequest {
             'tipo.in'                   => 'El campo tipo solo puede contener CIE10 o CMMCJ',
         ];
     }
+
+    protected function prepareForValidation(): void {
+        $this->merge([
+            'codigo'        => trim(strip_tags($this->codigo)),
+            'descripcion'   => trim(strip_tags($this->descripcion)),
+            'tipo'          => trim(strip_tags($this->tipo)),
+        ]);
+    }
 }

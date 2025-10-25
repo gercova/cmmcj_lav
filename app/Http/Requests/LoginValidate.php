@@ -25,4 +25,11 @@ class LoginValidate extends FormRequest
             'password.min'         => 'La contraseña debe tener al menos 8 caracteres',
         ];
     }
+
+    protected function prepareForValidation(): void {
+        $this->merge([
+            'username' => trim(strip_tags($this->username)),
+            'password' => trim(strip_tags($this->password)),
+        ]);
+    }
 }

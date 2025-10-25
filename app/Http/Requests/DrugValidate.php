@@ -29,4 +29,12 @@ class DrugValidate extends FormRequest {
             'detalle.regex'             => 'La Descripción solo puede contener letras (con o sin tilde), números, espacios, y los siguientes símbolos: , / # - () .',
         ];
     }
+
+    protected function prepareForValidation(): void {
+        $this->merge([
+            'unidad_medida_id'  => trim(strip_tags($this->unidad_medida_id)),
+            'descripcion'       => trim(strip_tags($this->descripcion)),
+            'detalle'           => trim(strip_tags($this->detalle)),
+        ]);
+    }
 }

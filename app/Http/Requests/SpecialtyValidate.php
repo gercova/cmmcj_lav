@@ -24,4 +24,11 @@ class SpecialtyValidate extends FormRequest {
             'descripcion.max'       => 'La Descripción tiene un límite de 255 caracteres',
         ];
     }
+
+    protected function prepareForValidation(): void {
+        $this->merge([
+            'ocupacion_id'  => trim(strip_tags($this->ocupacion_id)),
+            'descripcion'   => trim(strip_tags($this->descripcion)),
+        ]);
+    }
 }
