@@ -33,13 +33,11 @@
                                         <p>Menu de registros de exámenes {{ $history->sexo == 'M' ? 'del' : 'de la' }} paciente <b>{{ $history->nombres }}</b> identificado con DNI: <b>{{ $history->dni }}</b></p>
                                     </div>
                                     <input type="hidden" id="historyId" name="historyId" value="{{ $history->id }}">
-                                    
-                                    
                                     <input type="hidden" id="dni" name="dni" value="{{ $history->dni }}">
-                                    
+                                    @can('examen_crear')
                                         <hr>
                                         <a class="btn btn-outline btn-primary" href="{{ route('emr.exams.new', $history->id) }}">Agregar nuevo examen</a>
-                                    
+                                    @endcan
                                     <hr>
                                 </div>
                                 <div class="col-12">

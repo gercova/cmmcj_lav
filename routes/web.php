@@ -126,7 +126,8 @@ Route::middleware(['auth', 'prevent.back'])->group(function(){
     Route::get('/sys/users/list',                   [UsersController::class, 'list']);
     Route::post('/sys/users/store',                 [UsersController::class, 'store']);
     Route::post('/users/storePassword/{user}',      [UsersController::class, 'storePassword']);
-    Route::post('/sys/users/store/{user}',          [UsersController::class, 'storePermission']);
+    //Route::post('/sys/users/store/{user}',          [UsersController::class, 'storePermission']);
+    Route::post('/sys/users/update-permissions',    [UsersController::class, 'updatePermissions']);
     Route::post('/sys/users/searchByModule',        [UsersController::class, 'searchByModule']);
     Route::delete('/sys/users/{user}',              [UsersController::class, 'destroy']);
 });

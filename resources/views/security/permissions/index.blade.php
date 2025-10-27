@@ -80,6 +80,10 @@
                             <label for="guard_name">Guard Name: </label>
                             <input type="text" class="form-control" id="guard_name" name="guard_name">
                         </div>
+                        <div class="form-group">
+                            <label for="descripcion">Descripción: </label>
+                            <input type="text" class="form-control" id="descripcion" name="descripcion">
+                        </div>
                     </div>
                     <div class="modal-footer justify-content-between">
                         <input type="hidden" name="id" id="id">

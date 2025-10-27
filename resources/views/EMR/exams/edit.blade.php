@@ -663,7 +663,6 @@
                                                             <th>Nombre Examen</th>
                                                             <th>Examen</th>
                                                             <th>Fecha</th>
-                                                            <th>Resultado</th>
                                                             <th></th>
                                                         </tr>
                                                     <thead>

@@ -168,22 +168,68 @@ $(document).ready(function(){
         const submitButton          = $(this).find('button[type="submit"]');
         const originalButtonText    = submitButton.html();
         submitButton.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Cargando...');
-
         try {
             const response = await axios.post(`${API_URL}/sys/exams/store`, formData);
-            if(response.status == 200 && response.data.status == true){
-                $('.text-danger').remove();
-                $('.form-group').removeClass('is-invalid is-valid');
-                Swal.fire(
-                    'Operación exitosa', response.data.message, response.data.type
-                ).then((result)=>{
-                    if(result.value){
-                        window.location.href = response.data.redirect;
-                    }
+            // Validar que la respuesta sea exitosa y tenga los datos esperados
+            if (response.status === 200 && response.data && response.data.status === true) {
+                console.log(response.data);
+                // Limpiar el formulario y mensajes de error
+                $('#examForm').trigger('reset');
+                $('#examForm').find('.text-danger').remove();
+                $('.form-control').removeClass('is-invalid is-valid');
+                // Mostrar un mensaje de carga mientras se suben los archivos
+                const result = await Swal.fire({
+                    title: 'Subiendo archivos y guardando información',
+                    allowEscapeKey: false,
+                    allowOutsideClick: false,
+                    timer: 4000,
+                    timerProgressBar: true,
+                    didOpen: () => {
+                        Swal.showLoading();
+                        const timer = Swal.getHtmlContainer().querySelector('b');
+                        timerInterval = setInterval(() => {
+                            timer.textContent = Swal.getTimerLeft();
+                        }, 100);
+                    },
+                    willClose: () => { clearInterval(timerInterval); }
                 });
-            }else if(response.data.status == false){
-                swal.fire({
-                    icon: 'error', title: response.data.message, confirmButtonColor: '#3085d6', confirmButtonText: 'Aceptar', cancelButtonText: 'Cancelar'
+                // Si el temporizador termina, mostrar un mensaje de éxito
+                if (result.dismiss === Swal.DismissReason.timer) {
+                    await Swal.fire({
+                        icon: response.data.type || 'success', // Usar 'success' como valor predeterminado
+                        title: response.data.message || 'Información guardada correctamente',
+                        html: `<div class="text-center">
+                            <p class="mb-3">Selecciona el formato de impresión:</p>
+                            <div class="d-flex justify-content-center gap-3">
+                                <a class="btn btn-outline-info d-flex flex-column align-items-center p-3" href="${response.data.print_a4}" target="_blank">
+                                    <i class="fas fa-file-pdf fa-2x mb-2"></i>
+                                    <span>Formato A4</span>
+                                    <small class="badge badge-light mt-1">Carta</small>
+                                </a>
+                                &nbsp;
+                                <a class="btn btn-outline-success d-flex flex-column align-items-center p-3" href="${response.data.print_a5}" target="_blank">
+                                    <i class="fas fa-file-pdf fa-2x mb-2"></i>
+                                    <span>Formato A5</span>
+                                    <small class="badge badge-light mt-1">Medio</small>
+                                </a>
+                            </div>
+                        </div>`,
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'Aceptar',
+                    });
+                    // Redirigir si hay una ruta definida
+                    if (response.data.route) {
+                        window.location.href = response.data.route;
+                    }
+                }
+            } else if (response.data && response.data.status === false) {
+                // Mostrar un mensaje de error si el servidor indica un fallo
+                await Swal.fire({
+                    icon: response.data.type || 'error',
+                    title: response.data.messages || 'Error al guardar la información',
+                    showConfirmButton: false,
+                    showCancelButton: false,
+                    timer: 2000
                 });
             }
         } catch (error) {
@@ -371,20 +417,22 @@ $(document).ready(function(){
     });
 });
 
-//Función calular FPP y Edad Gestacional
+//Función calcular FPP y Edad Gestacional
 function getFpp(dateString){
     let fumDate = new Date(dateString);
-    // Calcular la fecha probable de parto (FPP)
+    
+    // Calcular FPP y formatear como yyyy-mm-dd
     let fppDate = new Date(fumDate);
-    fppDate.setDate(fppDate.getDate() + 280); // 280 días = 40 semanas
-    // Calcular la edad gestacional actual
+    fppDate.setDate(fppDate.getDate() + 280);
+    let fppFormatted = fppDate.toISOString().split('T')[0];
+    
+    // Calcular edad gestacional
     let today = new Date();
-    let diffTime = today - fumDate;
-    let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    let diffDays = Math.floor((today - fumDate) / (1000 * 60 * 60 * 24));
     let gestationalWeeks = Math.floor(diffDays / 7);
     let gestationalDays = diffDays % 7;
-    // Mostrar la FPP
-    $('#fpp').addClass('is-valid').val(fppDate.toLocaleDateString());
-    // Mostrar la edad gestacional
+    
+    // Mostrar resultados
+    $('#fpp').addClass('is-valid').val(fppFormatted);
     $('#edad_gestacional').addClass('is-valid').val(gestationalWeeks + ' semanas (' + gestationalDays + ' días)');
 }
