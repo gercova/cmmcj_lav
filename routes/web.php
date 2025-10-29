@@ -75,6 +75,24 @@ Route::middleware(['auth', 'prevent.back'])->group(function(){
     Route::delete('/sys/ex-dx/delete/{id}',         [ExamsController::class, 'destroyDiagnostics']);
     Route::delete('/sys/ex-mx/delete/{id}',         [ExamsController::class, 'destroyMedications']);
     Route::get('/sys/exams/print/{id}/{format}',    [ExamsController::class, 'printPrescriptionId'])->name('emr.exams.print');
+    // Hospitalizaciones
+    Route::get('/sys/hospitalizations',                        [Hospi ::class, 'index'])->name('emr.hospitalizations.home');
+    Route::get('/sys/hospitalizations/new/{history}',          [HospitalizationsController::class, 'new'])->name('emr.hospitalizations.new');
+    Route::get('/sys/hospitalizations/edit/{exam}',            [HospitalizationsController::class, 'edit'])->name('emr.hospitalizations.edit');
+    Route::get('/sys/hospitalizations/see/{history}',          [HospitalizationsController::class, 'see'])->name('emr.hospitalizations.see');
+    Route::get('/sys/hospitalizations/view/{exam}',            [HospitalizationsController::class, 'view']);
+    Route::post('/sys/hospitalizations/store',                 [HospitalizationsController::class, 'store']);
+    Route::get('/sys/hospitalizations/list/{history}',         [HospitalizationsController::class, 'listhospitalizations']);
+    Route::get('/sys/hospitalizations/list-dx/{exam}',         [HospitalizationsController::class, 'listDiagnostics']);
+    Route::get('/sys/hospitalizations/list-mx/{exam}',         [HospitalizationsController::class, 'listMedications']);
+    Route::get('/sys/hospitalizations/list-dc/{exam}',         [HospitalizationsController::class, 'listDocuments']);
+    Route::post('/sys/ex-dx/validate-match',        [HospitalizationsController::class, 'validateMatchDx']);
+    Route::post('/sys/ex-mx/validate-match',        [HospitalizationsController::class, 'validateMatchMx']);
+    Route::delete('/sys/ex/delete/{exam}',          [HospitalizationsController::class, 'destroy']);
+    Route::delete('/sys/ex-dc/delete/{id}',         [HospitalizationsController::class, 'destroyDocuments']);
+    Route::delete('/sys/ex-dx/delete/{id}',         [HospitalizationsController::class, 'destroyDiagnostics']);
+    Route::delete('/sys/ex-mx/delete/{id}',         [HospitalizationsController::class, 'destroyMedications']);
+    Route::get('/sys/hospitalizations/print/{id}/{format}',    [ExamsController::class, 'printPrescriptionId'])->name('emr.exams.print');
     // Citas
     Route::get('/sys/appx',                         [AppointmentsController::class, 'index'])->name('emr.appointments.home');
     Route::get('/sys/appx/{appointment}',           [AppointmentsController::class, 'show']);

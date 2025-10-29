@@ -21,9 +21,9 @@ class RolePermissionSeeder extends Seeder
         $asistente        = Role::create(['name' => 'Asistente']);
 
         // Permisos
-        $crudPermissions = ['acceder', 'ver', 'crear', 'editar', 'guardar', 'borrar'];
-        $modulos = ['historias', 'examenes', 'unidad_medida', 'farmacos', 'diagnosticos', 'ocupaciones', 'empresa', 'especialidades', 'modulos', 'usuarios', 'roles', 'permisos', 'seguridad', 'documentos', 'mantenimiento', 'reportes', 'dashboard'];
-        $modules = ['historia', 'examen', 'unidad_medida', 'farmaco', 'diagnostico', 'ocupacion', 'empresa', 'modulo', 'especialidad', 'usuario', 'rol', 'permiso'];
+        $crudPermissions    = ['acceder', 'ver', 'crear', 'editar', 'guardar', 'borrar'];
+        $modulos            = ['historias', 'examenes', 'unidad_medida', 'farmacos', 'diagnosticos', 'ocupaciones', 'empresa', 'especialidades', 'modulos', 'usuarios', 'roles', 'permisos', 'seguridad', 'documentos', 'mantenimiento', 'reportes', 'dashboard'];
+        $modules            = ['historia', 'examen', 'unidad_medida', 'farmaco', 'diagnostico', 'ocupacion', 'empresa', 'modulo', 'especialidad', 'usuario', 'rol', 'permiso'];
 
         foreach($modulos as $m) {
             Permission::create(['name' => $m]);
@@ -35,9 +35,9 @@ class RolePermissionSeeder extends Seeder
             }
         }
 
-        $administrador = Role::find(1);
-        $especialista = Role::find(2);
-        $asistente = Role::find(3);
+        $administrador  = Role::find(1);
+        $especialista   = Role::find(2);
+        $asistente      = Role::find(3);
 
         // Asignar permisos a roles
         $administrador->givePermissionTo(Permission::all());

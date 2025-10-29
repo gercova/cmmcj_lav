@@ -20,7 +20,7 @@ class AppointmentsController extends Controller {
     }
 
     public function store(): JsonResponse {
-
+        return response()->json([]);
     }
 
     public function show(Appointment $appointment): JsonResponse {

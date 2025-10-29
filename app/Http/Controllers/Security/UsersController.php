@@ -195,8 +195,6 @@ class UsersController extends Controller {
         ], 200);
     }
 
-    z
-
     public function updatePermissions(Request $request): JsonResponse {
         $user = User::findOrFail($request->user_id);
         $permissions = $request->permissions ?: [];

@@ -60,6 +60,14 @@
                                     </a>
                                 </li>
                             @endcan
+
+                                <li class="nav-item">
+                                    <a href="{{ route('emr.hospitalizations.home') }}" class="nav-link {{ request()->routeIs('emr.exams.*') ? 'active' : '' }}">
+                                        <i class="bi bi-chevron-right"></i>
+                                        <p>Hospitalizaciones</p>
+                                    </a>
+                                </li>
+                                
                         </ul>
                     </li>
                 @endcan
