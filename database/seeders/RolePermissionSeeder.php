@@ -2,10 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\Module;
+use App\Models\Permission;
+use App\Models\Submodule;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class RolePermissionSeeder extends Seeder
@@ -16,22 +18,22 @@ class RolePermissionSeeder extends Seeder
     public function run(): void
     {
         // Roles
-        $administrador    = Role::create(['name' => 'Administrador']);
-        $especialista     = Role::create(['name' => 'Especialista']);
-        $asistente        = Role::create(['name' => 'Asistente']);
+        //$administrador    = Role::create(['name' => 'Administrador']);
+        //$especialista     = Role::create(['name' => 'Especialista']);
+        //$asistente        = Role::create(['name' => 'Asistente']);
 
         // Permisos
         $crudPermissions    = ['acceder', 'ver', 'crear', 'editar', 'guardar', 'borrar'];
-        $modulos            = ['historias', 'examenes', 'unidad_medida', 'farmacos', 'diagnosticos', 'ocupaciones', 'empresa', 'especialidades', 'modulos', 'usuarios', 'roles', 'permisos', 'seguridad', 'documentos', 'mantenimiento', 'reportes', 'dashboard'];
-        $modules            = ['historia', 'examen', 'unidad_medida', 'farmaco', 'diagnostico', 'ocupacion', 'empresa', 'modulo', 'especialidad', 'usuario', 'rol', 'permiso'];
+        $modules            = Module::all();
+        $submodules         = Submodule::get();
 
-        foreach($modulos as $m) {
-            Permission::create(['name' => $m]);
+        foreach($modules as $m) {
+            Permission::create(['name' => $m->descripcion, 'descripcion' => "El permiso sive para dar acceso a los módulos principales"]);
         }
 
-        foreach ($modules as $module) {
+        foreach ($submodules as $sub) {
             foreach ($crudPermissions as $action) {
-                Permission::create(['name' => "{$module}_{$action}"]);
+                Permission::create(['name' => "{$sub->nombre}_{$action}", 'descripcion' => "El permiso sirve para asigner la función de {$action}"]); 
             }
         }
 

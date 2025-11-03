@@ -11,6 +11,7 @@ use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\Maintenance\DiagnosticsController;
 use App\Http\Controllers\Maintenance\DrugsController;
 use App\Http\Controllers\Maintenance\OccupationsController;
+use App\Http\Controllers\Security\ModulesController;
 use App\Http\Controllers\Security\PermissionsController;
 use App\Http\Controllers\Security\SpecialtiesController;
 use App\Http\Controllers\Security\UsersController;
@@ -79,13 +80,13 @@ Route::middleware(['auth', 'prevent.back'])->group(function(){
     // Hospitalizaciones
     Route::get('/sys/hospitalizations',                         [HospitalizationsController::class, 'index'])->name('emr.hospitalizations.home');
     Route::get('/sys/hospitalizations/new/{history}',           [HospitalizationsController::class, 'new'])->name('emr.hospitalizations.new');
-    Route::get('/sys/hospitalizations/edit/{exam}',             [HospitalizationsController::class, 'edit'])->name('emr.hospitalizations.edit');
+    Route::get('/sys/hospitalizations/edit/{hospitalization}',  [HospitalizationsController::class, 'edit'])->name('emr.hospitalizations.edit');
     Route::get('/sys/hospitalizations/see/{history}',           [HospitalizationsController::class, 'see'])->name('emr.hospitalizations.see');
-    Route::get('/sys/hospitalizations/view/{exam}',             [HospitalizationsController::class, 'view']);
+    Route::get('/sys/hospitalizations/view/{hospitalization}',  [HospitalizationsController::class, 'view']);
     Route::post('/sys/hospitalizations/store',                  [HospitalizationsController::class, 'store']);
     Route::get('/sys/hospitalizations/list/{history}',          [HospitalizationsController::class, 'listhospitalizations']);
-    Route::delete('/sys/ex/delete/{exam}',                      [HospitalizationsController::class, 'destroy']);
-    Route::get('/sys/hospitalizations/print/{id}/{format}',     [HospitalizationsController::class, 'printPrescriptionId'])->name('emr.hospitalizations.print');
+    Route::delete('/sys/ex/delete/{hospitalization}',           [HospitalizationsController::class, 'destroy']);
+    Route::get('/sys/hospitalizations/print/{id}',  [HospitalizationsController::class, 'printPrescriptionId'])->name('emr.hospitalizations.print');
     // Citas
     Route::get('/sys/appx',                         [AppointmentsController::class, 'index'])->name('emr.appointments.home');
     Route::get('/sys/appx/{appointment}',           [AppointmentsController::class, 'show']);
@@ -117,6 +118,12 @@ Route::middleware(['auth', 'prevent.back'])->group(function(){
     Route::get('/sys/enterprise',                   [EnterpriseController::class, 'index'])->name('business.enterprise');
     Route::post('/sys/enterprise/store',            [EnterpriseController::class, 'store']);
     Route::get('/sys/enterprise/images',            [EnterpriseController::class, 'getImages']);
+    // Módulos
+    Route::get('/sys/modules',                      [ModulesController::class, 'index'])->name('security.modules.home');
+    Route::get('/sys/modules/list',                 [ModulesController::class, 'list']);
+    Route::get('/sys/modules/{specialty}',          [ModulesController::class, 'show']);
+    Route::post('/sys/modules/store',               [ModulesController::class, 'store']);
+    Route::delete('/sys/modules/delete',            [ModulesController::class, 'destroy']);
     // Especialidades
     Route::get('/sys/specialties',                  [SpecialtiesController::class, 'index'])->name('security.specialties.home');
     Route::get('/sys/specialties/list',             [SpecialtiesController::class, 'list']);

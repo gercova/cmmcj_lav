@@ -34,7 +34,7 @@
                         </a>
                     </li>
                 @endcan
-                @can('documentos')
+                @can('documento')
                     <li class="nav-item {{ request()->routeIs('emr.*') ? 'menu-is-opening menu-open' : '' }}">
                         <a href="#" class="nav-link {{ request()->routeIs('emr.*') ? 'active' : '' }}">
                             <i class="nav-icon fa bi bi-journal-medical"></i>
@@ -62,7 +62,7 @@
                             @endcan
 
                                 <li class="nav-item">
-                                    <a href="{{ route('emr.hospitalizations.home') }}" class="nav-link {{ request()->routeIs('emr.exams.*') ? 'active' : '' }}">
+                                    <a href="{{ route('emr.hospitalizations.home') }}" class="nav-link {{ request()->routeIs('emr.hospitalizations.*') ? 'active' : '' }}">
                                         <i class="bi bi-chevron-right"></i>
                                         <p>Hospitalizaciones</p>
                                     </a>
@@ -139,6 +139,14 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
+
+                                <li class="nav-item">
+                                    <a href="{{ route('security.modules.home') }}" class="nav-link {{ request()->routeIs('security.modules.*') ? 'active' : '' }}">
+                                        <i class="bi bi-chevron-right"></i>
+                                        <p>Módulos</p>
+                                    </a>
+                                </li>
+
                             @can('especialidad_acceder')
                                 <li class="nav-item">
                                     <a href="{{ route('security.specialties.home') }}" class="nav-link {{ request()->routeIs('security.specialties.*') ? 'active' : '' }}">

@@ -67,7 +67,25 @@ class PermissionsController extends Controller {
     public function store(PermissionValidate $request): JsonResponse {
         $validated = $request->validated();
 
-        //dd($validated);
+        // Permisos
+        $crudPermissions    = ['acceder', 'ver', 'crear', 'editar', 'guardar', 'borrar'];
+        $crudDescriptions   = [
+
+        ];
+        // $modulos            = ['historias', 'examenes', 'unidad_medida', 'farmacos', 'diagnosticos', 'ocupaciones', 'empresa', 'especialidades', 'modulos', 'usuarios', 'roles', 'permisos', 'seguridad', 'documentos', 'mantenimiento', 'reportes', 'dashboard'];
+        // $modules            = ['historia', 'examen', 'unidad_medida', 'farmaco', 'diagnostico', 'ocupacion', 'empresa', 'modulo', 'especialidad', 'usuario', 'rol', 'permiso'];
+
+        /*foreach($modulos as $m) {
+            Permission::create(['name' => $m]);
+        }*/
+        
+
+        // foreach ($modules as $module) {
+            foreach ($crudPermissions as $action) {
+
+                Permission::create(['name' => "{$module}_{$action}", 'descripcion' => ""]);
+            }
+        // }
 
         DB::beginTransaction();
         try {

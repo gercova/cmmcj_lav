@@ -632,9 +632,9 @@
                                                         <tr>
                                                             <th>Nombre Examen</th>
                                                             <th>Examen</th>
-                                                            <th>Fecha</th>
-                                                            <th>Resultado</th>
-                                                            <th></th>
+                                                            <th>Fecha Examen</th>
+                                                            <th>Registro</th>
+                                                            <th>Opciones</th>
                                                         </tr>
                                                     <thead>
                                                     <tbody></tbody>

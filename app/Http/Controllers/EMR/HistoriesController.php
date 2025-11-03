@@ -113,7 +113,7 @@ class HistoriesController extends Controller
             return response()->json([
                 'status'    => (bool) $result,
                 'type'      => $result ? 'success' : 'error',
-                'message'   => $result->wasRecentlyCreated ? 'Historia clínica guardada correctamente' : 'Historia clínica actualizada correctamente',
+                'message'   => $result->wasChanged() ? 'Historia clínica actualizada correctamente' : 'Historia clínica guardada correctamente',
                 'route'     => route('emr.histories.home'),
             ]);
         } catch (\Throwable $th) {
