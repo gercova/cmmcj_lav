@@ -11,4 +11,5 @@ class ContraceptiveMethod extends Model
 
     protected $table        = 'mac';
     protected $primaryKey   = 'id';
+    public $timestamps      = false;
 }

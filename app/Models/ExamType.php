@@ -9,6 +9,7 @@ class ExamType extends Model
 {
     use HasFactory;
 
-    protected $table = 'tipo_examen';
-    protected $primaryKey = 'id';
+    protected $table        = 'tipo_examen';
+    protected $primaryKey   = 'id';
+    public $timestamps      = false;
 }

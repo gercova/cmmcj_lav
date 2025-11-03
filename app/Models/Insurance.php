@@ -9,6 +9,7 @@ class Insurance extends Model
 {
     use HasFactory;
 
-    protected $table = 'seguros';
-    protected $primaryKey = 'id';
+    protected $table        = 'seguros';
+    protected $primaryKey   = 'id';
+    public $timestamps      = false;
 }

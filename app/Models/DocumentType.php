@@ -10,4 +10,5 @@ class DocumentType extends Model
     use HasFactory;
     protected $table        = 'tipo_documento';
     protected $primaryKey   = 'id';
+    public $timestamps      = false;
 }

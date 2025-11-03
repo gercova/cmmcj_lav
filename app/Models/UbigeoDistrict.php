@@ -11,5 +11,6 @@ class UbigeoDistrict extends Model
 
     protected $table        = 'ubigeo_distrito';
     protected $primaryKey   = 'id';
+    protected $keyType      = 'string';
     public $timestamps      = false;
 }
