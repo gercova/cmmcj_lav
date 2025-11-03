@@ -121,9 +121,12 @@ Route::middleware(['auth', 'prevent.back'])->group(function(){
     // Módulos
     Route::get('/sys/modules',                      [ModulesController::class, 'index'])->name('security.modules.home');
     Route::get('/sys/modules/list',                 [ModulesController::class, 'list']);
-    Route::get('/sys/modules/{specialty}',          [ModulesController::class, 'show']);
+    Route::get('/sys/modules/{module}',             [ModulesController::class, 'show']);
+    Route::get('/sys/modules/sub/{submodule}',      [ModulesController::class, 'showSub']);
     Route::post('/sys/modules/store',               [ModulesController::class, 'store']);
+    Route::post('/sys/modules/sub/store',           [ModulesController::class, 'storeSub']);
     Route::delete('/sys/modules/delete',            [ModulesController::class, 'destroy']);
+    Route::delete('/sys/modules/sub/delete',        [ModulesController::class, 'destroySub']);
     // Especialidades
     Route::get('/sys/specialties',                  [SpecialtiesController::class, 'index'])->name('security.specialties.home');
     Route::get('/sys/specialties/list',             [SpecialtiesController::class, 'list']);
