@@ -1,5 +1,5 @@
 // Inicializar Select2
-$('#moduleSelect').select2({
+$('#submoduleSelect').select2({
     theme: 'bootstrap4',
     placeholder: 'Seleccione un módulo',
     allowClear: true
@@ -13,10 +13,10 @@ let selectedAssignedRows = [];  // IDs de filas seleccionadas en asignados
 cargarDatos('todos');
 
 // Evento cambio de módulo
-$('#moduleSelect').on('change', function(){
-    const moduleId = $(this).val();
+$('#submoduleSelect').on('change', function(){
+    const submoduleId = $(this).val();
     selectedAvailableRows = []; // Limpiar selección al cambiar módulo
-    cargarDatos(moduleId);
+    cargarDatos(submoduleId);
 });
 
 // Selección de filas en permisos disponibles
@@ -222,7 +222,7 @@ $(document).on('click', function(e) {
     }
 });
 
-function cargarDatos(moduleId) {
+function cargarDatos(submoduleId) {
     $('#availablePermissions').html(`<tr>
         <td colspan="3" class="text-center">
             <div class="spinner-border text-primary" role="status">
@@ -233,7 +233,7 @@ function cargarDatos(moduleId) {
     </tr>`);
 
     axios.post('/sys/users/searchByModule', {
-        moduleId: moduleId,
+        submoduleId: submoduleId,
         user_id: $('#userId').val()
     })
     .then(function(response) {

@@ -22,7 +22,17 @@ $(document).ready(function(){
 		$('#modalModule').modal('show');
 		$('.modal-title').text('Agregar Módulo');
     });
-	//formulario farmacos
+    //boton modal Submodule
+	$('#btn-add-submodule').click(function(e){
+        e.preventDefault();
+		$('.form-control').removeClass('is-valid is-invalid');
+		$('#submoduleForm').trigger('reset');
+        $('#submoduleForm').find('.text-danger').remove();
+        $('#submoduleId').val('');
+        $('#modalSubmodule').modal('show');
+        $('.modal-title').text('Agregar Submódulo');
+    });
+	//formulario module
 	$('#moduleForm').submit(async function(e){
         e.preventDefault();
         $('.text-danger').remove();
@@ -39,7 +49,7 @@ $(document).ready(function(){
             if(response.status == 200 && response.data.status == true){
 				console.log(response);
                 $('#moduleForm').trigger('reset');
-                $('#modalmodule').modal('hide');
+                $('#modalModule').modal('hide');
                 $('#module_data').DataTable().ajax.reload();
                 alertNotify(response.data.type, response.data.message);
             }else if(response.data.status == false){
@@ -57,19 +67,39 @@ $(document).ready(function(){
         }
     });
 	//update item
-    $(document).on('click', '.update-row', async function(e) {
+    $(document).on('click', '.update-row-module', async function(e) {
         e.preventDefault();
         let id = $(this).attr('value');
         const response = await axios.get(`${API_URL}/sys/modules/${id}`);
         if(response.status == 200){
-            $('.modal-title').text('Actualizar Fármaco');
+            $('.modal-title').text('Actualizar Módulo');
             $(".text-danger").remove();
-		    $('.form-group').removeClass('has-error').removeClass('has-success');
-            $('#unidad_medida_id').val(response.data.unidad_medida_id);
+		    $('.form-group').removeClass('is-invalid is-valid');
             $("#descripcion").val(response.data.descripcion);
-            $("#detalle").val(response.data.detalle);
             $("#id").val(response.data.id);      
-            $('#modalmodule').modal('show');
+            $('#modalSubmodule').modal('show');
+        }
+    });
+    //function get submodule by id
+    $(document).on('click', '.update-row-submodule', async function(e) {
+        e.preventDefault();
+        const id = $(this).attr('value');
+        try {
+            const response = await axios.get(`${API_URL}/sys/modules/sub/${id}`);
+            if (response.status == 200) {
+                console.log(response.data);
+                $('.modal-title').text('Actualizar Submódulo');
+                $(".text-danger").remove();
+                $('.form-control').removeClass('is-invalid is-valid');
+                $("#module_id").val(response.data.module_id);
+                $("#sm_nombre").val(response.data.nombre);
+                $("#sm_descripcion").val(response.data.descripcion);
+                $("#sm_icono").val(response.data.icono);
+                $('#submoduleId').val(response.data.id);      
+                $('#modalSubmodule').modal('show');
+            }   
+        } catch (error) {
+            console.log(error);
         }
     });
 });

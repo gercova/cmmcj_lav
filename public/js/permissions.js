@@ -1,7 +1,7 @@
 let slimSelect;
 if (slimSelect) slimSelect.destroy();
 slimSelect = new SlimSelect({
-    select: '#module_id',
+    select: '#submodule_id',
     placeholder: 'Seleccione un módulo',
     allowDeselect: true
 });
@@ -74,13 +74,14 @@ $(document).on('click', '.update-row', async function(e) {
         $('.form-group').removeClass('is-invalid is-valid');
         if (slimSelect) slimSelect.destroy();
         slimSelect = new SlimSelect({
-            select: '#module_id',
+            select: '#submodule_id',
             placeholder: 'Seleccione un cargo',
             allowDeselect: true
         });
         slimSelect.set(response.data.module_id);
         $('#name').val(response.data.name);
         $('#guard_name').val(response.data.guard_name);
+        $('#descripcion').val(response.data.descripcion);
         $('#id').val(response.data.id);
         $('#modalPermission').modal('show');
     }

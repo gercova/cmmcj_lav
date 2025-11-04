@@ -13,7 +13,7 @@ $(document).ready(function(){
     ]);
 
 	//boton modal farmacos
-	$('#btn-add_drug').click(function(e){
+	$('#btn-add-drug').click(function(e){
         e.preventDefault();
 		$('.form-group').removeClass('is-invalid is-valid');
 		$('#drugForm').trigger('reset');
