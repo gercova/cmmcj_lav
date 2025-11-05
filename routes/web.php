@@ -43,7 +43,6 @@ Route::middleware(['auth', 'prevent.back'])->group(function(){
     Route::get('/sys/dashboard/annual/{year}',      [ReportsController::class, 'getAnnualData']);
     Route::get('/sys/dashboard/dxByExam',           [ReportsController::class, 'getDiagnosticsByExam']);
     Route::get('/sys/dashboard/mxByExam',           [ReportsController::class, 'getDrugsByExam']);
-    //Route::get('/sys/dashboard/hCBySex',          [ReportsController::class, 'getHistoriesBySex']);
     Route::get('/sys/dashboard/hcByMS',             [ReportsController::class, 'getHistoriesByMaritalStatus']);
     Route::get('/sys/dashboard/hcByBG',             [ReportsController::class, 'getHistoriesByBloodingGroup']);
     Route::get('/sys/dashboard/hcByDI',             [ReportsController::class, 'getHistoriesByDegreeIntruction']);
@@ -84,8 +83,8 @@ Route::middleware(['auth', 'prevent.back'])->group(function(){
     Route::get('/sys/hospitalizations/see/{history}',           [HospitalizationsController::class, 'see'])->name('emr.hospitalizations.see');
     Route::get('/sys/hospitalizations/view/{hospitalization}',  [HospitalizationsController::class, 'view']);
     Route::post('/sys/hospitalizations/store',                  [HospitalizationsController::class, 'store']);
-    Route::get('/sys/hospitalizations/list/{history}',          [HospitalizationsController::class, 'listhospitalizations']);
-    Route::delete('/sys/ex/delete/{hospitalization}',           [HospitalizationsController::class, 'destroy']);
+    Route::get('/sys/hospitalizations/list/{history}',          [HospitalizationsController::class, 'listHospitalizations']);
+    Route::delete('/sys/hsp/delete/{hospitalization}',           [HospitalizationsController::class, 'destroy']);
     Route::get('/sys/hospitalizations/print/{id}',  [HospitalizationsController::class, 'printPrescriptionId'])->name('emr.hospitalizations.print');
     // Citas
     Route::get('/sys/appx',                         [AppointmentsController::class, 'index'])->name('emr.appointments.home');

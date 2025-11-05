@@ -8,6 +8,7 @@ use App\Http\Requests\UserValidate;
 use App\Models\Enterprise;
 use App\Models\Module;
 use App\Models\Specialty;
+use App\Models\Submodule;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
@@ -51,6 +52,7 @@ class UsersController extends Controller {
         $user                   = User::with(['permissions', 'roles.permissions'])->findOrFail($user->id);
         // Obtener todos los permisos del sistema
         $modulesPermissions     = Module::all();
+        $submodulesPermissions  = Submodule::all();
         $allPermissions         = Permission::all();
         // Permisos directos del usuario
         $directPermissions      = $user->permissions;
@@ -60,7 +62,7 @@ class UsersController extends Controller {
         $allAssignedPermissions = $directPermissions->merge($rolePermissions)->unique('id');
         // Permisos disponibles (no asignados ni directos ni por roles)
         $availablePermissions   = $allPermissions->diff($allAssignedPermissions);
-        return view('security.user.role', compact('user', 'modulesPermissions', 'availablePermissions', 'directPermissions', 'rolePermissions', 'allAssignedPermissions'));
+        return view('security.user.role', compact('user', 'modulesPermissions', 'submodulesPermissions', 'availablePermissions', 'directPermissions', 'rolePermissions', 'allAssignedPermissions'));
     }
 
     public function list(): JsonResponse {
@@ -208,11 +210,10 @@ class UsersController extends Controller {
     }
 
     public function searchByModule(Request $request): JsonResponse {
-        $module = $request->input('moduleId');
-
+        $module = $request->input('submoduleId');
         $result = Permission::query();
         if ($module !== 'todos') {
-            $result->where('module_id', '=', $module);
+            $result->where('submodule_id', '=', $module);
         }
 
         $data = $result->get();

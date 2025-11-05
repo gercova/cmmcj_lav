@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Bed extends Model
@@ -14,4 +15,8 @@ class Bed extends Model
     protected $primaryKey   = 'id';
     protected $fillable     = ['description', 'floor', 'detail'];
     protected $dates        = ['created_at', 'updated_at', 'deleted_at'];
+
+    public function hospitalization(): HasMany {
+        return $this->hasMany(Hospitalization::class);
+    }
 }

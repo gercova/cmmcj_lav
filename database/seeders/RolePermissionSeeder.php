@@ -33,7 +33,11 @@ class RolePermissionSeeder extends Seeder
 
         foreach ($submodules as $sub) {
             foreach ($crudPermissions as $action) {
-                Permission::create(['name' => "{$sub->nombre}_{$action}", 'descripcion' => "El permiso sirve para asignar la función de {$action} en el submódulo de {$sub->nombre}"]); 
+                Permission::create([
+                    'name' => "{$sub->nombre}_{$action}", 
+                    'descripcion' => "El permiso sirve para asignar la función de {$action} en el submódulo de {$sub->nombre}",
+                    'submodule_id' => $sub->id,
+                ]); 
             }
         }
 

@@ -12,6 +12,7 @@ use App\Models\Exam;
 use App\Models\ExamType;
 use App\Models\History;
 use App\Models\MedicationExam;
+use App\Models\UrineTest;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
@@ -43,11 +44,36 @@ class ExamsController extends Controller {
         return view('emr.exams.new', compact('history', 'te', 'mac'));
     }
 
+    public function new_urine_test(Exam $exam): View {
+        return view('EMR.exams.complementary.n-urine-t', compact('exam'));
+    }
+    
+    public function new_blood_test(Exam $exam): View {
+        return view('EMR.exams.complementary.n-blood-t', compact('exam'));
+    }
+     
+    public function new_stool_test(Exam $exam): View {
+        return view('EMR.exams.complementary.n-stool-t');
+    }
+
     public function edit(Exam $exam): View {
         $te     = ExamType::all();
         $hc     = DB::select('CALL PA_getMedicalHistoryByExam(?)', [$exam->id]);
         $mac    = ContraceptiveMethod::all();
         return view('emr.exams.edit', compact('exam', 'te', 'hc', 'mac'));
+    }
+
+    public function edit_urine_test(UrineTest $test): View {
+        $hc = DB::select('CALL PA_getMedicalHistoryByExam(?)', [$test->examen_id]);
+        return view('EMR.exams.complementary.e-urine-t', compact('test', 'hc'));
+    }
+    
+    public function edit_blood_test(): View {
+        return view('EMR.exams.complementary.e-blood-t');
+    }
+     
+    public function edit_stool_test(): View {
+        return view('EMR.exams.complementary.e-stool-t', compact(''));
     }
 
     public function see(History $history): View {

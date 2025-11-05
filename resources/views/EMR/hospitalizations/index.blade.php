@@ -1,4 +1,5 @@
 @extends('layouts.skelenton')
+@section('title', config('global.site_name').' - Hospitalizaciones') <!-- Título dinámico -->
 @section('content')
 <div class="content-wrapper">
     <div class="content-header">
@@ -37,5 +38,5 @@
         </div>
     </section>
 </div>
-<script src="{{ asset('js/exams.js') }}"></script>
+<script src="{{ asset('js/hospitalizations.js') }}"></script>
 @endsection

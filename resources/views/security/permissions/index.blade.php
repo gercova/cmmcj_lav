@@ -1,4 +1,5 @@
 @extends('layouts.skelenton')
+@section('title', config('global.site_name').' - Permisos') <!-- Título dinámico -->
 @section('content')
 <div class="content-wrapper">
     <div class="content-header">
@@ -24,7 +25,9 @@
                     <div class="card">
                         @can('permiso_crear')
                             <div class="card-header">
-                                <button type="button" class="btn btn-outline btn-primary" id="btn-add-permission"><i class="bi bi-plus-circle"></i> Agregar permiso</button>
+                                <button type="button" class="btn btn-outline btn-primary" id="btn-add-permission">
+                                    <i class="bi bi-plus-circle"></i> Agregar permiso
+                                </button>
                             </div>
                         @endcan
                         <div class="card-body">
@@ -35,7 +38,7 @@
                                             <th style="width:10px">#</th>
                                             <th>Permiso</th>
                                             <th>Guardia</th>
-                                            <th>Módulo</th>
+                                            <th>Módulo / Súbmodulo</th>
                                             <th>Fecha</th>
                                             <th>Opciones</th>
                                         </tr>
@@ -63,12 +66,21 @@
                 <form id="permissionForm" method="post">
                     @csrf
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label for="module_id">Módulo: </label>
+                        <div class="form-group module">
+                            <label for="submodule_id">Módulo: </label>
                             <select name="module_id" id="module_id">
                                 <option value="">-- Seleccione --</option>
-                                @foreach($md as $item)
-                                    <option value="{{ $item->id }}">{{ $item->descripcion }}</option>
+                                @foreach($md as $m)
+                                    <option value="{{ $m->id }}">{{ $m->descripcion }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group module">
+                            <label for="submodule_id">Submódulo: </label>
+                            <select name="submodule_id" id="submodule_id">
+                                <option value="">-- Seleccione --</option>
+                                @foreach($sub as $s)
+                                    <option value="{{ $s->id }}">{{ $s->nombre }}</option>
                                 @endforeach
                             </select>
                         </div>

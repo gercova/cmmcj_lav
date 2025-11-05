@@ -26,7 +26,7 @@
                         <p>Inicio</p>
                     </a>
                 </li>
-                @can('reportes')
+                @can('reporte')
                     <li class="nav-item">
                         <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard')? 'active' : '' }}">
                             <i class="nav-icon fa bi bi-speedometer"></i>
@@ -108,7 +108,7 @@
                         </ul>
                     </li>
                 @endcan
-                @can('negocios')
+                @can('negocio')
                     <li class="nav-item {{ request()->routeIs('business.*') ? 'menu-is-opening menu-open' : '' }}">
                         <a href="#" class="nav-link {{ request()->routeIs('business.*') ? 'active' : '' }}">
                             <i class="nav-icon fa bi bi-building-fill-gear"></i>

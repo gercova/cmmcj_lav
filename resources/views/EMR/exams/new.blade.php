@@ -20,8 +20,7 @@
     <section class="content">
         <div class="container-fluid">
             <div class="card card-primary">
-                <div class="card-header">
-                </div>
+                <div class="card-header"></div>
                 <form id="examForm" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="card-body">
@@ -38,7 +37,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-4 col-form-label">Especialidad:</label>
                                     <div class="col-sm-8">
-                                        <input type="text" value="" class="form-control form-control-sm" readonly>
+                                        <input type="text" value="{{ auth()->user()->roles[0]->name }}" class="form-control form-control-sm" readonly>
                                     </div>
                                 </div>
                             </div>

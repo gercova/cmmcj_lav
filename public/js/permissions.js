@@ -1,8 +1,19 @@
-let slimSelect;
-if (slimSelect) slimSelect.destroy();
-slimSelect = new SlimSelect({
-    select: '#submodule_id',
+let slimSelectMod, slimSelectSub;
+
+if (slimSelectMod && slimSelectSub){
+    slimSelectMod.destroy();
+    slimSelectSub.destroy();
+}
+
+slimSelectMod = new SlimSelect({
+    select: '#module_id',
     placeholder: 'Seleccione un módulo',
+    allowDeselect: true
+});
+
+slimSelectSub = new SlimSelect({
+    select: '#submodule_id',
+    placeholder: 'Seleccione un submódule',
     allowDeselect: true
 });
 
@@ -35,7 +46,6 @@ $('#permissionForm').submit(async function(e){
     $('.form-group').removeClass('is-invalid is-valid');
 
     const formData = new FormData(this);
-
     const submitButton = $(this).find('button[type="submit"]');
     const originalButtonText = submitButton.html();
     submitButton.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Cargando...');
@@ -72,13 +82,29 @@ $(document).on('click', '.update-row', async function(e) {
         $('.modal-title').text('Actualizar Permisos');
         $(".text-danger").remove();
         $('.form-group').removeClass('is-invalid is-valid');
-        if (slimSelect) slimSelect.destroy();
-        slimSelect = new SlimSelect({
-            select: '#submodule_id',
-            placeholder: 'Seleccione un cargo',
+        if (slimSelectMod && slimSelectSub){
+            slimSelectMod.destroy();
+            slimSelectSub.destroy();
+        }
+        // Módulo
+        slimSelectMod = new SlimSelect({
+            select: '#module_id',
+            placeholder: 'Seleccione un módulo',
             allowDeselect: true
         });
-        slimSelect.set(response.data.module_id);
+        // Submódulo
+        slimSelectSub = new SlimSelect({
+            select: '#submodule_id',
+            placeholder: 'Seleccione un submódulo',
+            allowDeselect: true
+        });
+        
+        if(response.data.submodule_id !== null && response.data.submodule !== null){
+            // Módulo
+            slimSelectMod.set(response.data.submodule.module_id.id);
+            // Submódulo
+            slimSelectSub.set(response.data.submodule_id);
+        }
         $('#name').val(response.data.name);
         $('#guard_name').val(response.data.guard_name);
         $('#descripcion').val(response.data.descripcion);

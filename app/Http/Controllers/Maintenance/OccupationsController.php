@@ -27,31 +27,16 @@ class OccupationsController extends Controller {
 
     public function list(): JsonResponse {
         $results 	= Occupation::all();
-        $data       = $results->map(function ($item, $index) {
-            $buttons = '';
-            $user = auth()->user();
-            if ($user->can('ocupacion_editar')) {
-                $buttons .= sprintf(
-                    '<button type="button" class="btn btn-sm btn-warning update-row btn-md" value="%s" title="Editar">
-                        <i class="bi bi-pencil-square"></i>
-                    </button> ',
-                    htmlspecialchars($item->id, ENT_QUOTES, 'UTF-8')
-                );
-            }
-            if ($user->can('ocupacion_borrar')) {
-                $buttons .= sprintf(
-                    '<button type="button" class="btn btn-sm btn-danger delete-occupation btn-md" value="%s" title="Eliminar">
-                        <i class="bi bi-trash"></i>
-                    </button>',
-                    htmlspecialchars($item->id, ENT_QUOTES, 'UTF-8')
-                );
-            }
-            
+        $user       = auth()->user();
+        $canEdit    = $user->can('ocupacion_editar');
+        $canDelete  = $user->can('ocupacion_borrar');
+        
+        $data = $results->map(function ($item, $index) use ($canEdit, $canDelete) {
             return [
                 $index + 1,
                 $item->descripcion,
                 $item->created_at->format('Y-m-d H:i:s'),
-                $buttons ?: 'No hay acciones disponibles',
+                $this->buildActionDropdown($item->id, $canEdit, $canDelete),
             ];
         });
 
@@ -60,7 +45,24 @@ class OccupationsController extends Controller {
             "iTotalRecords"			=> $data->count(),
             "iTotalDisplayRecords"	=> $data->count(),
             "aaData"				=> $data,
-       ]);
+        ]);
+    }
+
+    protected function buildActionDropdown($id, $canEdit, $canDelete): string {
+        if (!$canEdit && !$canDelete) return '<span class="text-muted">Sin acciones</span>';
+        
+        $buttons = [];
+        if ($canEdit) {
+            $buttons[] = '<li><a class="dropdown-item update-row" type="button" value="'.e($id).'"><i class="bi bi-pencil-square"></i> Editar</a></li>';
+        }
+        if ($canDelete) {
+            $buttons[] = '<li><a class="dropdown-item delete-occupation" type="button" value="'.e($id).'"><i class="bi bi-trash"></i> Eliminar</a></li>';
+        }
+        
+        return '<div class="btn-group">
+            <button class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">Acciones</button>
+            <ul class="dropdown-menu">'.implode('', $buttons).'</ul>
+        </div>';
     }
 
     public function store(OccupationValidate $request): JsonResponse {

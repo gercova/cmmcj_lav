@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Module extends Model {
@@ -14,7 +15,7 @@ class Module extends Model {
     protected $fillable     = ['descripcion'];
     protected $hidden       = ['created_at', 'updated_at', 'deleted_at'];
 
-    public function permissions() {
-        return $this->hasMany(Permission::class);
+    public function submodules(): HasMany {
+        return $this->hasMany(Submodule::class);
     }
 }

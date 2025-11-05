@@ -66,10 +66,12 @@ class HistoriesController extends Controller
 		// Agregar permisos al resultado para el frontend
         $permissions = [];
 		$permissions = [
-			'update_hc' => auth()->user()->can('historia_editar'), 	// actualizar una historia clínica
-			'delete_hc' => auth()->user()->can('historia_borrar'), 		// borrar una historia clinica
-			'add_exm' 	=> auth()->user()->can('examen_crear'), 		// añadir un nuevo examen
-			'view_exm' 	=> auth()->user()->can('examen_ver'), 			// ver exámenes de un paciente
+			'update_hc' => auth()->user()->can('historia_editar'), 	        // actualizar una historia
+			'delete_hc' => auth()->user()->can('historia_borrar'), 		    // borrar una historia
+			'add_exm' 	=> auth()->user()->can('examen_crear'), 		    // añadir un nuevo examen
+			'view_exm' 	=> auth()->user()->can('examen_ver'), 			    // ver exámenes de un paciente
+            'add_hsp'   => auth()->user()->can('hospitalizacion_crear'),    // añadir una hospitalización
+            'view_hsp'  => auth()->user()->can('hospitalizacion_ver'), 		// ver hospitalizaciones de un paciente
 		];
 
 		$data = $data->map(function ($record) use ($permissions) {
@@ -89,7 +91,8 @@ class HistoriesController extends Controller
     public function store(HistoryValidate $request): JsonResponse {
         $validated      = $request->validated();
         $proccessFields = [
-            'ubigeo_nacimiento' => isset($request->ubigeo_nacimiento) ? ($this->getStringId($request->input('ubigeo_nacimiento'))) : '220901',
+            'nombres'           => strtoupper($validated['nombres']),
+            'ubigeo_nacimiento' => isset($validated['ubigeo_nacimiento']) ? ($this->getStringId($validated['ubigeo_nacimiento'])) : '220901',
             'ubigeo_residencia' => $this->getStringId($validated['ubigeo_residencia']),
             'ocupacion_id'      => $this->getStringId($validated['ocupacion_id']),
         ];

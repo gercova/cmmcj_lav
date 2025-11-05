@@ -27,52 +27,6 @@ class DrugsController extends Controller {
         return view('maintenance.drugs.index', compact('um'));
     }
 
-    /*public function list(){
-        $results 	= DB::table('view_active_drugs')->get();
-        $data       = $results->map(function ($item, $index) {
-            $buttons = '';
-            $user = auth()->user();
-            if ($user->can('farmaco_editar')) {
-                $buttons .= sprintf(
-                    '<li><a class="dropdown-item update-row" type="button" value="%s"> <i class="bi bi-pencil-square"></i> Editar</a></li>',
-                    htmlspecialchars($item->id, ENT_QUOTES, 'UTF-8')
-                );
-            }
-            if ($user->can('farmaco_borrar')) {
-                $buttons .= sprintf(
-                    '<li><a class="dropdown-item delete-drug" type="button" value="%s"> <i class="bi bi-trash"></i> Eliminar</a></li>',
-                    htmlspecialchars($item->id, ENT_QUOTES, 'UTF-8')
-                );
-            }
-
-            $button = sprintf(
-                '<div class="btn-group">
-                    <button class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Acciones
-                    </button>
-                    <ul class="dropdown-menu">'.
-                        $buttons ?: 'No hay acciones disponibles'
-                    .'</ul>
-                </div>',
-            );
-            
-            return [
-                $index + 1,
-                $item->unidad,
-                $item->farmaco,
-                $item->created_at,
-                $button,
-            ];
-        });
-
-        return response()->json([
-            "sEcho"					=> 1,
-            "iTotalRecords"			=> $data->count(),
-            "iTotalDisplayRecords"	=> $data->count(),
-            "aaData"				=> $data,
-        ]);
-    }*/
-
     public function list(): JsonResponse {
         $results    = DB::table('view_active_drugs')->get();
         $user       = auth()->user();

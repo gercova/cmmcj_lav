@@ -50,10 +50,10 @@
                                             <div class="card-body">
                                                 <div class="form-group">
                                                     <label for="moduleSelect">Filtrar por Módulo</label>
-                                                    <select class="form-control select2" id="moduleSelect" name="moduleSelect" style="width: 100%;">
+                                                    <select class="form-control select2" id="submoduleSelect" name="submoduleSelect" style="width: 100%;">
                                                         <option value="todos">Todos los módulos</option>
-                                                        @foreach($modulesPermissions as $module)
-                                                            <option value="{{ $module->id }}">{{ $module->descripcion }}</option>
+                                                        @foreach($submodulesPermissions as $su)
+                                                            <option value="{{ $su->id }}">{{ $su->nombre }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -80,7 +80,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
                                     <!-- Columna de botones de acción -->
                                     <div class="col-md-2 d-flex align-items-center justify-content-center">
                                         <div class="transfer-buttons text-center">
@@ -175,8 +174,8 @@
                                     <thead class="thead-light">
                                         <tr>
                                             <th width="5%" class="sticky-top">#</th>
-                                            <th width="60%" class="sticky-top">Nombre del Permiso</th>
-                                            <th width="35%" class="sticky-top">Descripción</th>
+                                            <th width="30%" class="sticky-top">Nombre del Permiso</th>
+                                            <th width="65%" class="sticky-top">Descripción</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -184,7 +183,7 @@
                                             <tr>
                                                 <td>{{ $index + 1 }}</td>
                                                 <td>{{ $permission->name }}</td>
-                                                <td>{{ $permission->description ?? 'Sin descripción' }}</td>
+                                                <td>{{ $permission->descripcion ?? 'Sin descripción' }}</td>
                                             </tr>
                                         @empty
                                             <tr>

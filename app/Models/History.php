@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 use  Database\Factories\HistoryFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class History extends Model {
     use HasFactory, SoftDeletes;
@@ -97,7 +99,7 @@ class History extends Model {
 	}
 
     public static function getUBirthByHistoryId($id){
-		return History::selectRaw('CONCAT(historias.ubigeo_nacimiento, " | ", ur.region, " | ", up.provincia, " | ", ud.distrito) as nacimiento')
+		return History::selectRaw('CONCAT(historias.ubigeo_nacimiento, " | ", ur.nombre, " | ", up.nombre, " | ", ud.nombre) as nacimiento')
 			->join('ubigeo_distrito as ud', 'historias.ubigeo_nacimiento', '=', 'ud.id')
 			->join('ubigeo_region as ur', 'ud.region_id', '=', 'ur.id')
 			->join('ubigeo_provincia as up', 'ud.provincia_id', '=', 'up.id')
@@ -107,7 +109,7 @@ class History extends Model {
 	}
 
 	public static function getUResidenceByHistoryId($id){
-		return History::selectRaw('CONCAT(historias.ubigeo_residencia, " | ", ur.region, " | ", up.provincia, " | ", ud.distrito) as residencia')
+		return History::selectRaw('CONCAT(historias.ubigeo_residencia, " | ", ur.nombre, " | ", up.nombre, " | ", ud.nombre) as residencia')
 			->join('ubigeo_distrito as ud', 'historias.ubigeo_residencia', '=', 'ud.id')
 			->join('ubigeo_region as ur', 'ud.region_id', '=', 'ur.id')
 			->join('ubigeo_provincia as up', 'ud.provincia_id', '=', 'up.id')
@@ -116,21 +118,25 @@ class History extends Model {
 			->toArray();
 	}
 
-    public function typeDocument() {
+    public function typeDocument(): BelongsTo {
         return $this->belongsTo(DocumentType::class, 'tipo_documento_id');
     }
 
-    public function groupSanguineo() {
+    public function groupSanguineo(): BelongsTo {
         return $this->belongsTo(BloodGroup::class, 'grupo_sanguineo_id');
     }
 
-    public function degreeInstruccion() {
+    public function degreeInstruccion(): BelongsTo {
         return $this->belongsTo(DegreesInstruction::class, 'grado_instruccion_id');
     }
 
-    public function occupation() {
+    public function occupation(): BelongsTo {
         return $this->belongsTo(Occupation::class, 'ocupacion_id');
     }
+
+    public function hospitalization(): HasMany {
+        return $this->hasMany(Hospitalization::class);
+    } 
 
     // Especificar el factory personalizado
     protected static function newFactory() {

@@ -20,14 +20,9 @@
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
-                <div class="card card-default">
+                <div class="card card-primary">
                     <div class="card-header">
                         <h3 class="card-title">Filiación</h3>
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                        </div>
                     </div>
                     <form id="historyForm" method="post">
                         @csrf
@@ -97,7 +92,7 @@
                                         <select class="form-control" id="grupo_sanguineo_id" name="grupo_sanguineo_id" required>
                                             <option value="">-- Seleccione --</option>
                                             @foreach($gs as $g)
-                                                <option value="{{ $g->id }}" {{ old('grupo_sanguineo_id') == $g->id ? 'selected' : '' }}>{{ $g->descripcion }}</option>
+                                                <option value="{{ $g->id }}" {{ old('grupo_sanguineo_id') == $g->id ? 'selected' : '' }}>{{ $g->nombre }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -143,7 +138,7 @@
                                         <select class="form-control" id="grado_instruccion_id" name="grado_instruccion_id" required>
                                             <option value="">-- Seleccione --</option>
                                             @foreach($gi as $g)
-                                                <option value="{{ $g->id }}" {{ old('grado_instruccion_id') == $g->id ? 'selected' : '' }}>{{ $g->descripcion }}</option>
+                                                <option value="{{ $g->id }}" {{ old('grado_instruccion_id') == $g->id ? 'selected' : '' }}>{{ $g->nombre }}</option>
                                             @endforeach
                                         </select>
                                     </div>

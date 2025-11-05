@@ -43,6 +43,7 @@ class EnterpriseController extends Controller {
                     $data['nombre_comercial']       = trim(request('nombre_comercial') ?? '');
                     $data['razon_social']           = trim(request('razon_social') ?? '');
                     $data['representante_legal']    = trim(request('representante_legal') ?? '');
+                    $data['rubro_empresa']          = trim(request('rubro') ?? '');
     
                     if ($enterprise->update($data)) $response = ['status' => true, 'type' => 'success', 'message' => 'Actualizado correctamente'];
                     break;
@@ -64,12 +65,11 @@ class EnterpriseController extends Controller {
                 case 4:
                     if ($request->hasFile('mini-logo')) {
                         $this->uploadFile($enterprise, 'logo_miniatura', $request->file('mini-logo'));
-                        $response = ['status' => true, 'type' => 'success', 'message' => 'Mini-logo actualizado correctamente'];
+                        $response = ['status' => true, 'type' => 'success', 'message' => 'Mini-logo actualizado correctamente', 'route' => route('business.enterprise') ];
                     }
                     break;
     
-                default:
-                    $response = ['status' => false, 'type' => 'error', 'message' => 'Operación no válida'];
+                default: $response = ['status' => false, 'type' => 'error', 'message' => 'Operación no válida'];
             }
 
             DB::commit();

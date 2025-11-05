@@ -5,6 +5,7 @@ namespace App\Http\Controllers\EMR;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HospitalizationValidate;
 use App\Http\Resources\HospitalizationResource;
+use App\Models\Bed;
 use App\Models\History;
 use App\Models\Hospitalization;
 use Illuminate\Contracts\View\View;
@@ -15,6 +16,10 @@ class HospitalizationsController extends Controller {
     
     public function __construct(){
         $this->middleware(['auth', 'prevent.back']);
+        $this->middleware([]);
+        $this->middleware([]);
+        $this->middleware([]);
+        $this->middleware([]);
     }
 
     public function index(): View {
@@ -22,41 +27,43 @@ class HospitalizationsController extends Controller {
     }
 
     public function new(History $history): View {
-        return view('EMR.hospitalizations.new', compact('history'));
+        $beds = Bed::get();
+        return view('EMR.hospitalizations.new', compact('history', 'beds'));
     }
 
     public  function edit(Hospitalization $hospitalization): View {
         $history = History::find($hospitalization->history_id);
-        return view('EMR.hospitalizations.edit', compact('hospitalization', 'history'));
+        $beds = Bed::get();
+        return view('EMR.hospitalizations.edit', compact('hospitalization', 'history', 'beds'));
     }
 
     public function see(History $history): View {
         return view('EMR.hospitalizations.see', compact('history'));
     }
 
-    public function list(History $history): JsonResponse {
-        $results 		= DB::select('CALL PA_getExamsbyMedicalHistory(?)', [$history->id]);
+    public function listHospitalizations(History $history): JsonResponse {
+        $results 		= DB::select('CALL PA_getHospitalizationsByMedicalHistory(?)', [$history->id]);
 		$data 			= collect($results)->map(function ($item, $index) {
 			$user   	= auth()->user();
 			$buttons 	= '';
-			//if($user->can('examen_ver')){
+			if($user->can('hospitalizacion_ver')){
                 $buttons .= sprintf(
                     '<button type="button" class="btn btn-info view-exam btn-xs" value="%s"><i class="bi bi-eye"></i> Ver informe</button>&nbsp;',
                     htmlspecialchars($item->id, ENT_QUOTES, 'UTF-8')
                 );
-            //}
-			//if($user->can('examen_editar')){
+            }
+			if($user->can('hospitalizacion_editar')){
                 $buttons .= sprintf(
                     '<a type="button" class="btn btn-warning btn-xs" href="%s"><i class="bi bi-pencil-square"></i> Editar</a>&nbsp;',
                     htmlspecialchars(route('emr.exams.edit', ['exam' => $item->id]), ENT_QUOTES, 'UTF-8'),
                 );
-            //}
-			//if($user->can('examen_borrar')){
+            }
+			if($user->can('hospitalizacion_borrar')){
                 $buttons .= sprintf(
                     '<button type="button" class="btn btn-danger delete-exam btn-xs" value="%s"><i class="bi bi-trash"></i> Eliminar</button>',
                     htmlspecialchars($item->id, ENT_QUOTES, 'UTF-8')
                 );
-            //}
+            }
 
 			return [
 				$index + 1,
@@ -77,7 +84,6 @@ class HospitalizationsController extends Controller {
 
     public function store(HospitalizationValidate $request): JsonResponse {
         $validated = $request->validated();
-
         DB::beginTransaction();
         try {
             $result = Hospitalization::updateOrCreate(['id' => $request->input('id')], $validated);
@@ -86,7 +92,7 @@ class HospitalizationsController extends Controller {
                 'status'    => true,
                 'type'      => 'success',
                 'message'   => $result->wasChanged() ? 'Hospitalización actualizada correctamente' : 'Hospitalización registrada correctamente',
-                'route'     => route('emr.hospitalizations.see', $result->history_id)
+                'route'     => route('emr.hospitalizations.see', $result->historia_id)
             ], 200);
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -99,7 +105,7 @@ class HospitalizationsController extends Controller {
     }
 
     public function show(Hospitalization $hospitalization): JsonResponse {
-        $hospitalization->load('historias'); // Carga la relación
+        $hospitalization->load('historias');
         return response()->json(HospitalizationResource::make($hospitalization), 200);
     }
 

@@ -1,4 +1,5 @@
 @extends('layouts.skelenton')
+@section('title', config('global.site_name').' - Especialidades') <!-- Título dinámico -->
 @section('content')
 <div class="content-wrapper">
     <div class="content-header">

@@ -9,8 +9,8 @@ use App\Models\Module;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use Spatie\Permission\Models\Permission;
-//use App\Models\Permission;
+use App\Models\Permission;
+use App\Models\Submodule;
 
 class PermissionsController extends Controller {
 
@@ -23,22 +23,33 @@ class PermissionsController extends Controller {
     }
 
     public function index(): View {
-        $md = Module::all();
-        return view('security.permissions.index', compact('md'));
+        $md = Module::get();
+        $sub = Submodule::get();
+        return view('security.permissions.index', compact('md', 'sub'));
     }
 
     public function list(): JsonResponse {
-        $results    = Permission::selectRaw('permissions.name as permission, permissions.guard_name, m.descripcion as module, permissions.created_at, permissions.id')
-            ->join('modules as m', 'permissions.module_id', '=', 'm.id')->orderBy('name', 'asc')->get();
-        $data       = $results->map(function($item, $index){
+        $results = Permission::with('submodule')->orderBy('permissions.name', 'asc')->get();
+        $data = $results->map(function($item, $index){
+            $submodulesList = '<table class="table table-sm">';
+            if ($item->submodule) {
+                $submodulesList .= sprintf(
+                    '<tr>
+                        <td><span class="badge badge-success">%s</span></td>
+                    </tr>',
+                    ucfirst($item->submodule->nombre),
+                );
+            } else {
+                $submodulesList .= '<tr><td><span class="badge badge-warning">Sin submódulo</span></td></tr>';
+            }
+            
+            $submodulesList .= '</table>';
+            
             return [
                 $index + 1,
-                $item->permission,
+                ucfirst($item->name),
                 $item->guard_name,
-                sprintf(
-                    '<span class="badge badge-success">%s</span>',
-                    $item->module
-                ),
+                $submodulesList,
                 $item->created_at ? $item->created_at->format('Y-m-d H:i:s') : '',
                 sprintf(
                     '<div class="btn-group">
@@ -49,7 +60,7 @@ class PermissionsController extends Controller {
                             <li><a class="dropdown-item update-row" type="button" value="%s"> <i class="bi bi-pencil-square"></i> Editar</a></li>
                             <li><a class="dropdown-item delete-permission" type="button" value="%s"> <i class="bi bi-trash"></i> Eliminar</a></li>       
                         </ul>
-				    </div>',
+                    </div>',
                     $item->id,
                     $item->id
                 ),
@@ -57,10 +68,10 @@ class PermissionsController extends Controller {
         });
 
         return response()->json([
-            "sEcho"					    => 1,
-            "iTotalRecords"			    => $data->count(),
-            "iTotalDisplayRecords"	    => $data->count(),
-            "aaData"				    => $data,
+            "sEcho"                 => 1,
+            "iTotalRecords"         => $data->count(),
+            "iTotalDisplayRecords"  => $data->count(),
+            "aaData"                => $data,
         ]);
     }
 
@@ -72,8 +83,7 @@ class PermissionsController extends Controller {
         $crudDescriptions   = [
 
         ];
-        // $modulos            = ['historias', 'examenes', 'unidad_medida', 'farmacos', 'diagnosticos', 'ocupaciones', 'empresa', 'especialidades', 'modulos', 'usuarios', 'roles', 'permisos', 'seguridad', 'documentos', 'mantenimiento', 'reportes', 'dashboard'];
-        // $modules            = ['historia', 'examen', 'unidad_medida', 'farmaco', 'diagnostico', 'ocupacion', 'empresa', 'modulo', 'especialidad', 'usuario', 'rol', 'permiso'];
+        
 
         /*foreach($modulos as $m) {
             Permission::create(['name' => $m]);
@@ -94,7 +104,7 @@ class PermissionsController extends Controller {
             return response()->json([
                 'status'    => true,
                 'type'      => 'success',
-                'message'   => $result->wasChanged() ? 'Permiso actualizado correctamente' : 'Permiso guardado correctamente',
+                'message'   => $result->wasChanged() ? 'Permiso actualizado correctamente' : 'Permiso creado correctamente',
             ], 200);
         } catch(\Throwable $th) {
             DB::rollBack();
@@ -108,7 +118,8 @@ class PermissionsController extends Controller {
     }
 
     public function show(Permission $permission): JsonResponse {
-        return response()->json(PermissionResource::make($permission));
+        $permission->load(['submodule.module']);
+        return response()->json(PermissionResource::make($permission), 200);
     }
 
     public function destroy(Permission $permission): JsonResponse {

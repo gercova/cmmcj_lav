@@ -128,7 +128,7 @@
                                                 <div class="col-4">
                                                     <div class="form-group">
                                                         <label for="fce">Fecha fundación empresa:</label>
-                                                        <input type="date" class="form-control" id="fce" name="fce" value="{{ $etp->fecha_creacion }}">
+                                                        <input type="date" class="form-control" id="fce" name="fce" value="{{ $etp->fecha_creacion->format('Y-m-d') }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -181,7 +181,7 @@
                                     </div>
 
                                     <div class="tab-pane fade" id="vert-tabs-logo-min" role="tabpanel" aria-labelledby="vert-tabs-logo-min-tab">
-                                        <form id="logoMinForm" method="post" enctype="multipart/form-data">
+                                        <form id="logoMiniForm" method="post" enctype="multipart/form-data">
                                             @csrf
                                             <input type="hidden" name="op" value="4">
                                             <input type="hidden" name="id" id="id" value="{{ $etp->id }}">

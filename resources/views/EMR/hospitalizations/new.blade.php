@@ -6,12 +6,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Nueva historia</h1>
+                        <h1 class="m-0">Nueva hospitalización</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{ route('emr.histories.home') }}">Historias</a></li>
-                            <li class="breadcrumb-item active">Nueva historia</li>
+                            <li class="breadcrumb-item"><a href="{{ route('emr.hospitalizations.home') }}">Hospitalizaciones</a></li>
+                            <li class="breadcrumb-item active">Nueva hospitalización</li>
                         </ol>
                     </div>
                 </div>
@@ -20,118 +20,55 @@
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
-                <div class="card card-default">
-                    <div class="card-header">
-                        <h3 class="card-title">Filiación</h3>
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <form id="historyForm" method="post">
+                <div class="card card-primary">
+                    <div class="card-header"></div>
+                    <form id="hospitalizationForm" method="post">
                         @csrf
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-3">
-                                    <div class="form-group">
-                                        <label for="tipo_documento_id">Tipo Documento</label>
-                                        <select class="form-control" id="tipo_documento_id" name="tipo_documento_id" required>
-                                            <option value="">-- Seleccione --</option>
-                                            @foreach($td as $t)
-                                                <option value="{{ $t->id }}" {{ old('tipo_documento_id') == $t->id ? 'selected' : '' }}>{{ $t->descripcion }}</option>
-                                            @endforeach
-                                        </select>
+                                <div class="col-md-4">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">Atendido por:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" value="{{ auth()->user()->name }}" class="form-control form-control-sm" readonly>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-3">
+                                <div class="col-md-4">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">Especialidad:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" value="{{ auth()->user()->roles[0]->name }}" class="form-control form-control-sm" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">Fecha:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control form-control-sm date" name="created_at" value="{{ now()->format('Y-m-d') }}" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="dni">DNI</label>
-                                        <input type="number" class="form-control" id="dni" name="dni" value="{{ old('dni') }}" required>
+                                        <label>DNI :: NOMBRES </label>
+                                        <input type="text" class="form-control" value="{{ $history->dni.' :: '.strtoupper($history->nombres) }}" readonly>
+                                        <input type="hidden" name="historia_id" id="historia_id" value="{{ $history->id }}">
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="form-group">
-                                        <label for="nombres">Nombres</label>
-                                        <input type="text" class="form-control" id="nombres" name="nombres" value="{{ old('nombres') }}" required>
-                                    </div>
-                                </div>
-                                <div class="col-2">
-                                    <div class="form-group">
-                                        <label for="fecha_nacimiento">Fecha Nacimiento</label>
-                                        <input type="text" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" value="{{ old('fecha_nacimiento') }}" onchange="getAge(this.value);" required>
-                                    </div>
-                                </div>
-                                <div class="col-2">
-                                    <div class="form-group">
-                                        <label for="edad">Edad</label>
-                                        <input type="text" class="form-control" id="edad" name="edad" value="{{ old('edad') }}" required readonly>
-                                    </div>
-                                </div>
-                                <div class="col-2">
-                                    <div class="form-group">
-                                        <label for="sexo">Sexo</label>
-                                        <select class="form-control" id="sexo" name="sexo" required>
+                                        <label for="bed_id">Cama: </label>
+                                        <select name="bed_id" id="bed_id">
                                             <option value="">-- Seleccione --</option>
-                                            <option value="M">Masculino</option>
-                                            <option value="F">Femenino</option>
-                                        </select>
-                                    </div>
-                                </div>  
-                                <div class="col-2">
-                                    <div class="form-group">
-                                        <label for="telefono">Celular</label>
-                                        <input type="text" class="form-control" id="telefono" name="telefono" value="{{ old('telefono') }}" required>
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        <label for="email">Email</label>
-                                        <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-2">
-                                    <div class="form-group">
-                                        <label for="grupo_sanguineo_id">Grupo sanguíneo</label>
-                                        <select class="form-control" id="grupo_sanguineo_id" name="grupo_sanguineo_id" required>
-                                            <option value="">-- Seleccione --</option>
-                                            @foreach($gs as $g)
-                                                <option value="{{ $g->id }}" {{ old('grupo_sanguineo_id') == $g->id ? 'selected' : '' }}>{{ $g->descripcion }}</option>
+                                            @foreach($beds as $b)
+                                                <option value="{{ $b->id }}">{{ $b->description.' - '.$b->floor }}</option>
                                             @endforeach
                                         </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="row">
-                                <div class="col-2">
-                                    <div class="form-group">
-                                        <br>
-                                        <button type="button" class="btn btn-warning extra"><i class="fa fa-globe"></i> Paciente extranjero</button>
-                                        <button type="button" class="btn btn-success pe d-none"><i class="fa fa-globe"></i> Paciente nacional</button>
-                                    </div>
-                                </div>
-                                <div class="col-5">
-                                    <div class="form-group nacional">
-                                        <label for="ubigeo_nacimiento">Lugar Nacimiento: </label>
-                                        <select class="form-control buscarUbigeoR" id="ubigeo_nacimiento" name="ubigeo_nacimiento"></select>
-                                    </div>
-                                    <div class="form-group foreign d-none">
-                                        <label for="extranjero">Ubigeo extranjero</label>
-                                        <input class="form-control" id="extranjero" name="extranjero" placeholder="PAÍS, REGIÓN, CIUDAD">
-                                    </div>
-                                </div>
-                                <div class="col-5">
-                                    <div class="form-group">
-                                        <label for="ubigeo_residencia">Lugar Residencia: </label>
-                                        <select class="form-control buscarUbigeoR" id="ubigeo_residencia" name="ubigeo_residencia" required></select>
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        <label for="direccion">Dirección</label>
-                                        <input type="text" class="form-control" id="direccion" name="direccion" value="{{ old('direccion') }}" required>
                                     </div>
                                 </div>
                             </div>
@@ -139,113 +76,44 @@
                             <div class="row">
                                 <div class="col-3">
                                     <div class="form-group">
-                                        <label for="grado_instruccion_id">Grado instrucción</label>
-                                        <select class="form-control" id="grado_instruccion_id" name="grado_instruccion_id" required>
-                                            <option value="">-- Seleccione --</option>
-                                            @foreach($gi as $g)
-                                                <option value="{{ $g->id }}" {{ old('grado_instruccion_id') == $g->id ? 'selected' : '' }}>{{ $g->descripcion }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <label for="ocupacion_id">Ocupación</label>
-                                        <select class="form-control buscarOcupacion" id="ocupacion_id" name="ocupacion_id" required></select>
+                                        <label for="fc">Frecuencia cardiaca</label>
+                                        <input class="form-control" id="fc" name="fc" value="{{ old('fc') }}" required>
                                     </div>
                                 </div>
                                 <div class="col-3">
                                     <div class="form-group">
-                                        <label for="estado_civil_id">Estado civil</label>
-                                        <select class="form-control" id="estado_civil_id" name="estado_civil_id" required>
-                                            <option value="">-- Seleccione --</option>
-                                            @foreach($ec as $e)
-                                                <option value="{{ $e->id }}" {{ old('estado_civil_id') == $e->id ? 'selected' : '' }}>{{ $e->descripcion }}</option>
-                                            @endforeach
-                                        </select>
+                                        <label for="t">Temperatura C / F</label>
+                                        <input class="form-control" id="t" name="t" value="{{ old('t') }}" required>
                                     </div>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-3">
                                     <div class="form-group">
-                                        <label for="acompanante">Acompañante</label>
-                                        <input class="form-control" id="acompanante" name="acompanante" value="{{ old('acompanante') }}" required>
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        <label for="acompanante_telefono">Acompañante teléfono</label>
-                                        <input class="form-control" id="acompanante_telefono" name="acompanante_telefono" value="{{ old('acompanante_telefono') }}" required>
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        <label for="acompanante_direccion">Acompañante dirección</label>
-                                        <input class="form-control" id="acompanante_direccion" name="acompanante_direccion" value="{{ old('acompanante_direccion') }}" required>
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        <label for="vinculo">Vínculo</label>
-                                        <input class="form-control" id="vinculo" name="vinculo" value="{{ old('vinculo') }}" required>
+                                        <label for="so2">Saturación de oxígeno</label>
+                                        <input class="form-control" id="so2" name="so2" value="{{ old('so2') }}" required>
                                     </div>
                                 </div>
                             </div>
                             <hr>
                             <div class="row">
-                                <div class="col-3">
+                                <div class="col-12">
                                     <div class="form-group">
-                                        <label for="seguro_id">Seguro</label>
-                                        <select class="form-control" id="seguro_id" name="seguro_id" required>
-                                            <option value="">-- Seleccione --</option>
-                                            @foreach($ss as $s)
-                                                <option value="{{ $s->id }}" {{ old('seguro_id') == $s->id ? 'selected' : '' }}>{{ $s->descripcion }}</option>
-                                            @endforeach
-                                        </select>
+                                        <label for="vital_functions">Funciones vitales</label>
+                                        <input type="text" class="form-control" name="vital_functions" id="vital_functions" value="{{ old('vital_functions') }}">
                                     </div>
                                 </div>
-                                <div class="col-5">
+                                <div class="col-12">
                                     <div class="form-group">
-                                        <label for="seguro_descripcion">Descripción</label>
-                                        <input type="text" class="form-control" name="seguro_descripcion" id="seguro_descripcion" value="{{ old('seguro_descripcion') }}">
+                                        <label for="observations">Observaciones</label>
+                                        <input type="text" class="form-control" name="observations" id="observations" value="{{ old('observations') }}">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="others">Otros hallazgos</label>
+                                        <textarea class="form-control" name="others" id="others">{{ old('others') }}</textarea>
                                     </div>
                                 </div>
                             </div>
-                            <hr>
-                            
-                            <div class="row">
-                                
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label for="ant_quirurgicos">Antecedentes quirúrgicos</label>
-                                        <textarea class="form-control" name="ant_quirurgicos" id="ant_quirurgicos">{{ old('ant_quirurgicos') }}</textarea>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label for="ant_patologicos">Antecedentes patológicos</label>
-                                        <input type="text" class="form-control" name="ant_patologicos" id="ant_patologicos" value="{{ old('ant_patologicos') }}">
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label for="ant_familiares">Antecedentes familiares</label>
-                                        <input type="text" class="form-control" name="ant_familiares" id="ant_familiares" value="{{ old('ant_familiares') }}">
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label for="ant_medicos">Antecedentes médicos</label>
-                                        <input type="text" class="form-control" name="ant_medicos" id="ant_medicos" value="{{ old('ant_medicos') }}">
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label for="rams">RAMS</label>
-                                        <textarea class="form-control" name="rams" id="rams">{{ old('rams') }}</textarea>
-                                    </div>
-                                </div>
-                            </div>
-
                         </div>
                         <div class="card-footer">
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -257,5 +125,12 @@
             </div>
         </section>
     </div>
+    <script>
+        new SlimSelect({
+            select: '#bed_id',
+            placeholder: 'Seleccione una cama',
+            allowDeselect: true
+        });
+    </script>
     <script src="{{ asset('js/hospitalizations.js') }}"></script>
 @endsection

@@ -17,6 +17,12 @@ class UnitofMeasure extends Model
         'aka',
     ];
 
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+
     protected $casts = [
         'descripcion'   => 'string',
         'aka'           => 'string',
