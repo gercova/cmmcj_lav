@@ -32,9 +32,9 @@ class HospitalizationsController extends Controller {
     }
 
     public  function edit(Hospitalization $hospitalization): View {
-        $history = History::find($hospitalization->history_id);
+        $hc = History::find($hospitalization->historia_id);
         $beds = Bed::get();
-        return view('EMR.hospitalizations.edit', compact('hospitalization', 'history', 'beds'));
+        return view('EMR.hospitalizations.edit', compact('hospitalization', 'hc', 'beds'));
     }
 
     public function see(History $history): View {
@@ -48,19 +48,19 @@ class HospitalizationsController extends Controller {
 			$buttons 	= '';
 			if($user->can('hospitalizacion_ver')){
                 $buttons .= sprintf(
-                    '<button type="button" class="btn btn-info view-exam btn-xs" value="%s"><i class="bi bi-eye"></i> Ver informe</button>&nbsp;',
+                    '<button type="button" class="btn btn-info view-hsp btn-xs" value="%s"><i class="bi bi-eye"></i> Ver informe</button>&nbsp;',
                     htmlspecialchars($item->id, ENT_QUOTES, 'UTF-8')
                 );
             }
 			if($user->can('hospitalizacion_editar')){
                 $buttons .= sprintf(
                     '<a type="button" class="btn btn-warning btn-xs" href="%s"><i class="bi bi-pencil-square"></i> Editar</a>&nbsp;',
-                    htmlspecialchars(route('emr.exams.edit', ['exam' => $item->id]), ENT_QUOTES, 'UTF-8'),
+                    htmlspecialchars(route('emr.hospitalizations.edit', ['hospitalization' => $item->id]), ENT_QUOTES, 'UTF-8'),
                 );
             }
 			if($user->can('hospitalizacion_borrar')){
                 $buttons .= sprintf(
-                    '<button type="button" class="btn btn-danger delete-exam btn-xs" value="%s"><i class="bi bi-trash"></i> Eliminar</button>',
+                    '<button type="button" class="btn btn-danger delete-hospitalization btn-xs" value="%s"><i class="bi bi-trash"></i> Eliminar</button>',
                     htmlspecialchars($item->id, ENT_QUOTES, 'UTF-8')
                 );
             }
@@ -69,7 +69,7 @@ class HospitalizationsController extends Controller {
 				$index + 1,
                 $item->created_at,
                 $item->dni,
-                $item->descripcion,
+                $item->bed,
                 $buttons ?: '<span class="text-muted">No autorizado</span>'
 			];
 		});

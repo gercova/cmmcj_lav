@@ -14,7 +14,16 @@ class Hospitalization extends Model {
 
     protected $table        = 'hospitalizations';
     protected $primaryKey   = 'id';
-    protected $fillable     = ['historia_id', 'bed_id', 'fc', 't', 'so2', 'vital_functions', 'observations', 'others'];
+    protected $fillable     = [
+        'historia_id', 
+        'bed_id', 
+        'fc', 
+        't', 
+        'so2',
+        'vital_functions', 
+        'observations', 
+        'others'
+    ];
     protected $dates        = ['created_at', 'updated_at', 'deleted_at'];
 
     public function historia(): BelongsTo {
