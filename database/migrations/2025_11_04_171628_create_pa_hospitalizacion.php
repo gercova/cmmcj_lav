@@ -19,10 +19,10 @@ return new class extends Migration
             )
             BEGIN
                 SELECT hos.created_at, h.dni, CONCAT(b.description, " - ", b.floor) bed, hos.id
-                FROM hospitalizations hos
-                JOIN historias h ON hos.history_id = h.id
+                FROM hospitalizaciones hos
+                JOIN historias h ON hos.historia_id = h.id
                 JOIN beds b ON hos.bed_id = b.id
-                WHERE hos.deleted_at IS NULL AND h.deleted_at IS NULL AND b.deleted_at IS NULL AND hos.history_id = historia_id;
+                WHERE hos.deleted_at IS NULL AND h.deleted_at IS NULL AND b.deleted_at IS NULL AND hos.historia_id = historia_id;
             END');
     }
 

@@ -14,6 +14,9 @@ return new class extends Migration
         Schema::create('unidad_medida', function (Blueprint $table) {
             $table->increments('id');
             $table->string('descripcion');
+            $table->string('aka')->unique();
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

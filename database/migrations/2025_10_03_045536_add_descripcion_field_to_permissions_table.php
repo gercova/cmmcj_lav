@@ -12,6 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('permissions', function (Blueprint $table) {
+            $table->unsignedInteger('submodule_id')->after('guard_name');
+            $table->foreign('submodule_id')->references('id')->on('submodules');
             $table->string('descripcion', 100);
         });
     }

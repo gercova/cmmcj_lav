@@ -43,6 +43,7 @@ return new class extends Migration
             $table->string('aparato_respiratorio')->nullable();
             $table->string('cardio_vascular')->nullable();
             $table->string('abdomen')->nullable();
+            $table->string('d_abm')->nullable();
             $table->string('i_abm')->nullable();
             $table->string('ap_abm')->nullable();
             $table->string('c_abm')->nullable();

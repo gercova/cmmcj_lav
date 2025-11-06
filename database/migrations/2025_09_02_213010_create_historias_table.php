@@ -17,7 +17,6 @@ return new class extends Migration
             $table->foreign('tipo_documento_id')->references('id')->on('tipo_documento');
             $table->string('dni', 8)->unique();
             $table->string('nombres');
-            $table->string('apellidos');
             $table->enum('sexo', ['F', 'M']);
             $table->date('fecha_nacimiento');
             $table->string('telefono');

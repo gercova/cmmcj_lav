@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->unsignedInteger('perfil_id')->nullable()->after('password');
             $table->foreign('perfil_id')->references('id')->on('perfiles');
-            // $table->boolean('is_active')->default(true)->after('remember_token');
         });
     }
 

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('beds', function (Blueprint $table) {
+        Schema::create('habitacion_cama', function (Blueprint $table) {
             $table->increments('id');
             $table->string('description');
             $table->string('floor', 50);

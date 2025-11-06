@@ -11,12 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('submodule', function (Blueprint $table) {
+        Schema::create('submodules', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('module_id');
             $table->foreign('module_id')->references('id')->on('modules');
+            $table->string('nombre', 100);
             $table->string('descripcion');
-            $table->string('detalle');
+            $table->string('ruta');
+            $table->string('icono');
+            $table->integer('orden');
             $table->timestamps();
             $table->softDeletes();
         });
