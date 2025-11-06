@@ -349,7 +349,7 @@
             </div>
             
             <div class="diagnosis-section no-break">
-                <p><b>Diagnóstico:</b> {{ !empty($dx) ? implode(' / ', array_map(function($d) { return $d->diagnostic; }, $dx)) : 'Sin diagnóstico' }}</p>
+                <p><b>Diagnóstico:</b> {{ !empty($dx) ? implode(' / ', array_map(function($d) { return $d->diagnostico; }, $dx)) : 'Sin diagnóstico' }}</p>
             </div>
             
             <div class="prescription-section">
