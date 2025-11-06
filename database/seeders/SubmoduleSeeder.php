@@ -16,7 +16,8 @@ class SubmoduleSeeder extends Seeder
     public function run(): void {
 
         // Obtener los módulos existentes
-        $dashboard      = Module::where('descripcion', 'dashboard')->first();
+        $home           = Module::where('descripcion', 'home')->first();
+        $reporte        = Module::where('descripcion', 'reporte')->first();
         $documentos     = Module::where('descripcion', 'documentos')->first();
         $mantenimiento  = Module::where('descripcion', 'mantenimiento')->first();
         $seguridad      = Module::where('descripcion', 'seguridad')->first();
