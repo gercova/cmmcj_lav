@@ -56,9 +56,9 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>DNI :: NOMBRES </label>
-                                        <input type="text" class="form-control" value="{{ $hc[0]->dni.' :: '.$hc[0]->nombres }}" readonly>
-                                        <input type="hidden" name="historia_id" id="historia_id" value="{{ $hc[0]->history }}">
-                                        <input type="hidden" name="examId" id="examId" value="{{ $exam->id }}">
+                                        <input type="text" class="form-control" value="{{ $hc->dni.' :: '.$hc->nombres }}" readonly>
+                                        <input type="hidden" name="historia_id" id="historia_id" value="{{ $hc->id }}">
+                                        <input type="hidden" name="hspId" id="hspId" value="{{ $hospitalization->id }}">
                                     </div>
                                 </div>
                                 <div class="col-6">
@@ -67,7 +67,7 @@
                                         <select name="bed_id" id="bed_id">
                                             <option value="">-- Seleccione --</option>
                                             @foreach($beds as $b)
-                                                <option value="{{ $b->id }}">{{ $b->description.' - '.$b->floor }}</option>
+                                                <option value="{{ $b->id }}" {{ $hospitalization->bed_id == $b->id ? 'selected' : '' }}>{{ $b->description.' - '.$b->floor }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -78,19 +78,19 @@
                                 <div class="col-3">
                                     <div class="form-group">
                                         <label for="fc">Frecuencia cardiaca</label>
-                                        <input class="form-control" id="fc" name="fc" value="{{ old('fc') }}" required>
+                                        <input class="form-control" id="fc" name="fc" value="{{ $hospitalization->fc }}" required>
                                     </div>
                                 </div>
                                 <div class="col-3">
                                     <div class="form-group">
                                         <label for="t">Temperatura C / F</label>
-                                        <input class="form-control" id="t" name="t" value="{{ old('t') }}" required>
+                                        <input class="form-control" id="t" name="t" value="{{ $hospitalization->t }}" required>
                                     </div>
                                 </div>
                                 <div class="col-3">
                                     <div class="form-group">
                                         <label for="so2">Saturación de oxígeno</label>
-                                        <input class="form-control" id="so2" name="so2" value="{{ old('so2') }}" required>
+                                        <input class="form-control" id="so2" name="so2" value="{{ $hospitalization->so2 }}" required>
                                     </div>
                                 </div>
                             </div>
@@ -99,19 +99,19 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label for="vital_functions">Funciones vitales</label>
-                                        <input type="text" class="form-control" name="vital_functions" id="vital_functions" value="{{ old('vital_functions') }}">
+                                        <input type="text" class="form-control" name="vital_functions" id="vital_functions" value="{{ $hospitalization->vital_functions }}">
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label for="observations">Observaciones</label>
-                                        <input type="text" class="form-control" name="observations" id="observations" value="{{ old('observations') }}">
+                                        <input type="text" class="form-control" name="observations" id="observations" value="{{ $hospitalization->observations }}">
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label for="others">Otros hallazgos</label>
-                                        <textarea class="form-control" name="others" id="others">{{ old('others') }}</textarea>
+                                        <textarea class="form-control" name="others" id="others">{{ $hospitalization->others }}</textarea>
                                     </div>
                                 </div>
                             </div>

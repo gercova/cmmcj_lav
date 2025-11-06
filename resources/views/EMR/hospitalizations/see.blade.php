@@ -49,6 +49,7 @@
                                                         <th>#</th>
                                                         <th>Fecha</th>
                                                         <th>DNI</th>
+                                                        <th>Cama</th>
                                                         <th>Opciones</th>
                                                     </tr>
                                                 </thead>
