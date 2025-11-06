@@ -11,7 +11,7 @@ class Bed extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table        = 'beds';
+    protected $table        = 'habitacion_cama';
     protected $primaryKey   = 'id';
     protected $fillable     = ['description', 'floor', 'detail'];
     protected $dates        = ['created_at', 'updated_at', 'deleted_at'];
