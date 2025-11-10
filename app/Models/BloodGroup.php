@@ -11,4 +11,6 @@ class BloodGroup extends Model
 
     protected $table        = 'grupos_sanguineos';
     protected $primaryKey   = 'id';
+    protected $fillable     = ['nombre'];
+    public $timestamps      = false;
 }

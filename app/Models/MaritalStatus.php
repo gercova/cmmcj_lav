@@ -9,6 +9,8 @@ class MaritalStatus extends Model
 {
     use HasFactory;
 
-    protected $table = 'estado_civil';
-    protected $primaryKey = 'id';
+    protected $table        = 'estado_civil';
+    protected $primaryKey   = 'id';
+    protected $fillable     = ['descripcion'];
+    public $timestamps      = false;
 }

@@ -10,7 +10,9 @@ class DegreesInstruction extends Model
     use HasFactory;
 
     protected $table    = 'grados_instruccion';
-    protected $fillable = ['descripcion'];
+    protected $primaryKey = 'id';
+    protected $fillable = ['nombre'];
+    public $timestamps  = false;
 
     public function histories() {
         return $this->hasMany(History::class, 'grado_instruccion_id');
