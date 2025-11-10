@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('PA_getHospitalizationsByMedicalHistory');
+        DB::unprepared("DROP PROCEDURE IF EXISTS PA_getHospitalizationsByMedicalHistory;");
     }
 };
