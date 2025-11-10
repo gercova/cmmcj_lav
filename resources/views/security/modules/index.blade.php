@@ -98,15 +98,6 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="module_id">Módulo: </label>
-                            <select class="form-control" id="submodule_id" name="submodule_id">
-                                <option value="">-- Seleccione un módulo --</option>
-                                @foreach ($sub as $s)
-                                    <option value="{{ $s->id }}">{{ $m->nombre }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
                             <label for="sm_nombres">Nombre: </label>
                             <input type="text" class="form-control" id="sm_nombre" name="nombre">
                         </div>

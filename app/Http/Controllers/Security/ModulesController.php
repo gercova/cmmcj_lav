@@ -26,11 +26,12 @@ class ModulesController extends Controller
 
     public function index(): View {
         $modules = Module::get();
-        return view('security.modules.index', compact('modules'));
+        $submodules = Submodule::get();
+        return view('security.modules.index', compact('modules', 'submodules'));
     }
 
     public function list(): JsonResponse {
-        $resultsM   = Module::with('submodules')->get();
+        $resultsM   = Module::with('submodules')->where('id', '<>', 1)->get();
         $data       = $resultsM->map(function($item, $key) {
             $submodulesList = '<table class="table table-sm">';
             foreach ($item->submodules as $sm) {

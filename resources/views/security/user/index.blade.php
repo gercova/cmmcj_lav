@@ -23,9 +23,6 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">
-                        {{ 
-                            auth()->user()->roles()->pluck('name')->implode(', ')
-                        }}
                         @can('usuario_crear')
                             <div class="card-header">
                                 <a class="btn btn-primary" href="{{ route('security.users.new') }}"><i class="bi bi-plus-circle"></i> Agregar usuario</a>

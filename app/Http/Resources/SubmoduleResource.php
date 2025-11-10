@@ -16,7 +16,8 @@ class SubmoduleResource extends JsonResource
     {
         return [
             'id'            => $this->id,
-            'module_id'     => new ModuleResource($this->whenLoaded('module')),
+            'module_id'     => $this->module_id,
+            'module'        => new ModuleResource($this->whenLoaded('module')),
             'nombre'        => $this->nombre,
             'descripcion'   => $this->descripcion,
             'ruta'          => $this->ruta,
