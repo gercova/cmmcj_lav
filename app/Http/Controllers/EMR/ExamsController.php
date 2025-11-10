@@ -312,34 +312,6 @@ class ExamsController extends Controller {
         MedicationExam::insert($data);
     }
 
-	/*private function saveDocument($documents, $history, $dni, $nombreDocumento, $fechaDocument, $id) {
-        if ($documents) {
-            $directorio = "img/pacientes/{$dni}";
-			if (!Storage::exists($directorio)) {
-                Storage::makeDirectory($directorio);
-            }
-			# Storage::disk('public')->makeDirectory($directorio);
-			foreach ($documents as $i => $document) {
-				if ($document->isValid()) {
-					//$extension 	= $document->extension();
-					$extension 	= $document->getClientOriginalExtension();
-					$fileName 	= mt_rand(1000, 9999).'.'.$extension;
-					$route 		= "{$directorio}/{$fileName}";
-
-					if ($document->storeAs($directorio, $fileName, 'public')) {
-						DocumentExam::create([
-							'examen_id'         => $id,
-							'historia_id'       => $history,
-							'nombre_examen'     => $nombreDocumento[$i],
-							'documento'         => $route,
-                            'fecha_documento'   => $fechaDocument[$i],
-						]);
-					}
-				}
-			}
-        }
-    }*/
-
     private function saveDocument($documents, $history, $dni, $nombreDocumento, $fechaDocument, $id): void {
         // Validar que se recibieron documentos
         if (!$documents || !is_array($documents)) return;
