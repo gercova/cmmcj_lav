@@ -35,8 +35,8 @@ return new class extends Migration
             $table->string('u_ivaa')->nullable();
             $table->unsignedInteger('mac_id')->nullable();
             $table->foreign('mac_id')->references('id')->on('mac');
-            $table->date('fum');
-            $table->date('fpp');
+            $table->date('fum')->nullable();
+            $table->date('fpp')->nullable();
             $table->string('edad_gestacional')->nullable();
             $table->string('apreciacion_general')->nullable();
             $table->string('piel_mucosas')->nullable();
