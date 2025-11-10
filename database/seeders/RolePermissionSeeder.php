@@ -6,7 +6,6 @@ use App\Models\Module;
 use App\Models\Permission;
 use App\Models\Submodule;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 
@@ -17,9 +16,9 @@ class RolePermissionSeeder extends Seeder
      */
     public function run(): void {
         // Roles
-        //$administrador    = Role::create(['name' => 'Administrador']);
-        //$especialista     = Role::create(['name' => 'Especialista']);
-        //$asistente        = Role::create(['name' => 'Asistente']);
+        # $administrador    = Role::create(['name' => 'Administrador']);
+        # $especialista     = Role::create(['name' => 'Especialista']);
+        # $asistente        = Role::create(['name' => 'Asistente']);
 
         // Permisos
         $crudPermissions    = ['acceder', 'ver', 'crear', 'editar', 'guardar', 'borrar'];
@@ -27,15 +26,20 @@ class RolePermissionSeeder extends Seeder
         $submodules         = Submodule::get();
 
         foreach($modules as $m) {
-            Permission::create(['name' => $m->descripcion, 'descripcion' => "El permiso sive para dar acceso a los módulos principales"]);
+            Permission::create([
+                'name'          => $m->descripcion, 
+                'descripcion'   => "El permiso sive para dar acceso a los módulos principales",
+                'submodule_id'  => 1, 
+            ]);
         }
 
         foreach ($submodules as $sub) {
             foreach ($crudPermissions as $action) {
                 Permission::create([
-                    'name' => "{$sub->nombre}_{$action}", 
-                    'descripcion' => "El permiso sirve para asignar la función de {$action} en el submódulo de {$sub->nombre}",
-                    'submodule_id' => $sub->id,
+                    'name'          => "{$sub->nombre}_{$action}",
+                    'guard_name'    => 'web',
+                    'descripcion'   => "El permiso sirve para asignar la función de {$action} en el submódulo de {$sub->nombre}",
+                    'submodule_id'  => $sub->id,
                 ]); 
             }
         }

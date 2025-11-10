@@ -13,10 +13,12 @@ class ModuleSeeder extends Seeder
      */
     public function run(): void
     {
+        Module::create(['descripcion' => 'principal']);
         Module::create(['descripcion' => 'home']);
         Module::create(['descripcion' => 'reporte']);
-        Module::create(['descripcion' => 'documentos']);
+        Module::create(['descripcion' => 'documento']);
         Module::create(['descripcion' => 'mantenimiento']);
+        Module::create(['descripcion' => 'negocio']);
         Module::create(['descripcion' => 'seguridad']);
     }
 }
