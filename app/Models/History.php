@@ -118,25 +118,29 @@ class History extends Model {
 			->toArray();
 	}
 
-    public function typeDocument(): BelongsTo {
+    public function tipoDocumento(): BelongsTo {
         return $this->belongsTo(DocumentType::class, 'tipo_documento_id');
     }
 
-    public function groupSanguineo(): BelongsTo {
+    public function grupoSanguineo(): BelongsTo {
         return $this->belongsTo(BloodGroup::class, 'grupo_sanguineo_id');
     }
 
-    public function degreeInstruccion(): BelongsTo {
+    public function gradoInstruccion(): BelongsTo {
         return $this->belongsTo(DegreesInstruction::class, 'grado_instruccion_id');
     }
 
-    public function occupation(): BelongsTo {
+    public function ocupacion(): BelongsTo {
         return $this->belongsTo(Occupation::class, 'ocupacion_id');
     }
 
-    public function hospitalization(): HasMany {
-        return $this->hasMany(Hospitalization::class);
-    } 
+    public function examen(): HasMany {
+        return $this->hasMany(Exam::class, 'historia_id');
+    }
+
+    public function hospitalizacion(): HasMany {
+        return $this->hasMany(Hospitalization::class, 'historia_id');
+    }
 
     // Especificar el factory personalizado
     protected static function newFactory() {

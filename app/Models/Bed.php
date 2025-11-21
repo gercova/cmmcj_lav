@@ -16,7 +16,7 @@ class Bed extends Model
     protected $fillable     = ['description', 'floor', 'detail'];
     protected $dates        = ['created_at', 'updated_at', 'deleted_at'];
 
-    public function hospitalization(): HasMany {
-        return $this->hasMany(Hospitalization::class);
+    public function hospitalizacion(): HasMany {
+        return $this->hasMany(Hospitalization::class, 'cama_id');
     }
 }

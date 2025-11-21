@@ -14,7 +14,7 @@ class DegreesInstruction extends Model
     protected $fillable = ['nombre'];
     public $timestamps  = false;
 
-    public function histories() {
+    public function historia() {
         return $this->hasMany(History::class, 'grado_instruccion_id');
     }
 }

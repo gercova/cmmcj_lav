@@ -31,7 +31,7 @@ class UnitofMeasure extends Model
         'deleted_at'    => 'datetime',
     ];
 
-    public function drugs(){
+    public function farmaco(){
         return $this->hasMany(Drug::class, 'unidad_medida_id');
     }
 }

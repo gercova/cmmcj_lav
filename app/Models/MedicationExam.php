@@ -36,15 +36,15 @@ class MedicationExam extends Model
         'deleted_at'    => 'datetime',
     ];
 
-    public function histories(){
+    public function historia(){
         return $this->belongsTo(History::class, 'historia_id');
     }
 
-    public function exams(){
+    public function examen(){
         return $this->belongsTo(Exam::class, 'examen_id');
     }
 
-    public function drugs(){
+    public function farmaco(){
         return $this->belongsTo(Drug::class, 'farmaco_id');
     }
 }

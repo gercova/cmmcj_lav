@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Diagnosis extends Model
@@ -31,5 +32,9 @@ class Diagnosis extends Model
             ->limit($pageSize)
             ->get();
         return [$results, $count];
+    }
+
+    public function examenDiagnostico(): HasMany {
+        return $this->hasMany(DiagnosticExam::class, 'diagnostico_id');
     }
 }

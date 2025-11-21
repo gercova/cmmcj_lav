@@ -23,7 +23,7 @@ class Occupation extends Model
         'deleted_at'    => 'datetime',
     ];
 
-    public function histories() {
+    public function historia() {
         return $this->hasMany(History::class, 'ocupacion_id');
     }
 }

@@ -15,7 +15,7 @@ class HospitalizationStatus extends Model
     protected $fillable = ['nombre'];
     public $timestamps = false;
 
-    public function Hospitalization(): HasMany {
+    public function Hospitalizacion(): HasMany {
         return $this->hasMany(Hospitalization::class, 'estado_hospitalizacion_id');
     }
 }

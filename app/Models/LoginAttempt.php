@@ -24,7 +24,7 @@ class LoginAttempt extends Model
         return $this->latitude && abs($this->latitude - $previous->latitude) > 5;
     }
 
-    public function user() {
+    public function usuario() {
         return $this->belongsTo(User::class);
     }
 }

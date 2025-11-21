@@ -45,7 +45,7 @@ class Drug extends Model
         return $this->belongsTo(UnitofMeasure::class, 'unidad_medida_id');
     }
 
-    public function medications(){
+    public function medicacion(){
         return $this->hasMany(MedicationExam::class, 'farmaco_id');
     }
 }

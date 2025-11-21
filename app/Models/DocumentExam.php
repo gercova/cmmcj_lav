@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class DocumentExam extends Model
@@ -25,4 +26,12 @@ class DocumentExam extends Model
         'updated_at'        => 'datetime',
         'deleted_at'        => 'datetime',
     ];
+
+    public function examen(): BelongsTo {
+        return $this->belongsTo(Exam::class, 'examen_id');
+    }
+
+    public function historia(): BelongsTo {
+        return $this->belongsTo(History::class, 'historia_id');
+    }
 }

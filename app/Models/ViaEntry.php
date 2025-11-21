@@ -15,7 +15,7 @@ class ViaEntry extends Model
     protected $fillable     = ['nombre'];
     public $timestamps      = false;
 
-    public function Hospitalization(): HasMany {
+    public function hospitalizacion(): HasMany {
         return $this->hasMany(Hospitalization::class, 'via_ingreso_id');
     }
 }
