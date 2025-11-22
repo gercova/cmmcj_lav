@@ -124,6 +124,13 @@
             </div>
         </div>
     </div>
+    <script>
+        $('.modal').on('hidden.bs.modal', function () {
+            // Limpiar el contenido del modal
+            $(this).find('.modal-body').html('');
+            $(this).find('.modal-title').html('');
+        });
+    </script>
     <!-- ./wrapper -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
