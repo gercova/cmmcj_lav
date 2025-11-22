@@ -12,19 +12,19 @@ class UrineTestValidate extends FormRequest
 
     public function rules(): array {
         return [
-            'examen_id'     => 'required',
-            'historia_id'   => 'required',
-            'color'         => 'string|nullable',
-            'aspecto'       => 'string|nullable',
-            'densidad'      => 'string|nullable',
-            'ph'            => 'decimal:3,1|nullable',
-            'proteinas'     => 'string|nullable',
-            'glucosa'       => 'string|nullable',
-            'cetonas'       => 'string|nullable',
-            'bilirrubina'   => 'string|nullable',
-            'sangre_oculta' => 'string|nullable',
-            'urobilinogeno' => 'string|nullable',
-            'nitritos'      => 'string|nullable',
+            'examen_id'             => 'required',
+            'historia_id'           => 'required',
+            'color'                 => 'string|nullable',
+            'aspecto'               => 'string|nullable',
+            'densidad'              => 'numeric|nullable',
+            'ph'                    => 'numeric|nullable',
+            'proteinas'             => 'string|nullable',
+            'glucosa'               => 'string|nullable',
+            'cetonas'               => 'string|nullable',
+            'bilirrubina'           => 'string|nullable',
+            'sangre_oculta'         => 'string|nullable',
+            'urobilinogeno'         => 'string|nullable',
+            'nitritos'              => 'string|nullable',
             'leucocitos_quimico'    => 'string|nullable',
             'leucocitos_campo'      => 'string|nullable',
             'hematies_campo'        => 'string|nullable',
@@ -41,7 +41,7 @@ class UrineTestValidate extends FormRequest
         return [
             'examen_id.required'    => 'El campo Examen ID es requerido',
             'historia_id.required'  => 'El campo Historia ID es requerido',
-            'ph.decimal'            => 'El campo ph debe ser decimal con 3 dígitos antes y 1 dígito después del punto',
+            'ph.decimal'            => 'El campo PH debe ser numérico o decimal',
         ];
     }
 
@@ -51,8 +51,8 @@ class UrineTestValidate extends FormRequest
             'historia_id'   => trim(strip_tags($this->historia_id)),
             'color'         => trim(strip_tags($this->color)),
             'aspecto'       => trim(strip_tags($this->aspecto)),
-            'densidad'      => trim(strip_tags($this->densidad)),
-            'ph'            => trim(strip_tags($this->ph)),
+            'densidad'      => $this->densidad === '' ? null : trim(strip_tags($this->densidad)),
+            'ph'            => $this->ph === '' ? null : trim(strip_tags($this->ph)),
             'proteinas'     => trim(strip_tags($this->proteinas)),
             'glucosa'       => trim(strip_tags($this->glucosa)),
             'cetonas'       => trim(strip_tags($this->cetonas)),
