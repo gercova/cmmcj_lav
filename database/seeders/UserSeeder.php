@@ -22,6 +22,7 @@ class UserSeeder extends Seeder {
             'email_verified_at' => now(),
             'password'  => Hash::make('011998COger$'), // Cambia la contraseña por algo seguro en producción
             'perfil_id' => 1,
+            'especialidad_id' => 1,
             'remember_token' => Str::random(10),
             'created_at' => now(),
             'updated_at' => now(),

@@ -25,7 +25,7 @@ class EnterpriseSeeder extends Seeder
             'ciudad'                => 'Tarapoto',
             'direccion'             => 'Jr. Leoncio Prado 1200',
             'pagina_web'            => 'cmmcj.com',
-            'representante_legal'   => 'image.png',
+            'representante_legal'   => 'Raúl Arroyo',
             'foto_representante'    => 'image.png',
             'logo_miniatura'        => 'image.png',
             'logo_principal'        => 'image.png',

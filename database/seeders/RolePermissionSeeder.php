@@ -16,9 +16,9 @@ class RolePermissionSeeder extends Seeder
      */
     public function run(): void {
         // Roles
-        # $administrador    = Role::create(['name' => 'Administrador']);
-        # $especialista     = Role::create(['name' => 'Especialista']);
-        # $asistente        = Role::create(['name' => 'Asistente']);
+        $administrador    = Role::create(['name' => 'Administrador']);
+        $especialista     = Role::create(['name' => 'Especialista']);
+        $asistente        = Role::create(['name' => 'Asistente']);
 
         // Permisos
         $crudPermissions    = ['acceder', 'ver', 'crear', 'editar', 'guardar', 'borrar'];
@@ -53,7 +53,7 @@ class RolePermissionSeeder extends Seeder
         $especialista->givePermissionTo(Permission::where('name', 'not like', '%seguridad%')->get());
         $asistente->givePermissionTo(Permission::where('name', '%_ver')->orWhere('name', '%_crear')->get());
 
-        $user = User::find(2);
+        $user = User::find(1);
         $user->assignRole('Administrador');
     }
 }

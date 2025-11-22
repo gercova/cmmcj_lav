@@ -12658,10 +12658,9 @@ class DiagnosticSeeder extends Seeder
             ['id' => '12643','codigo' => 'Z993','descripcion' => 'DEPENDENCIA DE SILLA DE RUEDAS'],
             ['id' => '12644','codigo' => 'Z994','descripcion' => 'DEPENDENCIA DE CORAZON ARTIFICIAL'],
             ['id' => '12645','codigo' => 'Z998','descripcion' => 'DEPENDENCIA DE OTRAS MAQUINAS Y DISPOSITIVOS CAPACITANTES'],
-            ['id' => '12646','codigo' => 'Z999','descripcion' => 'DEPENDENCIA DE MAQUINA Y DISPOSITIVO CAPACITANTE, NO ESPECIFICADA']
+            ['id' => '12646','codigo' => 'Z999','descripcion' => 'DEPENDENCIA DE MAQUINA Y DISPOSITIVO CAPACITANTE, NO ESPECIFICADA'],
         ];
 
         DB::table('diagnosticos')->insert($datos);
-        
     }
 }
