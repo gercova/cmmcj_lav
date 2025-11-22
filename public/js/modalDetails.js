@@ -111,7 +111,8 @@ const ModalDetails = (function() {
             const response = await axios.get(`${API_URL}/sys/${type}/view/${id}`);
             if (response.status === 200 && response.data) {
                 const record = type === 'appointments' ? response.data.ap : response.data.exam;
-                $('.modal-title').text(`${titlePrefix} ${record.dni}-${record.id}`);
+                console.log(record);
+                $('.modal-title').text(`${titlePrefix} ${response.data.hc.dni}-${record.id}`);
                 $('.modal-body').append(buildModalContent(response.data, type));
                 $('.modal-footer').append(buildModalButtons(id, type));
                 $('#modal-default').modal('show');
@@ -131,6 +132,10 @@ const ModalDetails = (function() {
     const init = () => {
         $(document).on('click', '.view-appointment', function(e) {
             e.preventDefault();
+            $('.modal-title').html(null);
+            $('.modal-body').html(null);
+            $('.modal-footer').html(null);
+            $('.modal-backdrop').remove();
             showDetails({
                 id: $(this).attr('value'),
                 type: 'appointments',
@@ -140,6 +145,7 @@ const ModalDetails = (function() {
 
         $(document).on('click', '.view-exam', function(e) {
             e.preventDefault();
+            $('.modal-backdrop').remove();
             showDetails({
                 id: $(this).attr('value'),
                 type: 'exams',

@@ -15,19 +15,19 @@ $(document).ready(function(){
 	//boton modal farmacos
 	$('#btn-add-drug').click(function(e){
         e.preventDefault();
-		$('.form-group').removeClass('is-invalid is-valid');
+		$('.form-control').removeClass('is-invalid is-valid');
+        $('.text-danger').remove();
 		$('#drugForm').trigger('reset');
-        $('#drugForm')[0].reset();
-        $('#id').val('');
-		$('#modalDrug').modal('show');
+        $('.text-danger').remove();
+        $('#id').val(null);
 		$('.modal-title').text('Agregar Fármaco');
+        $('#modalDrug').modal('show');
     });
 	//formulario farmacos
 	$('#drugForm').submit(async function(e){
         e.preventDefault();
-        $('.text-danger').remove();
         $('.form-group').removeClass('is-invalid is-valid');
-        
+        $('.text-danger').remove();
         const formData = $(this).serialize();
 
         const submitButton = $(this).find('button[type="submit"]');
@@ -63,8 +63,8 @@ $(document).ready(function(){
         const response = await axios.get(`${API_URL}/sys/drugs/${id}`);
         if(response.status == 200){
             $('.modal-title').text('Actualizar Fármaco');
+		    $('.form-group').removeClass('is-invalid is-valid');
             $(".text-danger").remove();
-		    $('.form-group').removeClass('has-error').removeClass('has-success');
             $('#unidad_medida_id').val(response.data.unidad_medida_id);
             $("#descripcion").val(response.data.descripcion);
             $("#detalle").val(response.data.detalle);

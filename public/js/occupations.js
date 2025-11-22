@@ -14,21 +14,20 @@ $(document).ready(function(){
 	//boton modal
 	$('#btn-add-occupation').click(function(e){
         e.preventDefault();
-		$('.form-group').removeClass('is-invalid is-valid');
-		$('#occupationForm').trigger('reset');
-        $('#occupationForm')[0].reset();
-        $('#ocupationId').val('');
-        $('#modalOccupation').modal('show');
+        $('#occupationForm').trigger('reset');
+		$('.form-control').removeClass('is-invalid is-valid');
+		$('.text-danger').remove();
+        $('#ocupationId').val(null);
         $('.modal-title').text('Agregar Ocupación');
+        $('#modalOccupation').modal('show');
     });
 	//formulario categoria
 	$('#occupationForm').off('submit').on('submit', async function(e){
         e.preventDefault();
-        
+        $('.form-control').removeClass('is-invalid is-valid');
         $('.text-danger').remove();
-        $('.form-group').removeClass('is-invalid is-valid');
-        const formData = $(this).serialize();
 
+        const formData = $(this).serialize();
         const submitButton = $(this).find('button[type="submit"]');
         const originalButtonText = submitButton.html();
         submitButton.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Cargando...');
@@ -58,12 +57,13 @@ $(document).ready(function(){
     $(document).on('click', '.update-row', async function(e) {
         e.preventDefault();
         const id = $(this).attr('value');
+        $('#occupationForm').trigger('reset');
+        $('.form-control').removeClass('is-invalid is-valid');
         const response = await axios.get(`${API_URL}/sys/occupations/${id}`);
         try {
             if(response.status == 200){
                 $('.modal-title').text('Actualizar Ocupación');
                 $(".text-danger").remove();
-                $('.form-group').removeClass('is-invalid is-valid');
                 $("#descripcion").val(response.data.descripcion);
                 $("#id").val(response.data.id);      
                 $('#modalOccupation').modal('show');
