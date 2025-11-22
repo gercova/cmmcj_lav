@@ -65,17 +65,32 @@ Route::middleware(['auth', 'prevent.back'])->group(function(){
     Route::get('/sys/exams/see/{history}',          [ExamsController::class, 'see'])->name('emr.exams.see');
     Route::get('/sys/exams/view/{exam}',            [ExamsController::class, 'view']);
     Route::post('/sys/exams/store',                 [ExamsController::class, 'store']);
+    Route::post('/sys/exams/store-blood',           [ExamsController::class, 'storeBloodTest']);
+    Route::post('/sys/exams/store-urine',           [ExamsController::class, 'storeUrineTest']);
+    Route::post('/sys/exams/store-stool',           [ExamsController::class, 'storeStoolTest']);
     Route::get('/sys/exams/list/{history}',         [ExamsController::class, 'listExams']);
     Route::get('/sys/exams/list-dx/{exam}',         [ExamsController::class, 'listDiagnostics']);
+    Route::get('/sys/exams/list-bt/{history}',      [ExamsController::class, 'listBloodTests']);
+    Route::get('/sys/exams/list-ut/{history}',      [ExamsController::class, 'listUrineTests']);
+    Route::get('/sys/exams/list-st/{history}',      [ExamsController::class, 'listStoolTests']);
     Route::get('/sys/exams/list-mx/{exam}',         [ExamsController::class, 'listMedications']);
     Route::get('/sys/exams/list-dc/{exam}',         [ExamsController::class, 'listDocuments']);
     Route::post('/sys/ex-dx/validate-match',        [ExamsController::class, 'validateMatchDx']);
     Route::post('/sys/ex-mx/validate-match',        [ExamsController::class, 'validateMatchMx']);
+    Route::get('/sys/ex-bt/{bt}',                   [ExamsController::class, 'showBloodTest']);
+    Route::get('/sys/ex-ut/{ut}',                   [ExamsController::class, 'showUrineTest']);
+    Route::get('/sys/ex-st/{st}',                   [ExamsController::class, 'showStoolTest']);
     Route::delete('/sys/ex/delete/{exam}',          [ExamsController::class, 'destroy']);
     Route::delete('/sys/ex-dc/delete/{id}',         [ExamsController::class, 'destroyDocuments']);
     Route::delete('/sys/ex-dx/delete/{id}',         [ExamsController::class, 'destroyDiagnostics']);
     Route::delete('/sys/ex-mx/delete/{id}',         [ExamsController::class, 'destroyMedications']);
+    Route::delete('/sys/ex-bt/delete/{bt}',         [ExamsController::class, 'destroyBloodTest']);
+    Route::delete('/sys/ex-ut/delete/{ut}',         [ExamsController::class, 'destroyUrineTest']);
+    Route::delete('/sys/ex-st/delete/{st}',         [ExamsController::class, 'destroyStoolTest']);
     Route::get('/sys/exams/print/{id}/{format}',    [ExamsController::class, 'printPrescriptionId'])->name('emr.exams.print');
+    Route::get('/sys/exams/print-blood-test/{bt}',  [ExamsController::class, 'printBloodTest'])->name('emr.exams.print-bt');
+    Route::get('/sys/exams/print-urine-test/{ut}',  [ExamsController::class, 'printUrineTest'])->name('emr.exams.print-ut');
+    Route::get('/sys/exams/print-stool-test/{st}',  [ExamsController::class, 'printStoolTest'])->name('emr.exams.print-st');
     // Hospitalizaciones
     Route::get('/sys/hospitalizations',                         [HospitalizationsController::class, 'index'])->name('emr.hospitalizations.home');
     Route::get('/sys/hospitalizations/new/{history}',           [HospitalizationsController::class, 'new'])->name('emr.hospitalizations.new');
@@ -84,8 +99,8 @@ Route::middleware(['auth', 'prevent.back'])->group(function(){
     Route::get('/sys/hospitalizations/view/{hospitalization}',  [HospitalizationsController::class, 'view']);
     Route::post('/sys/hospitalizations/store',                  [HospitalizationsController::class, 'store']);
     Route::get('/sys/hospitalizations/list/{history}',          [HospitalizationsController::class, 'listHospitalizations']);
-    Route::delete('/sys/hsp/delete/{hospitalization}',           [HospitalizationsController::class, 'destroy']);
-    Route::get('/sys/hospitalizations/print/{id}',  [HospitalizationsController::class, 'printPrescriptionId'])->name('emr.hospitalizations.print');
+    Route::delete('/sys/hsp/delete/{hospitalization}',          [HospitalizationsController::class, 'destroy']);
+    Route::get('/sys/hospitalizations/print/{id}',              [HospitalizationsController::class, 'printReportId'])->name('emr.hospitalizations.print');
     // Citas
     Route::get('/sys/appx',                         [AppointmentsController::class, 'index'])->name('emr.appointments.home');
     Route::get('/sys/appx/{appointment}',           [AppointmentsController::class, 'show']);
@@ -112,7 +127,6 @@ Route::middleware(['auth', 'prevent.back'])->group(function(){
     Route::post('/sys/occupations/store',           [OccupationsController::class, 'store']);
     Route::get('/sys/occupations/{occupation}',     [OccupationsController::class, 'show']);
     Route::delete('/sys/oc/delete/{occupation}',    [OccupationsController::class, 'destroy']);
-    Route::get('/sys/occupations/search',           [OccupationsController::class, 'search']);
     // Empresa
     Route::get('/sys/enterprise',                   [EnterpriseController::class, 'index'])->name('business.enterprise');
     Route::post('/sys/enterprise/store',            [EnterpriseController::class, 'store']);
@@ -146,7 +160,6 @@ Route::middleware(['auth', 'prevent.back'])->group(function(){
     Route::get('/sys/users/list',                   [UsersController::class, 'list']);
     Route::post('/sys/users/store',                 [UsersController::class, 'store']);
     Route::post('/users/storePassword/{user}',      [UsersController::class, 'storePassword']);
-    //Route::post('/sys/users/store/{user}',          [UsersController::class, 'storePermission']);
     Route::post('/sys/users/update-permissions',    [UsersController::class, 'updatePermissions']);
     Route::post('/sys/users/searchByModule',        [UsersController::class, 'searchByModule']);
     Route::delete('/sys/users/{user}',              [UsersController::class, 'destroy']);
