@@ -8,7 +8,6 @@ use App\Http\Resources\OccupationResource;
 use App\Models\Occupation;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class OccupationsController extends Controller {

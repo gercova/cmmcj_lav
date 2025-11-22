@@ -102,12 +102,12 @@ class HistoriesController extends Controller
         DB::beginTransaction();
         try {
             $result = History::updateOrCreate(['id' => $request->input('id')], $data);
-            if(!$result->wasRecentlyCreated) {
+            if($result->wasRecentlyCreated) {
                 Appointment::create([
                     'historia_id'       => $result->id,
                     'estado_cita_id'    => 1,
-                    //'fecha'             => $validated['fecha'],
-                    //'hora'              => $validated['hora'],
+                    'fecha'             => $result->created_at->format('Y-m-d'),
+                    'hora'              => $result->created_at->format('H:i:s'),
                     //'descripcion'       => $validated['descripcion'],
                 ]);
             }

@@ -3,7 +3,14 @@
 namespace App\Http\Controllers\EMR;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\BloodTestValidate;
 use App\Http\Requests\ExamValidate;
+use App\Http\Requests\StoolTestValidate;
+use App\Http\Requests\UrineTestValidate;
+use App\Http\Resources\BloodTestResource;
+use App\Http\Resources\StoolTestResource;
+use App\Http\Resources\UrineTestResource;
+use App\Models\BloodTest;
 use App\Models\ContraceptiveMethod;
 use App\Models\DiagnosticExam;
 use App\Models\DocumentExam;
@@ -12,6 +19,7 @@ use App\Models\Exam;
 use App\Models\ExamType;
 use App\Models\History;
 use App\Models\MedicationExam;
+use App\Models\StoolTest;
 use App\Models\UrineTest;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Contracts\View\View;
@@ -44,36 +52,11 @@ class ExamsController extends Controller {
         return view('emr.exams.new', compact('history', 'te', 'mac'));
     }
 
-    public function new_urine_test(Exam $exam): View {
-        return view('EMR.exams.complementary.n-urine-t', compact('exam'));
-    }
-    
-    public function new_blood_test(Exam $exam): View {
-        return view('EMR.exams.complementary.n-blood-t', compact('exam'));
-    }
-     
-    public function new_stool_test(Exam $exam): View {
-        return view('EMR.exams.complementary.n-stool-t');
-    }
-
     public function edit(Exam $exam): View {
         $te     = ExamType::all();
         $hc     = DB::select('CALL PA_getMedicalHistoryByExam(?)', [$exam->id]);
         $mac    = ContraceptiveMethod::all();
         return view('emr.exams.edit', compact('exam', 'te', 'hc', 'mac'));
-    }
-
-    public function edit_urine_test(UrineTest $test): View {
-        $hc = DB::select('CALL PA_getMedicalHistoryByExam(?)', [$test->examen_id]);
-        return view('EMR.exams.complementary.e-urine-t', compact('test', 'hc'));
-    }
-    
-    public function edit_blood_test(): View {
-        return view('EMR.exams.complementary.e-blood-t');
-    }
-     
-    public function edit_stool_test(): View {
-        return view('EMR.exams.complementary.e-stool-t', compact(''));
     }
 
     public function see(History $history): View {
@@ -87,45 +70,286 @@ class ExamsController extends Controller {
 		return response()->json(compact('exam', 'hc', 'diagnostic', 'medication'), 200);
 	}
 
+    public function showBloodTest(BloodTest $bt): JsonResponse {
+        $bt->load(['examen.historia']);
+        return response()->json(BloodTestResource::make($bt), 200);
+    }
+
+    public function showUrineTest(UrineTest $ut): JsonResponse {
+        $ut->load(['examen.historia']);
+        return response()->json(UrineTestResource::make($ut), 200);
+    }
+
+    public function showStoolTest(StoolTest $st): JsonResponse {
+        $st->load(['examen.historia']);
+        return response()->json(StoolTestResource::make($st), 200);
+    }
+
     public function listExams(History $history): JsonResponse {
-        $results 		= DB::select('CALL PA_getExamsbyMedicalHistory(?)', [$history->id]);
-		$data 			= collect($results)->map(function ($item, $index) {
-			$user   	= auth()->user();
-			$buttons 	= '';
-			if($user->can('examen_ver')){
-                $buttons .= sprintf(
-                    '<button type="button" class="btn btn-info view-exam btn-xs" value="%s"><i class="bi bi-eye"></i> Ver receta</button>&nbsp;',
-                    htmlspecialchars($item->id, ENT_QUOTES, 'UTF-8')
-                );
-            }
-			if($user->can('examen_editar')){
-                $buttons .= sprintf(
-                    '<a type="button" class="btn btn-warning btn-xs" href="%s"><i class="bi bi-pencil-square"></i> Editar</a>&nbsp;',
-                    htmlspecialchars(route('emr.exams.edit', ['exam' => $item->id]), ENT_QUOTES, 'UTF-8'),
-                );
-            }
-			if($user->can('examen_borrar')){
-                $buttons .= sprintf(
-                    '<button type="button" class="btn btn-danger delete-exam btn-xs" value="%s"><i class="bi bi-trash"></i> Eliminar</button>',
-                    htmlspecialchars($item->id, ENT_QUOTES, 'UTF-8')
-                );
-            }
-
-			return [
-				$index + 1,
+        $results    = DB::select('CALL PA_getExamsbyMedicalHistory(?)', [$history->id]);
+        $user       = auth()->user();
+        $canCreate  = $user->can('examen_crear');
+        $canSee     = $user->can('examen_ver');
+        $canEdit    = $user->can('examen_editar');
+        $canDelete  = $user->can('examen_borrar');
+        $data       = collect($results)->map(function ($item, $index) use ($canCreate, $canSee, $canEdit, $canDelete) {
+            return [
+                $index + 1,
                 $item->created_at,
-                $item->dni,
                 $item->descripcion,
-                $buttons ?: '<span class="text-muted">No autorizado</span>'
-			];
-		});
+                $this->buildActionDropdown($item->id, $canCreate, $canSee, $canEdit, $canDelete),
+            ];
+        });
 
-		return response()->json([
- 			"sEcho"					=> 1,
- 			"iTotalRecords"			=> $data->count(),
- 			"iTotalDisplayRecords"	=> $data->count(),
- 			"aaData"				=> $data ?? [],
- 		], 200);
+        return response()->json([
+            "sEcho"                 => 1,
+            "iTotalRecords"         => $data->count(),
+            "iTotalDisplayRecords"  => $data->count(),
+            "aaData"                => $data ?? [],
+        ], 200);
+    }
+
+    protected function buildActionDropdown($id, $canCreate, $canSee, $canEdit, $canDelete): string {
+        $buttons = [];
+        $buttonsExtra = [];
+
+        if (!$canCreate && !$canSee && !$canEdit && !$canDelete) return '<span class="text-muted">Sin acciones</span>';
+        // Botones para crear (van en el dropdown)
+        if ($canCreate) {
+            $buttonsExtra[] = '<li><a class="dropdown-item" id="btnAddBloodTest" type="button" value="'.e($id).'"><i class="bi bi-plus-square"></i> Crear examen de sangre</a></li>';
+            $buttonsExtra[] = '<li><a class="dropdown-item" id="btnAddUrineTest" type="button" value="'.e($id).'"><i class="bi bi-plus-square"></i> Crear examen de orina</a></li>';
+            $buttonsExtra[] = '<li><a class="dropdown-item" id="btnAddStoolTest" type="button" value="'.e($id).'"><i class="bi bi-plus-square"></i> Crear examen de heces </a></li>';
+        }
+        // Botones normales (fuera del dropdown)
+        if ($canSee) {
+            $buttons[] = sprintf(
+                '<button type="button" class="btn btn-info view-exam btn-xs" value="%s"> Ver detalle</button>',
+                htmlspecialchars($id, ENT_QUOTES, 'UTF-8')
+            );
+        }
+
+        if ($canEdit) {
+            $buttons[] = sprintf(
+                '<a type="button" class="btn btn-warning btn-xs" href="%s"><i class="bi bi-pencil-square"></i> Editar</a>',
+                htmlspecialchars(route('emr.exams.edit', ['exam' => $id]), ENT_QUOTES, 'UTF-8')
+            );
+        }
+        
+        if ($canDelete) {
+            $buttons[] = sprintf(
+                '<button type="button" class="btn btn-danger delete-exam btn-xs" value="%s"><i class="bi bi-trash"></i> Eliminar</button>&nbsp;',
+                htmlspecialchars($id, ENT_QUOTES, 'UTF-8')
+            );
+        }
+        // Construir el HTML final
+        $html = implode(' ', $buttons);
+        // Si hay botones para el dropdown, agregar el grupo de dropdown
+        if (!empty($buttonsExtra)) {
+            $html .= '<div class="btn-group">
+                <button class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">Acciones</button>
+                <ul class="dropdown-menu">'.implode('', $buttonsExtra).'</ul>
+            </div>';
+        }
+        
+        return $html;
+    }
+
+    public function listBloodTests(History $history): JsonResponse {
+        $user       = auth()->user();
+        $canEdit    = $user->can('examen_editar');
+        $canDelete  = $user->can('examen_borrar');
+        
+        // Filtrar solo exámenes que tienen examen de sangre
+        $results = Exam::with(['examenSangre' => function($query) {
+                $query->whereNull('deleted_at');
+            }])
+            ->where('historia_id', $history->id)
+            ->whereHas('examenSangre') // ¡ESTA ES LA CLAVE!
+            ->get();
+        
+        $data = $results->map(function($item, $key) use ($canEdit, $canDelete) {
+            // Verificar adicionalmente que tenga examenes de sangre
+            if ($item->examenSangre->isEmpty()) return null; // Saltar este item
+            
+            $list = '<table class="table table-sm">';
+            foreach ($item->examenSangre as $e) {
+                // Botones para cada examen de sangre con permisos
+                $actionButtons = '';
+                $actionButtons .= sprintf(
+                    '<a href="%s" class="btn btn-sm btn-info btn-sm" target="_blank"><i class="bi bi-file-earmark-pdf"></i></a>&nbsp;',
+                    htmlspecialchars(route('emr.exams.print-bt', ['bt' => $e->id]), ENT_QUOTES, 'UTF-8')
+                );
+                
+                if ($canEdit) {
+                    $actionButtons .= sprintf(
+                        '<button class="btn btn-sm btn-warning update-row-bt btn-sm" value="%s"><i class="bi bi-pencil-square"></i></button>&nbsp;',
+                        $e->id
+                    );
+                }
+                
+                if ($canDelete) {
+                    $actionButtons .= sprintf(
+                        '<button class="btn btn-sm btn-danger delete-bt btn-sm" value="%s"><i class="bi bi-trash"></i></button>',
+                        $e->id
+                    );
+                }
+                
+                $list .= sprintf(
+                    '<tr><td><span class="badge badge-success">%s</span></td><td>%s</td></tr>',
+                    $e->created_at->format('Y-m-d H:i:s'),
+                    $actionButtons
+                );
+            }
+            
+            $list .= '</table>';
+            
+            return [
+                $key + 1,
+                $list,
+                $item->tipoExamen->descripcion,
+                $item->created_at->format('Y-m-d H:i:s')
+            ];
+        })->filter(); // Filtrar elementos null
+
+        return response()->json([
+            "sEcho"                 => 1,
+            "iTotalRecords"         => $data->count(),
+            "iTotalDisplayRecords"  => $data->count(),
+            "aaData"                => $data->values() ?? [], // reindexar
+        ], 200);
+    }
+
+    public function listUrineTests(History $history): JsonResponse {
+        $user       = auth()->user();
+        $canEdit    = $user->can('examen_editar');
+        $canDelete  = $user->can('examen_borrar');
+        
+        // Filtrar solo exámenes que tienen examen de sangre
+        $results = Exam::with(['examenOrina' => function($query) {
+                $query->whereNull('deleted_at');
+            }])
+            ->where('historia_id', $history->id)
+            ->whereHas('examenOrina') // ¡ESTA ES LA CLAVE!
+            ->get();
+        
+        $data = $results->map(function($item, $key) use ($canEdit, $canDelete) {
+            // Verificar adicionalmente que tenga examenes de sangre
+            if ($item->examenOrina->isEmpty()) return null; // Saltar este item
+            
+            $list = '<table class="table table-sm">';
+            foreach ($item->examenOrina as $e) {
+                // Botones para cada examen de sangre con permisos
+                $actionButtons = '';
+                $actionButtons .= sprintf(
+                    '<a href="%s" class="btn btn-sm btn-info btn-sm" target="_blank"><i class="bi bi-file-earmark-pdf"></i></a>&nbsp;',
+                    htmlspecialchars(route('emr.exams.print-ut', ['ut' => $e->id]), ENT_QUOTES, 'UTF-8')
+                );
+                
+                if ($canEdit) {
+                    $actionButtons .= sprintf(
+                        '<button class="btn btn-sm btn-warning update-row-ut btn-sm" value="%s"><i class="bi bi-pencil-square"></i></button>&nbsp;',
+                        $e->id
+                    );
+                }
+                
+                if ($canDelete) {
+                    $actionButtons .= sprintf(
+                        '<button class="btn btn-sm btn-danger delete-ut btn-sm" value="%s"><i class="bi bi-trash"></i></button>',
+                        $e->id
+                    );
+                }
+                
+                $list .= sprintf(
+                    '<tr>
+                        <td><span class="badge badge-success">%s</span></td>
+                        <td>%s</td>
+                    </tr>',
+                    $e->created_at->format('Y-m-d H:i:s'),
+                    $actionButtons
+                );
+            }
+            
+            $list .= '</table>';
+            
+            return [
+                $key + 1,
+                $list,
+                $item->tipoExamen->descripcion,
+                $item->created_at->format('Y-m-d H:i:s')
+            ];
+        })->filter(); // Filtrar elementos null
+
+        return response()->json([
+            "sEcho"                 => 1,
+            "iTotalRecords"         => $data->count(),
+            "iTotalDisplayRecords"  => $data->count(),
+            "aaData"                => $data->values() ?? [], // reindexar
+        ], 200);
+    }
+
+    public function listStoolTests(History $history): JsonResponse {
+        $user       = auth()->user();
+        $canEdit    = $user->can('examen_editar');
+        $canDelete  = $user->can('examen_borrar');
+        
+        // Filtrar solo exámenes que tienen examen de sangre
+        $results = Exam::with(['examenHeces' => function($query) {
+                $query->whereNull('deleted_at');
+            }])
+            ->where('historia_id', $history->id)
+            ->whereHas('examenHeces') // ¡ESTA ES LA CLAVE!
+            ->get();
+        
+        $data = $results->map(function($item, $key) use ($canEdit, $canDelete) {
+            // Verificar adicionalmente que tenga examenes de sangre
+            if ($item->examenHeces->isEmpty()) return null; // Saltar este item
+            
+            $list = '<table class="table table-sm">';
+            foreach ($item->examenHeces as $e) {
+                // Botones para cada examen de sangre con permisos
+                $actionButtons = '';
+                $actionButtons .= sprintf(
+                    '<a href="%s" class="btn btn-sm btn-info btn-sm" target="_blank"><i class="bi bi-file-earmark-pdf"></i></a>&nbsp;',
+                    htmlspecialchars(route('emr.exams.print-st', ['st' => $e->id]), ENT_QUOTES, 'UTF-8')
+                );
+                
+                if ($canEdit) {
+                    $actionButtons .= sprintf(
+                        '<button class="btn btn-sm btn-warning update-row-st btn-sm" value="%s"><i class="bi bi-pencil-square"></i></button>&nbsp;',
+                        $e->id
+                    );
+                }
+                
+                if ($canDelete) {
+                    $actionButtons .= sprintf(
+                        '<button class="btn btn-sm btn-danger delete-st btn-sm" value="%s"><i class="bi bi-trash"></i></button>',
+                        $e->id
+                    );
+                }
+                
+                $list .= sprintf(
+                    '<tr><td><span class="badge badge-success">%s</span></td><td>%s</td></tr>',
+                    $e->created_at->format('Y-m-d H:i:s'),
+                    $actionButtons
+                );
+            }
+            
+            $list .= '</table>';
+            
+            return [
+                $key + 1,
+                $list,
+                $item->tipoExamen->descripcion,
+                $item->created_at->format('Y-m-d H:i:s')
+            ];
+        })->filter(); // Filtrar elementos null
+
+        return response()->json([
+            "sEcho"                 => 1,
+            "iTotalRecords"         => $data->count(),
+            "iTotalDisplayRecords"  => $data->count(),
+            "aaData"                => $data->values() ?? [], // reindexar
+        ], 200);
     }
 
     public function listDiagnostics(Exam $exam): JsonResponse {
@@ -369,13 +593,125 @@ class ExamsController extends Controller {
         }
     }
 
+    public function storeBloodTest(BloodTestValidate $request): JsonResponse {
+        $validated = $request->validated();
+        // Definir todos los campos decimales que necesitan procesamiento
+        $decimalFields = [
+            'hemoglobina', 'hematocrito', 'leucocitos', 'neutrofilos', 'linfocitos', 'monocitos', 'eosinofilos', 'basofilos', 'plaquetas', 'glucosa', 'urea', 'creatinina', 'acido_urico', 'colesterol_total', 'trigliceridos', 'transaminasas_got', 'transaminasas_gpt', 'bilirrubina_total', 'bilirrubina_directa', 'fosfatasa_alcalina', 'proteinas_totales', 'albumina', 'globulina', 'sodio', 'potasio', 'cloro', 'calcio', 'vsg', 'tiempo_protrombina', 'tpt'
+        ];
+        // Procesar todos los campos decimales en una sola operación
+        $processedFields = array_map(
+            fn($value) => empty($value) || $value === '' ? null : $value,
+            array_intersect_key($validated, array_flip($decimalFields))
+        );
+
+        $data = array_merge($validated, $processedFields);
+        
+        DB::beginTransaction();
+        try {
+            $result = BloodTest::updateOrCreate(['id' => $request->input('examen_sangre_id')], $data);
+            DB::commit();
+            
+            return response()->json([
+                'status'    => true,
+                'type'      => 'success',
+                'message'   => $result->wasRecentlyCreated ? 'Examen guardado correctamente' : 'Examen actualizado correctamente',
+                'route_print' => route('emr.exams.print-bt', $result->id),
+            ], 200);
+            
+        } catch (\Exception $th) {
+            DB::rollBack();
+            return response()->json([
+                'status'    => false,
+                'type'      => 'error',
+                'message'   => $th->getMessage(),
+            ], 400);
+        }
+    }
+
+    public function storeUrineTest(UrineTestValidate $request): JsonResponse {
+        $validated = $request->validated();
+        // Limpiar campos decimales explícitamente
+        $validated['densidad']  = ($validated['densidad'] === '') ? null : $validated['densidad'];
+        $validated['ph']        = ($validated['ph'] === '') ? null : $validated['ph'];
+        DB::beginTransaction();
+        try {
+            $result = UrineTest::updateOrCreate(['id' => $request->input('examen_orina_id')], $validated);
+            DB::commit();
+            return response()->json([
+                'status'    => true,
+                'type'      => 'success',
+                'message'   => $result->wasRecentlyCreated ? 'Examen guardado correctamente' : 'Examen actualizado correctamente',
+                'route_print' => route('emr.exams.print-ut', $result->id),
+            ], 200);
+        } catch (\Exception $th) {
+            DB::rollBack();
+            return response()->json([
+                'status'    => false,
+                'type'      => 'error',
+                'message'   => $th->getMessage(),
+            ], 400);
+        }
+    }
+
+    public function storeStoolTest(StoolTestValidate $request): JsonResponse {
+        $validated = $request->validated();
+        // Limpiar campos decimales explícitamente
+        $validated['ph'] = ($validated['ph'] === '') ? null : $validated['ph'];
+        DB::beginTransaction();
+        try {
+            $result = StoolTest::updateOrCreate(['id' => $request->input('examen_heces_id')], $validated);
+            DB::commit();
+            return response()->json([
+                'status'    => true,
+                'type'      => 'success',
+                'message'   => $result->wasRecentlyCreated ? 'Examen guardado correctamente' : 'Examen actualizado correctamente',
+                'route_print' => route('emr.exams.print-st', $result->id),
+            ], 200);
+        } catch (\Exception $th) {
+            DB::rollBack();
+            return response()->json([
+                'status'    => false,
+                'type'      => 'error',
+                'message'   => $th->getMessage(),
+            ], 400);
+        }
+    }
+
     public function destroy(Exam $exam): JsonResponse {
         $exam->delete();
         return response()->json([
             'status'    => (bool) $exam,
             'type'      => $exam ? 'success' : 'error',
             'message'   => $exam ? 'Examen eliminado' : 'Error al eliminar el examen'
-        ],200);
+        ], 200);
+    }
+
+    public function destroyBloodTest(BloodTest $bt): JsonResponse {
+        $bt->delete();
+        return response()->json([
+            'status'    => (bool) $bt,
+            'type'      => $bt ? 'success' : 'error',
+            'message'   => $bt ? 'Examen eliminado' : 'Error al eliminar el examen'
+        ], 200);
+    }
+
+    public function destroyUrineTest(UrineTest $ut): JsonResponse {
+        $ut->delete();
+        return response()->json([
+            'status'    => (bool) $ut,
+            'type'      => $ut ? 'success' : 'error',
+            'message'   => $ut ? 'Examen eliminado' : 'Error al eliminar el examen'
+        ], 200);
+    }
+
+    public function destroyStoolTest(StoolTest $st): JsonResponse {
+        $st->delete();
+        return response()->json([
+            'status'    => (bool) $st,
+            'type'      => $st ? 'success' : 'error',
+            'message'   => $st ? 'Examen eliminado' : 'Error al eliminar el examen'
+        ], 200);
     }
 
     public function destroyDiagnostics(DiagnosticExam $dx): JsonResponse {
@@ -476,5 +812,60 @@ class ExamsController extends Controller {
                 'margin_right'  => 0.5,
             ])
         ];
+    }
+
+    public function printBloodTest(BloodTest $bt) {
+        $en = Enterprise::findOrFail(1);
+        // Configurar PDF según formato
+        $pdf = PDF::loadView('EMR.exams.pdf-bt', compact('bt', 'en'));
+        $pdf->setPaper('a4', 'portrait')
+            ->setOptions([
+                'margin_top' 	        => 10,
+                'margin_bottom'         => 10,
+                'margin_left' 	        => 15,
+                'margin_right' 	        => 15,
+                'fontDefault'           => 'sans-serif',
+                'isHtml5ParserEnabled'  => true,
+                'isRemoteEnabled'       => false,
+                'isPhpEnabled'          => false,
+                'chroot'                => realpath(base_path()),
+            ]);
+        
+        $filename = "examen-sangre-{$bt->id}-{$bt->created_at->format('Y-m-d')}.pdf";
+        return $pdf->stream($filename);
+    }
+
+    public function printUrineTest(UrineTest $ut) {
+        $en = Enterprise::findOrFail(1);
+        // Configurar PDF según formato
+        $pdf = PDF::loadView('EMR.exams.pdf-ut', compact('ut', 'en'));
+        $pdf->setPaper('a4', 'portrait')
+            ->setOptions([
+                'fontDefault'           => 'sans-serif',
+                'isHtml5ParserEnabled'  => true,
+                'isRemoteEnabled'       => false,
+                'isPhpEnabled'          => false,
+                'chroot'                => realpath(base_path()),
+            ]);
+        
+        $filename = "examen-orina-{$ut->id}-{$ut->created_at->format('Y-m-d')}.pdf";
+        return $pdf->stream($filename);
+    }
+
+    public function printStoolTest(StoolTest $st) {
+        $en = Enterprise::findOrFail(1);
+        // Configurar PDF según formato
+        $pdf = PDF::loadView('EMR.exams.pdf-st', compact('st', 'en'));
+        $pdf->setPaper('a4', 'portrait')
+            ->setOptions([
+                'fontDefault'           => 'sans-serif',
+                'isHtml5ParserEnabled'  => true,
+                'isRemoteEnabled'       => false,
+                'isPhpEnabled'          => false,
+                'chroot'                => realpath(base_path()),
+            ]);
+        
+        $filename = "examen-heces-{$st->id}-{$st->created_at->format('Y-m-d')}.pdf";
+        return $pdf->stream($filename);
     }
 }

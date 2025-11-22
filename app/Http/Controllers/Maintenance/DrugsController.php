@@ -11,6 +11,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class DrugsController extends Controller {
 
@@ -55,12 +56,9 @@ class DrugsController extends Controller {
         if (!$canEdit && !$canDelete) return '<span class="text-muted">Sin acciones</span>';
         
         $buttons = [];
-        if ($canEdit) {
-            $buttons[] = '<li><a class="dropdown-item update-row" type="button" value="'.e($id).'"><i class="bi bi-pencil-square"></i> Editar</a></li>';
-        }
-        if ($canDelete) {
-            $buttons[] = '<li><a class="dropdown-item delete-drug" type="button" value="'.e($id).'"><i class="bi bi-trash"></i> Eliminar</a></li>';
-        }
+        if ($canEdit) $buttons[] = '<li><a class="dropdown-item update-row" type="button" value="'.e($id).'"><i class="bi bi-pencil-square"></i> Editar</a></li>';
+        
+        if ($canDelete) $buttons[] = '<li><a class="dropdown-item delete-drug" type="button" value="'.e($id).'"><i class="bi bi-trash"></i> Eliminar</a></li>';
         
         return '<div class="btn-group">
             <button class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">Acciones</button>
