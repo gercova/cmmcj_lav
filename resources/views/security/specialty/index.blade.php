@@ -80,7 +80,7 @@
                     <div class="modal-footer justify-content-between">
                         <input type="hidden" name="id" id="id">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-primary">Grabar datos</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
                     </div>
                 </form>
             </div>
