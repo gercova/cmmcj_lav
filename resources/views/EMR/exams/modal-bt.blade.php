@@ -30,6 +30,9 @@
                     </div>
                     <hr>
                     <div class="row">
+                        
+                            
+                        
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>DNI :: NOMBRES </label>

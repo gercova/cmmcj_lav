@@ -13,7 +13,7 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Arial', sans-serif !important;
             font-size: 12px;
             color: #333;
             line-height: 1.3;
@@ -103,6 +103,8 @@
             margin: 0;
             font-weight: 500;
         }
+
+
 
         /* SECCIÓN DE RECETA COMPACTA */
         .prescription-section h3 {
@@ -242,6 +244,7 @@
                 font-size: 11px;
                 margin: 0;
                 padding: 0;
+                font-family: 'Arial', sans-serif !important;
             }
             
             .a4-container {
@@ -324,9 +327,9 @@
                 <h1>{{ $en->nombre_comercial }}</h1>
                 <p class="slogan">{{ $en->slogan }}</p>
                 <div class="legal-info">
-                    <p><b>{{ $en->representante_legal }} - Médico Neumólogo</b></p>
-                    <p>CMP: 60432 | RNE: 39261</p>
-                    <p class="compact-text">Dirección: {{ $en->direccion }}, {{ $en->ubigeo }}</p>
+                    <p><b>{{ $en->representante_legal }} - Obstetra</b></p>
+                    <p>CMP: 55555 | RNE: 33333</p>
+                    <p class="compact-text">Dirección: {{ $en->direccion }}, {{ $en->ciudad }}</p>
                 </div>
             </div>
         </div>
@@ -349,7 +352,10 @@
             </div>
             
             <div class="diagnosis-section no-break">
-                <p><b>Diagnóstico CIE10:</b> {{ !empty($dx) ? implode(' / ', array_map(function($d) { return $d->codigo.' - '.$d->diagnostico; }, $dx)) : 'Sin diagnóstico' }}</p>
+                <p>
+                    <b>Diagnóstico CIE10:</b> 
+                    {{ !empty($dx) ? implode(' / ', array_map(function($d) { return $d->codigo.' - '.$d->diagnostico; }, $dx)) : 'Sin diagnóstico' }}
+                </p>
             </div>
             
             <div class="prescription-section">
@@ -380,8 +386,8 @@
 
         <div class="footer">
             <div class="footer-content">
-                <div class="footer-clinic">Clínica Rodriguez y Especialistas II</div>
-                <div class="footer-contact">Atención: Lunes - Sábado | Tel: {{ $en->telefono }}</div>
+                <div class="footer-clinic">{{ $en->nombre_comercial }}</div>
+                <div class="footer-contact">Atención: Lunes - Sábado | Tel: {{ $en->telefono_comercial }}</div>
             </div>
         </div>
     </div>

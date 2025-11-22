@@ -220,9 +220,9 @@
             <h1>{{ $en->nombre_comercial }}</h1>
             <p class="slogan">{{ $en->slogan }}</p>
             <div class="legal-info">
-                <p><b>{{ $en->representante_legal }} - Médico Neumólogo</b></p>
-                <p>CMP: 60432 | RNE: 39261</p>
-                <p>Dirección: {{ $en->direccion }}, {{ $en->ubigeo }}</p>
+                <p><b>{{ $en->representante_legal }} - Obstetra</b></p>
+                <p>CMP: 55555 | RNE: 33333</p>
+                <p>Dirección: {{ $en->direccion }}, {{ $en->ciudad }}</p>
             </div>
         </div>
     </div>
@@ -261,8 +261,8 @@
     </div>
     <div class="footer">
         <div class="footer-content">
-            <div class="footer-clinic">Centro Médico de la Mujer Corazón de Jesús</div>
-            <div class="footer-contact">Atención de lunes a sábado | Tel: {{ $en->telefono }}</div>
+            <div class="footer-clinic">{{ $en->nombre_comercial }}</div>
+            <div class="footer-contact">Atención de lunes a sábado | Tel: {{ $en->telefono_comercial }}</div>
         </div>
     </div>
 </body>
