@@ -102,102 +102,78 @@ $(document).ready(function(){
             }
         },
         recordsLoaded: (event, data) => {
-            //if(permissions.insert == 1){
-                $('.add-quote').click(function(e){
-                    e.preventDefault();
-                    let id = $(this).attr('value');
-                    Swal.fire({
-                        title: '¿Estás seguro de añadir este paciente a la cola de citas?',
-                        text: 'Añadir paciente a la agenda de hoy',
-                        icon: 'question',
+
+            $('.add-quote').click(async function(e){
+                e.preventDefault();
+                const id = $(this).attr('value');
+                const response = await axios.get(`${API_URL}/sys/histories/show/${id}`);
+                if(response.status == 200) {
+                    const history = response.data;
+                    $('.modal-title').text('Agendar Cita');
+                    $(".text-danger").remove();
+                    $('.form-group').removeClass('is-invalid is-valid');
+                    $("#paciente").val(history.dni + ' :: ' + history.nombres);
+                    $("#historia_id").val(history.id);
+                    $("#cita_id").val(null);      
+                    $('#appointmentModal').modal('show');
+                }
+            });
+            
+            $('.edit-row').click(function(e){
+                e.preventDefault();
+                let id = $(this).attr('value');
+                window.location.href = `${API_URL}/sys/histories/edit/${id}`;
+            });
+            
+            $('.delete-row').click(async function(e) {
+                e.preventDefault();
+                const id = $(this).attr('value');
+                try {
+                    const result = await swal.fire({
+                        title: '¿Estás seguro de hacerlo?',
+                        text: 'Si borras la historia clínica todos los datos de este paciente serán borrados',
+                        icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
                         cancelButtonColor: '#d33',
-                        confirmButtonText: 'Sí, añadir',
-                        cancelButtonText: 'Cancelar'
-                    }).then((result) => {
-                        if (result.value) {
-                            fetch(`${API_URL}/quotes/${id}`)
-                            .then(res=>res.json())
-                            .then(res => {
-                                console.log(res)
-                                if(res.success == true){
-                                    Swal.fire(
-                                        '¡Añadido!',
-                                        res.message,
-                                        'success'
-                                    )
-                                }else{
-                                    Swal.fire(
-                                        '¡Upsss!',
-                                        res.message,
-                                        'error'
-                                    )
+                        confirmButtonText: 'Sí, borrarlo',
+                        cancelButtonText: 'Cancelar',
+                    });
+                    if (result.isConfirmed) {
+                        const response = await axios.delete(`${API_URL}/sys/histories/${id}`);    
+                        if(response.status == 200 && response.data.status == true){
+                            Swal.fire({
+                                title: 'Cargando...',
+                                html: "Borrando historia clínica y demás registros... <b></b> milisegundos.",
+                                timer: 8000,  // 8000 ms = 8 segundos
+                                timerProgressBar: true,  // Muestra la barra de progreso
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                    const timer = Swal.getPopup().querySelector("b");
+                                    timerInterval = setInterval(() => {
+                                        timer.textContent = `${Swal.getTimerLeft()}`;
+                                    }, 100);
+                                },
+                                willClose: () => {
+                                    clearInterval(timerInterval);
+                                    console.log('Alerta cerrada automáticamente después de 8 segundos.');
                                 }
-                            }).catch(function(err) {
-                                console.log(err);
+                            }).then((result) => {
+                                if (result.dismiss === Swal.DismissReason.timer) {
+                                    //console.log(response);
+                                    Swal.fire('Operación exitosa', response.data.message, response.data.type)
+                                    LoadRecordsButton.click();
+                                }
                             });
+                        }else{
+                            Swal.fire('Operación fallida', response.data.message, response.data.type)
                         }
-                    })
-                });
-            //}
-            //if(permissions.update == 1){
-                $('.edit-row').click(function(e){
-                    e.preventDefault();
-                    let id = $(this).attr('value');
-                    window.location.href = `${API_URL}/sys/histories/edit/${id}`;
-                });
-            //}
-            //if(permissions.delete == 1){
-                $('.delete-row').click(async function(e) {
-                    e.preventDefault();
-                    const id = $(this).attr('value');
-                    try {
-                        const result = await swal.fire({
-                            title: '¿Estás seguro de hacerlo?',
-                            text: 'Si borras la historia clínica todos los datos de este paciente serán borrados',
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonColor: '#3085d6',
-                            cancelButtonColor: '#d33',
-                            confirmButtonText: 'Sí, borrarlo',
-                            cancelButtonText: 'Cancelar',
-                        });
-                        if (result.isConfirmed) {
-                            const response = await axios.delete(`${API_URL}/sys/histories/${id}`);    
-                            if(response.status == 200 && response.data.status == true){
-                                Swal.fire({
-                                    title: 'Cargando...',
-                                    html: "Borrando historia clínica y demás registros... <b></b> milisegundos.",
-                                    timer: 8000,  // 8000 ms = 8 segundos
-                                    timerProgressBar: true,  // Muestra la barra de progreso
-                                    didOpen: () => {
-                                        Swal.showLoading();
-                                        const timer = Swal.getPopup().querySelector("b");
-                                        timerInterval = setInterval(() => {
-                                            timer.textContent = `${Swal.getTimerLeft()}`;
-                                        }, 100);
-                                    },
-                                    willClose: () => {
-                                        clearInterval(timerInterval);
-                                        console.log('Alerta cerrada automáticamente después de 8 segundos.');
-                                    }
-                                }).then((result) => {
-                                    if (result.dismiss === Swal.DismissReason.timer) {
-                                        //console.log(response);
-                                        Swal.fire('Operación exitosa', response.data.message, response.data.type)
-                                        LoadRecordsButton.click();
-                                    }
-                                });
-                            }else{
-                                Swal.fire('Operación fallida', response.data.message, response.data.type)
-                            }
-                        }
-                    } catch (error) {
-                        console.error(error);   
                     }
-                });
-            //}
+                } catch (error) {
+                    console.error(error);   
+                }
+            });
+            
         }
     });
     LoadRecordsButton = $('#LoadRecordsButton');

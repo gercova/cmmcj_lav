@@ -145,14 +145,6 @@ $('#peso, #talla').on('input', function() {
     }
 });
 
-//datepicker
-$('.date').datepicker({
-    changeMonth: true,
-    changeYear: true,
-    yearRange: '1920:' + anio,
-    dateFormat: 'yy-mm-dd'
-});
-
 //Funcion para validar datos antes de ser enviados al controlador para guardar o actualizar un examen
 $('#examForm').submit(async function(e){
     e.preventDefault();
@@ -239,7 +231,7 @@ $('#examForm').submit(async function(e){
 });
 
 // Función para guardar examen de sangre
-$('#examBloodForm').submit(async function(e){
+/*$('#examBloodForm').submit(async function(e){
     e.preventDefault();
     $('.text-danger').remove();
     $('.form-group').removeClass('is-invalid is-valid');
@@ -313,10 +305,10 @@ $('#examBloodForm').submit(async function(e){
     } finally {
         submitButton.prop('disabled', false).html(originalButtonText);
     }
-});
+});*/
 
 // Función para guardar examen de orina
-$('#examUrineForm').submit(async function(e){
+/*$('#examUrineForm').submit(async function(e){
     e.preventDefault();
     $('.text-danger').remove();
     $('.form-group').removeClass('is-invalid is-valid');
@@ -390,10 +382,10 @@ $('#examUrineForm').submit(async function(e){
     } finally {
         submitButton.prop('disabled', false).html(originalButtonText);
     }
-});
+});*/
 
 // Función para guardar examen de heces
-$('#examStoolForm').submit(async function(e){
+/*$('#examStoolForm').submit(async function(e){
     e.preventDefault();
     $('.text-danger').remove();
     $('.form-group').removeClass('is-invalid is-valid');
@@ -467,7 +459,7 @@ $('#examStoolForm').submit(async function(e){
     } finally {
         submitButton.prop('disabled', false).html(originalButtonText);
     }
-});
+});*/
 
 //Función para buscar  un diagnóstico 
 $('#diagnostics').autocomplete({
@@ -629,138 +621,6 @@ $('#btn-add-drug').on('click', async function(){
     }
 });
 
-// Btn mostrar y editar examen de sangre 
-$(document).on('click', '.update-row-bt', async function(e) {
-    e.preventDefault();
-    const bt = $(this).attr('value');
-    $('#examBloodForm').trigger('reset');
-    $('.modal-title').html(null);
-    $('.modal-body').html(null);
-    $('.modal-footer').html(null);
-    $('.form-control').removeClass('is-invalid is-valid');
-    $('.text-danger').remove();
-    const response = await axios.get(`${API_URL}/sys/ex-bt/${bt}`);
-    if (response.status === 200) {
-        //console.log(response.data);
-        const exam = response.data;
-        console.log(exam);
-        $('input[name="historia_id"]').val(exam.historia_id);
-        $('input[name="examen_id"]').val(exam.examen_id);
-        $('input[name="examen_sangre_id"]').val(exam.id);
-        $('input[name="hemoglobina"]').val(exam.hemoglobina);
-        $('input[name="hematocrito"]').val(exam.hematocrito);
-        $('input[name="leucocitos"]').val(exam.leucocitos);
-        $('input[name="neutrofilos"]').val(exam.neutrofilos);
-        $('input[name="linfocitos"]').val(exam.linfocitos);
-        $('input[name="monocitos"]').val(exam.monocitos);
-        $('input[name="eosinofilos"]').val(exam.eosinofilos);
-        $('input[name="basofilos"]').val(exam.basofilos);
-        $('input[name="plaquetas"]').val(exam.plaquetas);
-        $('input[name="glucosa"]').val(exam.glucosa);
-        $('input[name="urea"]').val(exam.urea);
-        $('input[name="creatinina"]').val(exam.creatinina);
-        $('input[name="acido_urico"]').val(exam.acido_urico);
-        $('input[name="colesterol_total"]').val(exam.colesterol_total);
-        $('input[name="trigliceridos"]').val(exam.trigliceridos);
-        $('input[name="transaminasas_got"]').val(exam.transaminasas_got);
-        $('input[name="transaminasas_gpt"]').val(exam.transaminasas_gpt);
-        $('input[name="bilirrubina_total"]').val(exam.bilirrubina_total);
-        $('input[name="bilirrubina_directa"]').val(exam.bilirrubina_directa);
-        $('input[name="fosfatasa_alcalina"]').val(exam.fosfatasa_alcalina);
-        $('input[name="proteinas_totales"]').val(exam.proteinas_totales);
-        $('input[name="albumina"]').val(exam.albumina);
-        $('input[name="globulina"]').val(exam.globulina);
-        $('input[name="sodio"]').val(exam.sodio);
-        $('input[name="potasio"]').val(exam.potasio);
-        $('input[name="cloro"]').val(exam.cloro);
-        $('input[name="calcio"]').val(exam.calcio);
-        $('input[name="vsg"]').val(exam.vsg);
-        $('input[name="tiempo_protrombina"]').val(exam.tiempo_protrombina);
-        $('input[name="tpt"]').val(exam.tpt);
-        $('input[name="observaciones"]').val(exam.observaciones);
-        $('.modal-title').text('Actualizar Examen de Sangre');
-        $('#modalBloodForm').modal('show');
-    }
-});
-
-// Btn mostrar y editar examen de sangre 
-$(document).on('click', '.update-row-ut', async function(e) {
-    e.preventDefault();
-    const ut = $(this).attr('value');
-    $('#examBloodForm').trigger('reset');
-    $('.modal-title').html(null);
-    $('.modal-body').html(null);
-    $('.modal-footer').html(null);
-    $('.form-control').removeClass('is-invalid is-valid');
-    $('.text-danger').remove();
-    const response = await axios.get(`${API_URL}/sys/ex-ut/${ut}`);
-    if (response.status === 200) {
-        const exam = response.data;
-        $('input[name="historia_id"]').val(exam.historia_id);
-        $('input[name="examen_id"]').val(exam.examen_id);
-        $('input[name="examen_orina_id"]').val(exam.id);
-        $('input[name="color"]').val(exam.color);
-        $('input[name="aspecto"]').val(exam.aspecto);
-        $('input[name="densidad"]').val(exam.densidad);
-        $('input[name="ph"]').val(exam.ph);
-        $('input[name="proteinas"]').val(exam.proteinas);
-        $('input[name="glucosa"]').val(exam.glucosa);
-        $('input[name="cetonas"]').val(exam.cetonas);
-        $('input[name="bilirrubina"]').val(exam.bilirrubina);
-        $('input[name="sangre_oculta"]').val(exam.sangre_oculta);
-        $('input[name="urobilinogeno"]').val(exam.urobilinogeno);
-        $('input[name="nitritos"]').val(exam.nitritos);
-        $('input[name="leucocitos_quimico"]').val(exam.leucocitos_quimico);
-        $('input[name="leucocitos_campo"]').val(exam.leucocitos_campo);
-        $('input[name="hematies_campo"]').val(exam.hematies_campo);
-        $('input[name="celulas_epiteliales"]').val(exam.celulas_epiteliales);
-        $('input[name="bacterias"]').val(exam.bacterias);
-        $('input[name="cristales"]').val(exam.cristales);
-        $('input[name="cilindros"]').val(exam.cilindros);
-        $('input[name="mucus"]').val(exam.mucus);
-        $('input[name="observaciones"]').val(exam.observaciones);
-        $('.modal-title').text('Actualizar Examen de Orina');
-        $('#modalUrineForm').modal('show');
-    }
-});
-
-// Btn mostrar y editar examen de heces
-$(document).on('click', '.update-row-st', async function(e) {
-    e.preventDefault();
-    const st = $(this).attr('value');
-    $('#examStoolForm').trigger('reset');
-    $('.modal-title').html(null);
-    $('.modal-body').html(null);
-    $('.modal-footer').html(null);
-    $('.form-control').removeClass('is-invalid is-valid');
-    $('.text-danger').remove();
-    const response = await axios.get(`${API_URL}/sys/ex-st/${st}`);
-    if (response.status === 200) {
-        const exam = response.data;
-        $('input[name="historia_id"]').val(exam.historia_id);
-        $('input[name="examen_id"]').val(exam.examen_id);
-        $('input[name="examen_heces_id"]').val(exam.id);
-        $('input[name="consistencia"]').val(exam.consistencia);
-        $('input[name="color"]').val(exam.color);
-        $('input[name="mucus"]').val(exam.mucus);
-        $('input[name="restos_alimenticios"]').val(exam.restos_alimenticios);
-        $('input[name="leucocitos"]').val(exam.leucocitos);
-        $('input[name="hematies"]').val(exam.hematies);
-        $('input[name="bacterias"]').val(exam.bacterias);
-        $('input[name="levaduras"]').val(exam.levaduras);
-        $('input[name="parasitos"]').val(exam.parasitos);
-        $('input[name="huevos_parasitos"]').val(exam.huevos_parasitos);
-        $('input[name="sangre_oculta"]').val(exam.sangre_oculta);
-        $('input[name="ph"]').val(exam.ph);
-        $('input[name="grasa_fecal"]').val(exam.grasa_fecal);
-        $('input[name="cultivo_bacteriano"]').val(exam.cultivo_bacteriano);
-        $('input[name="sensibilidad_antimicrobiana"]').val(exam.sensibilidad_antimicrobiana);
-        $('input[name="observaciones"]').val(exam.observaciones);
-        $('.modal-title').text('Actualizar Examen de Heces');
-        $('#modalStoolForm').modal('show');
-    }
-});
-
 //Función para quitar las filas de la table de recetas
 $(document).on('click','.btn-remove-drug', function(){
     $(this).closest('tr').remove();
@@ -778,35 +638,7 @@ $('#btn-add-test').on('click', function(){
 $(document).on('click','.remove-row-test', function(){
     $(this).closest('tr').remove();
 });
-// Configuración general para los modales de los formularios de examen de sangre, orina y heces
-const examConfig = {
-    'blood': { form: '#examBloodForm', modal: '#modalBloodForm', title: 'Agregar Examen de Sangre' },
-    'urine': { form: '#examUrineForm', modal: '#modalUrineForm', title: 'Agregar Examen de Orina' },
-    'stool': { form: '#examStoolForm', modal: '#modalStoolForm', title: 'Agregar Examen de Heces' }
-};
-// Función única para manejar todos los modales
-$(document).on('click', '#btnAddBloodTest, #btnAddUrineTest, #btnAddStoolTest', async function(e) {
-    e.preventDefault();
-    //$('.modal-title').html(null);
-    //$('.modal-body').html(null);
-    //$('.modal-footer').html(null);
-    $('.modal-backdrop').remove();
-    const id = $(this).attr('value');
-    const examType = this.id.replace('btnAdd', '').replace('Test', '').toLowerCase();
-    const { form, modal, title } = examConfig[examType];    
-    const response = await axios.get(`${API_URL}/sys/exams/view/${id}`);
-    if (response.status === 200) {
-        console.log(response.data);
-        const { exam } = response.data;
-        $(form).trigger('reset');
-        $('.form-control').removeClass('is-invalid is-valid');
-		$('.text-danger').remove();
-        $('input[name="historia_id"]').val(exam.historia_id);
-        $('input[name="examen_id"]').val(exam.id);
-        $('.modal-title').text(title);
-        $(modal).modal('show');
-    }
-});
+
 //Función calcular FPP y Edad Gestacional
 function getFpp(dateString){
     let fumDate = new Date(dateString);

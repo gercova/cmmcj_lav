@@ -66,6 +66,41 @@ $(document).ready(function(){
             submitButton.prop('disabled', false).html(originalButtonText);
         }
     });
+
+    //formulario submodule
+	$('#submoduleForm').submit(async function(e){
+        e.preventDefault();
+        $('.text-danger').remove();
+        $('.form-group').removeClass('is-invalid is-valid');
+        
+        const formData = $(this).serialize();
+
+        const submitButton = $(this).find('button[type="submit"]');
+        const originalButtonText = submitButton.html();
+        submitButton.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Cargando...');
+
+        try {
+			const response = await axios.post(`${API_URL}/sys/modules/sub/store`, formData);
+            if(response.status == 200 && response.data.status == true){
+				console.log(response);
+                $('#submoduleForm').trigger('reset');
+                $('#modalSubmodule').modal('hide');
+                $('#module_data').DataTable().ajax.reload();
+                alertNotify(response.data.type, response.data.message);
+            }else if(response.data.status == false){
+                alertNotify(response.data.type, response.data.message);
+            }
+		} catch(error) {
+            if(error.response && error.response.data.errors){
+                $.each(error.response.data.errors, function(key, value) {
+                    let inputElement = $(document).find('[name="' + key + '"]');
+                    inputElement.after('<span class="text-danger">' + value[0] + '</span>').closest('.form-control').addClass('is-invalid').focus();
+                });
+            }
+        } finally {
+            submitButton.prop('disabled', false).html(originalButtonText);
+        }
+    });
 	//update item
     $(document).on('click', '.update-row-module', async function(e) {
         e.preventDefault();

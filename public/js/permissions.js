@@ -101,7 +101,7 @@ $(document).on('click', '.update-row', async function(e) {
         
         if(response.data.submodule_id !== null && response.data.submodule !== null){
             // Módulo
-            slimSelectMod.set(response.data.submodule.module_id.id);
+            slimSelectMod.set(response.data.submodule.module.id);
             // Submódulo
             slimSelectSub.set(response.data.submodule_id);
         }
