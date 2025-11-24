@@ -141,6 +141,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -153,8 +154,6 @@
         </div>
     </section>
 </div>
-@include('EMR.exams.modal-bt')
-@include('EMR.exams.modal-ut')
-@include('EMR.exams.modal-st')
 <script src="{{ asset('js/exams.js') }}"></script>
+<script src="{{ asset('js/modalFormTest.js') }}"></script>
 @endsection

@@ -105,12 +105,7 @@
                             <label for="sm_descripcion">Descripción: </label>
                             <input type="text" class="form-control" id="sm_descripcion" name="descripcion">
                         </div>
-                        <div class="form-group">
-                            <label for="sm_icono">Icono: </label>
-                            <input type="text" class="form-control" id="sm_icono" name="icono">
-                        </div>
                     </div>
-
                     <div class="modal-footer justify-content-between">
                         <input type="hidden" name="submoduleId" id="submoduleId">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
@@ -121,6 +116,5 @@
         </div>
     </div>
 @endcan
-
 <script src="{{ asset('js/modules.js') }}"></script>
 @endsection

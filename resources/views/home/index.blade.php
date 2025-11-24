@@ -65,18 +65,21 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <a href="{{ route('emr.histories.new') }}" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Agregar nueva historia</a>
+                            @can('historia_crear')
+                                <a href="{{ route('emr.histories.new') }}" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Agregar nueva historia</a>    
+                            @endcan
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <h3>Pacientes agendados</h3>
-                                <table class="table table-hover" id="quotes_data">
+                                <table class="table table-hover table-sm" id="quotes_data">
                                     <thead class="thead-light">
                                         <tr>
                                             <th style="width:10px">#</th>
                                             <th>DNI</th>
                                             <th>Nombres</th>
                                             <th>Fecha</th>
+                                            <th>Estado</th>
                                             <th>Opciones</th>
                                         </tr>
                                     </thead>

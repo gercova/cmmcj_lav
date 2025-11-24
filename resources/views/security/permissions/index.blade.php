@@ -23,13 +23,13 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">
-                        @can('permiso_crear')
+                        <!--@can('permiso_crear')
                             <div class="card-header">
                                 <button type="button" class="btn btn-outline btn-primary" id="btn-add-permission">
                                     <i class="bi bi-plus-circle"></i> Agregar permiso
                                 </button>
                             </div>
-                        @endcan
+                        @endcan-->
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-hover" id="permission_data">
@@ -66,6 +66,9 @@
                 <form id="permissionForm" method="post">
                     @csrf
                     <div class="modal-body">
+                        <div class="alert alert-warning">
+                            <p>Ten cuidado al modificar el permiso, actualizarlo sin cuidado puede generar errores en cascada en todo el sistema</p>
+                        </div>
                         <div class="form-group module">
                             <label for="submodule_id">Módulo: </label>
                             <select name="module_id" id="module_id">
@@ -92,9 +95,17 @@
                             <label for="guard_name">Guard Name: </label>
                             <input type="text" class="form-control" id="guard_name" name="guard_name">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group descripcion">
                             <label for="descripcion">Descripción: </label>
                             <input type="text" class="form-control" id="descripcion" name="descripcion">
+                        </div>
+                        <div class="form-group clearfix">
+                            <div class="icheck-primary d-inline">
+                                <input type="checkbox" id="crud" name="crud">
+                                <label for="crud">
+                                    Activar crud
+                                </label>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer justify-content-between">
