@@ -15,7 +15,8 @@ class BedResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'description'   => $this->decription, 
+            'id'            => $this->id,
+            'description'   => $this->description, 
             'floor'         => $this->floor,
             'detail'        => $this->detail,
         ];

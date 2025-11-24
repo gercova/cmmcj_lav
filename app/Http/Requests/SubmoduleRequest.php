@@ -14,8 +14,7 @@ class SubmoduleRequest extends FormRequest
         return [
             'module_id' => 'required',
             'nombre'    => 'required|unique:submodules,nombre,id,'.$this->id,
-            'ruta'      => 'required|string',
-            'icono'     => 'required|string',
+            'descripcion' => 'required|max:100',
         ];
     }
 
@@ -24,8 +23,16 @@ class SubmoduleRequest extends FormRequest
             'module_id.required'    => 'El Módulo es requerido',
             'nombre.required'       => 'El Nombre es requerido',
             'nombre.unique'         => 'El Nombre ya existe',
-            'ruta.required'         => 'La Ruta es requerida',
-            'icono.required'        => 'El Ícono es requerido',
+            'descripcion.required'  => 'La Descripcion es requerida',
+            'descripcion.max'       => 'La Descripcion tiene un máximo de 100 caracteres',
         ];
+    }
+
+    protected function prepareForValidation(): void {
+        $this->merge([
+            'module_id'     => trim(strip_tags($this->module_id)),
+            'nombre'        => trim(strip_tags($this->nombre)),
+            'descripcion'   => trim(strip_tags($this->descripcion)),
+        ]);
     }
 }
