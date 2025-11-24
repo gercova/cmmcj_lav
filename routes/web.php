@@ -8,6 +8,7 @@ use App\Http\Controllers\EMR\HistoriesController;
 use App\Http\Controllers\EMR\HospitalizationsController;
 use App\Http\Controllers\EMR\ReportsController;
 use App\Http\Controllers\Home\HomeController;
+use App\Http\Controllers\Maintenance\BedsController;
 use App\Http\Controllers\Maintenance\DiagnosticsController;
 use App\Http\Controllers\Maintenance\DrugsController;
 use App\Http\Controllers\Maintenance\OccupationsController;
@@ -47,23 +48,32 @@ Route::middleware(['auth', 'prevent.back'])->group(function(){
     Route::get('/sys/dashboard/hcByBG',             [ReportsController::class, 'getHistoriesByBloodingGroup']);
     Route::get('/sys/dashboard/hcByDI',             [ReportsController::class, 'getHistoriesByDegreeIntruction']);
     Route::get('/sys/dashboard/hcByMAC',            [ReportsController::class, 'getHistoriesByMAC']);
-    
     // Historias
     Route::get('/sys/histories',                    [HistoriesController::class, 'index'])->name('emr.histories.home');
     Route::get('/sys/histories/new',                [HistoriesController::class, 'new'])->name('emr.histories.new');
     Route::get('/sys/histories/edit/{history}',     [HistoriesController::class, 'edit'])->name('emr.histories.edit');
+    Route::get('/sys/histories/show/{history}',     [HistoriesController::class, 'show']);
     Route::post('/sys/histories/store',             [HistoriesController::class, 'store']);
     Route::post('/sys/histories/list',              [HistoriesController::class, 'list']);
     Route::post('/sys/histories/dni',               [HistoriesController::class, 'searchDni']);
     Route::post('/sys/histories/location',          [HistoriesController::class, 'searchLocation']);
     Route::post('/sys/histories/occupation',        [HistoriesController::class, 'searchOccupation']);
     Route::delete('/sys/histories/{history}',       [HistoriesController::class, 'destroy']);
+    // Citas
+    Route::get('/sys/appointments/home',            [AppointmentsController::class, 'getQuotes']);
+    Route::get('/sys/appointments/list',            [AppointmentsController::class, 'list']);
+    Route::get('/sys/appointments/listStatus',      [AppointmentsController::class, 'listStatus']);
+    Route::get('/sys/appointments/{appointment}',   [AppointmentsController::class, 'show']);
+    Route::post('/sys/appointments/store',          [AppointmentsController::class, 'store']);
+    Route::get('/sys/appointments/changeStatus/{id}', [AppointmentsController::class, 'checkAppointmentsStatus']);
+    Route::delete('/sys/appointments/destroy',      [AppointmentsController::class, 'destroy']);
     // Exámenes 
     Route::get('/sys/exams',                        [ExamsController::class, 'index'])->name('emr.exams.home');
     Route::get('/sys/exams/new/{history}',          [ExamsController::class, 'new'])->name('emr.exams.new');
     Route::get('/sys/exams/edit/{exam}',            [ExamsController::class, 'edit'])->name('emr.exams.edit');
     Route::get('/sys/exams/see/{history}',          [ExamsController::class, 'see'])->name('emr.exams.see');
     Route::get('/sys/exams/view/{exam}',            [ExamsController::class, 'view']);
+    Route::get('/sys/exams/detail/{exam}',          [ExamsController::class, 'viewDetailExam']);
     Route::post('/sys/exams/store',                 [ExamsController::class, 'store']);
     Route::post('/sys/exams/store-blood',           [ExamsController::class, 'storeBloodTest']);
     Route::post('/sys/exams/store-urine',           [ExamsController::class, 'storeUrineTest']);
@@ -127,6 +137,12 @@ Route::middleware(['auth', 'prevent.back'])->group(function(){
     Route::post('/sys/occupations/store',           [OccupationsController::class, 'store']);
     Route::get('/sys/occupations/{occupation}',     [OccupationsController::class, 'show']);
     Route::delete('/sys/oc/delete/{occupation}',    [OccupationsController::class, 'destroy']);
+    // Camas
+    Route::get('/sys/beds',                         [BedsController::class, 'index'])->name('maintenance.beds');
+    Route::get('/sys/beds/list',                    [BedsController::class, 'list']);
+    Route::post('/sys/beds/store',                  [BedsController::class, 'store']);
+    Route::get('/sys/beds/{bed}',                   [BedsController::class, 'show']);
+    Route::delete('/sys/bd/delete/{bed}',           [BedsController::class, 'destroy']);
     // Empresa
     Route::get('/sys/enterprise',                   [EnterpriseController::class, 'index'])->name('business.enterprise');
     Route::post('/sys/enterprise/store',            [EnterpriseController::class, 'store']);
@@ -150,7 +166,7 @@ Route::middleware(['auth', 'prevent.back'])->group(function(){
     Route::get('/sys/permissions',                  [PermissionsController::class, 'index'])->name('security.permissions.home');
     Route::get('/sys/permissions/list',             [PermissionsController::class, 'list']);
     Route::get('/sys/permissions/{permission}',     [PermissionsController::class, 'show']);
-    Route::post('/sys/permissions/store',           [PermissionsController::class, 'store']);
+    // Route::post('/sys/permissions/store',           [PermissionsController::class, 'store']);
     Route::delete('/sys/px/delete/{permission}',    [PermissionsController::class, 'destroy']);
     // Usuarios
     Route::get('/sys/users',                        [UsersController::class, 'index'])->name('security.users.home');
