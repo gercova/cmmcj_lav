@@ -37,14 +37,15 @@ class ModulesController extends Controller
             foreach ($item->submodules as $sm) {
                 $submodulesList .= sprintf(
                     '<tr>
-                        <td><span class="badge badge-success"><i class="%s"></i></span>&nbsp;%s</td>
-                        <td>
+                        <td style="%s"><span class="badge badge-success">%s</span></td>
+                        <td style="%s">
                             <button class="btn btn-sm btn-warning update-row-submodule btn-sm" value="%s"><i class="bi bi-pencil-square"></i></button>
                             <button class="btn btn-sm btn-danger delete-submodule btn-sm" value="%s"><i class="bi bi-trash"></i></button>
                         </td>
                     </tr>',
-                    $sm->icono,
-                    $sm->descripcion,
+                    'width:80%',
+                    ucwords($sm->nombre),
+                    'width:20%',
                     $sm->id,
                     $sm->id,
                 );
@@ -63,7 +64,6 @@ class ModulesController extends Controller
                     <button type="button" class="btn btn-sm btn-danger delete-module btn-md" value="%s">
                         <i class="bi bi-trash"></i>
                     </button>',
-                    $item->id,
                     $item->id,
                     $item->id
                 ),

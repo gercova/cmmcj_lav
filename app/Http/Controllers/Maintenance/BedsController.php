@@ -37,7 +37,7 @@ class BedsController extends Controller
                 $item->description,
                 $item->floor,
                 $item->detail,
-                $item->created_at,
+                $item->created_at->format('Y-m-d H:i:s'),
                 $this->buildActionDropdown($item->id, $canEdit, $canDelete),
             ];
         });

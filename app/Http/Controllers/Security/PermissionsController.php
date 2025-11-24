@@ -31,19 +31,17 @@ class PermissionsController extends Controller {
     public function list(): JsonResponse {
         $results = Permission::with('submodule')->orderBy('permissions.name', 'asc')->get();
         $data = $results->map(function($item, $index){
-            $submodulesList = '<table class="table table-sm">';
+            $submodulesList = '<div class="row">';
             if ($item->submodule) {
                 $submodulesList .= sprintf(
-                    '<tr>
-                        <td><span class="badge badge-success">%s</span></td>
-                    </tr>',
+                    '<span class="badge badge-success">%s</span>',
                     ucfirst($item->submodule->nombre),
                 );
             } else {
-                $submodulesList .= '<tr><td><span class="badge badge-warning">Sin submódulo</span></td></tr>';
+                $submodulesList .= '<span class="badge badge-warning">Sin submódulo</span>';
             }
             
-            $submodulesList .= '</table>';
+            $submodulesList .= '</div>';
             
             return [
                 $index + 1,
@@ -75,7 +73,7 @@ class PermissionsController extends Controller {
         ]);
     }
 
-    public function store(PermissionValidate $request): JsonResponse {
+    /*public function store(PermissionValidate $request): JsonResponse {
         $validated = $request->validated();
 
         // Permisos
@@ -83,11 +81,9 @@ class PermissionsController extends Controller {
         $crudDescriptions   = [
 
         ];
-        
-
-        /*foreach($modulos as $m) {
-            Permission::create(['name' => $m]);
-        }*/
+        // foreach($modulos as $m) {
+        //    Permission::create(['name' => $m]);
+        // }
         
 
         // foreach ($modules as $module) {
@@ -115,7 +111,7 @@ class PermissionsController extends Controller {
                 'error'     => $th->getMessage(),
             ], 500);
         }
-    }
+    }*/
 
     public function show(Permission $permission): JsonResponse {
         $permission->load(['submodule.module']);
