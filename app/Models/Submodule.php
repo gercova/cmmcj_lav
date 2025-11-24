@@ -14,14 +14,14 @@ class Submodule extends Model
 
     protected $table        = 'submodules';
     protected $primaryKey   = 'id';
-    protected $fillable     = ['module_id', 'nombre', 'descripcion', 'ruta', 'icono', 'orden'];
+    protected $fillable     = ['module_id', 'nombre', 'descripcion'];
     protected $dates        = ['created_at', 'updated_at', 'deleted_at'];
 
     public function module(): BelongsTo {
         return $this->belongsTo(Module::class);
     }
 
-    public function permissions(): HasMany {
+    public function permission(): HasMany {
         return $this->hasMany(Permission::class);
     }
 }
