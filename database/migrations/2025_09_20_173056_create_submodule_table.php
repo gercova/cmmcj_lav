@@ -17,9 +17,9 @@ return new class extends Migration
             $table->foreign('module_id')->references('id')->on('modules');
             $table->string('nombre', 100);
             $table->string('descripcion');
-            $table->string('ruta');
-            $table->string('icono');
-            $table->integer('orden');
+            //$table->string('ruta');
+            //$table->string('icono');
+            //$table->integer('orden');
             $table->timestamps();
             $table->softDeletes();
         });
