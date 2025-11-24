@@ -1,20 +1,3 @@
-const historyId = $('#historyId').val();
-const anio      = new Date().getFullYear();
-
-const tables = {
-    //listado de hospitalizaciones por historia clínica
-    hospitalizations: $('#hospitalization_data').DataTable({ ajax: `${API_URL}/sys/hospitalizations/list/${historyId}`, processing: true }),
-};
-
-//Eliminar un registro
-DeleteHandler.initButtons([
-    {
-        selector: '.delete-hospitalization',
-        endpoint: 'hsp',
-        table: tables.hospitalizations
-    }
-]);
-
 $('#histories').jtable({
     title       : "HOSPITALIZACIONES",
     paging      : true,
@@ -111,6 +94,22 @@ LoadRecordsButton.click(function (e) {
     });
 });
 LoadRecordsButton.click();
+
+const historyId = $('#historyId').val();
+
+const tables = {
+    //listado de hospitalizaciones por historia clínica
+    hospitalizations: $('#hospitalization_data').DataTable({ ajax: `${API_URL}/sys/hospitalizations/list/${historyId}`, processing: true }),
+};
+
+//Eliminar un registro
+DeleteHandler.initButtons([
+    {
+        selector: '.delete-hospitalization',
+        endpoint: 'hsp',
+        table: tables.hospitalizations
+    }
+]);
 
 //datepicker
 $('.date').datepicker({
