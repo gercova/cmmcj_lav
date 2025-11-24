@@ -105,6 +105,14 @@
                                     </a>
                                 </li>
                             @endcan
+
+                                <li class="nav-item">
+                                    <a href="{{ route('maintenance.beds') }}" class="nav-link {{ request()->routeIs('maintenance.beds') ? 'active' : '' }}">
+                                        <i class="bi bi-chevron-right"></i>
+                                        <p>Camas</p>
+                                    </a>
+                                </li>    
+
                         </ul>
                     </li>
                 @endcan
@@ -139,19 +147,11 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
-
+                            @can('modulo_acceder')
                                 <li class="nav-item">
                                     <a href="{{ route('security.modules.home') }}" class="nav-link {{ request()->routeIs('security.modules.*') ? 'active' : '' }}">
                                         <i class="bi bi-chevron-right"></i>
                                         <p>Módulos</p>
-                                    </a>
-                                </li>
-
-                            @can('especialidad_acceder')
-                                <li class="nav-item">
-                                    <a href="{{ route('security.specialties.home') }}" class="nav-link {{ request()->routeIs('security.specialties.*') ? 'active' : '' }}">
-                                        <i class="bi bi-chevron-right"></i>
-                                        <p>Especialidades</p>
                                     </a>
                                 </li>
                             @endcan
@@ -160,6 +160,14 @@
                                     <a href="{{ route('security.permissions.home') }}" class="nav-link {{ request()->routeIs('security.permissions.*') ? 'active' : '' }}">
                                         <i class="bi bi-chevron-right"></i>
                                         <p>Permisos</p>
+                                    </a>
+                                </li>
+                            @endcan
+                            @can('especialidad_acceder')
+                                <li class="nav-item">
+                                    <a href="{{ route('security.specialties.home') }}" class="nav-link {{ request()->routeIs('security.specialties.*') ? 'active' : '' }}">
+                                        <i class="bi bi-chevron-right"></i>
+                                        <p>Especialidades</p>
                                     </a>
                                 </li>
                             @endcan

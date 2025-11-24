@@ -18,7 +18,6 @@
     <!-- DataTables -->
     <link href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
     <link href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}" rel="stylesheet">
     <!-- Theme style -->
     <link href="{{ asset('dist/css/adminlte.min.css') }}" rel="stylesheet">
     <!-- JTable -->
@@ -36,10 +35,9 @@
     <link href="{{ asset('plugins/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet">
     <!-- Bootstrap Icon -->
     <link href="{{ asset('css/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css') }}" rel="stylesheet">
+    <!-- Datepicker -->
+    <link href="{{ asset('plugins/datepicker/tempusdominus-bootstrap-4.min.css') }}" rel="stylesheet">
     <!-- Hightcharts -->
-    <!--<script src="{{ asset('plugins/highcharts/highcharts.js') }}"></script>
-	<script src="{{ asset('plugins/highcharts/dashboards.js') }}"></script>
-    <script src="{{ asset('plugins/highcharts/layout.js') }}"></script>-->
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
@@ -56,14 +54,6 @@
     <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('plugins/jszip/jszip.min.js') }}"></script>
-    <script src="{{ asset('plugins/pdfmake/pdfmake.min.js') }}"></script>
-    <script src="{{ asset('plugins/pdfmake/vfs_fonts.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
     <!-- JTable -->
     <script src="{{ asset('jtable/jquery.jtable.js') }}"></script>
     <script src="{{ asset('jtable/jquery.jtable.min.js') }}"></script>
@@ -74,14 +64,17 @@
     <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
     <!-- SweetAlert 2 -->
     <script src={{ asset('plugins/sweetalert2/sweetalert2.min.js') }}></script>
+    <!-- datepicker -->
+    <script src="{{ asset('plugins/datepicker/moment.min.js') }}"></script>
+    <script src="{{ asset('plugins/datepicker/es.min.js') }}"></script>
+    <script src="{{ asset('plugins/datepicker/tempusdominus-bootstrap-4.min.js') }}"></script>
     <script>
         const API_URL = "{{ url('/') }}";
         const NAME_ENTERPRISE = "{{ $enterprise->nombre_comercial }}";
         const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        const anio = new Date().getFullYear();
     </script>
     <!-- Hightcharts -->
-    <script src="{{ asset('highcharts/highcharts.js') }}"></script>
-	<script src="{{ asset('highcharts/exporting.js') }}"></script>
     <!-- Extras -->
     <script src="{{ asset('js/lodash.min.js') }}"></script>
     <script src="{{ asset('js/slimselect.min.js') }}"></script>
@@ -124,13 +117,62 @@
             </div>
         </div>
     </div>
-    <script>
-        $('.modal').on('hidden.bs.modal', function () {
-            // Limpiar el contenido del modal
-            $(this).find('.modal-body').html('');
-            $(this).find('.modal-title').html('');
-        });
-    </script>
+    <!-- Modal citas -->
+    <div class="modal fade" id="appointmentModal" tabindex="-1" aria-modal="true" role="dialog" data-backdrop="static" aria-labelledby="staticBackdropLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel"></h1>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <form id="appointmentForm" method="post">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="paciente">Paciente:</label>
+                            <input type="text" class="form-control date" name="paciente" id="paciente" value="" readonly>
+                            <input type="hidden"  name="historia_id" id="historia_id" value="">
+                            <input type="hidden"  name="cita_id" id="cita_id" value="">
+                        </div>
+                        <div class="form-group">
+                            <label for="estado_cita_id">Selecciona un estado:</label>
+                            <select id="estado_cita_id" name="estado_cita_id" class="form-control" required>
+                                <option value="">-- Selecciona --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="fecha">Fecha:</label>
+                            <div class="input-group date" id="datepickerFecha" data-target-input="nearest">
+                                <input type="text" class="form-control datetimepicker-input" name="fecha" id="fecha" data-target="#datepickerFecha"  placeholder="Seleccione fecha" readonly>
+                                <div class="input-group-append" data-target="#datepickerFecha" data-toggle="datetimepicker">
+                                    <div class="input-group-text">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="paciente">Hora:</label>
+                            <div class="input-group date" id="datepickerHora" data-target-input="nearest">
+                                <input type="text" class="form-control datetimepicker-input" name="hora" id="hora" data-target="#datepickerHora" placeholder="Seleccione hora" readonly>
+                                <div class="input-group-append" data-target="#datepickerHora" data-toggle="datetimepicker">
+                                    <div class="input-group-text">
+                                        <i class="fa fa-clock"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <!-- ./wrapper -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
