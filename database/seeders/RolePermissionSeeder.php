@@ -23,7 +23,7 @@ class RolePermissionSeeder extends Seeder
         // Permisos
         $crudPermissions    = ['acceder', 'ver', 'crear', 'editar', 'guardar', 'borrar'];
         $modules            = Module::all();
-        $submodules         = Submodule::get();
+        $submodules         = Submodule::where('id', '<>', 1)->get();
 
         foreach($modules as $m) {
             Permission::create([
