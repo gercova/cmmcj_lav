@@ -4,6 +4,7 @@ namespace App\Http\Controllers\EMR;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HistoryValidate;
+use App\Http\Resources\HistoryResource;
 use App\Models\Appointment;
 use App\Models\BloodGroup;
 use App\Models\DegreesInstruction;
@@ -87,6 +88,10 @@ class HistoriesController extends Controller
 	
 		return response()->json($jTableResult);
 	}
+
+    public function show(History $history): JsonResponse {
+        return response()->json(HistoryResource::make($history), 200);
+    }
 
     public function store(HistoryValidate $request): JsonResponse {
         $validated      = $request->validated();

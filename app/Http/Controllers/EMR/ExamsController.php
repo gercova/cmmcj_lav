@@ -8,6 +8,7 @@ use App\Http\Requests\ExamValidate;
 use App\Http\Requests\StoolTestValidate;
 use App\Http\Requests\UrineTestValidate;
 use App\Http\Resources\BloodTestResource;
+use App\Http\Resources\ExamResource;
 use App\Http\Resources\StoolTestResource;
 use App\Http\Resources\UrineTestResource;
 use App\Models\BloodTest;
@@ -69,6 +70,11 @@ class ExamsController extends Controller {
 		$medication = DB::select('CALL PA_getMedicationByExam(?)', [$exam->id]);
 		return response()->json(compact('exam', 'hc', 'diagnostic', 'medication'), 200);
 	}
+
+    public function viewDetailExam(Exam $exam): jsonResponse {
+        $exam->load(['historia']);
+		return response()->json(ExamResource::make($exam), 200);
+    }
 
     public function showBloodTest(BloodTest $bt): JsonResponse {
         $bt->load(['examen.historia']);
