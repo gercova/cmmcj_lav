@@ -23,9 +23,11 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">
-                        <div class="card-header">
-                            <button type="button" class="btn btn-outline btn-primary" id="btn-add-bed"><i class="bi bi-plus-circle"></i> Agregar nueva cama</button>
-                        </div>
+                        @can('cama_agregar')
+                            <div class="card-header">
+                                <button type="button" class="btn btn-outline btn-primary" id="btn-add-bed"><i class="bi bi-plus-circle"></i> Agregar nueva cama</button>
+                            </div>
+                        @endcan
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12">
