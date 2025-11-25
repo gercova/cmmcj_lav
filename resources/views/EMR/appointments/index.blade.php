@@ -24,7 +24,7 @@
                     <div class="card card-primary">
                         <div class="card-header">
                             <h3 class="card-title">
-                                <i class="fas fa-calendar"></i> Agenda de Citas
+                                <i class="bi bi-calendar3"></i> Agenda de Citas
                             </h3>
                             <div class="card-tools">
                                 <button type="button" class="btn btn-success btn-sm" id="btnNewAppointment">
@@ -48,7 +48,7 @@
                                 <div class="col-md-4">
                                     <label>&nbsp;</label><br>
                                     <button id="btnRefresh" class="btn btn-info">
-                                        <i class="fas fa-sync-alt"></i> Actualizar
+                                        <i class="bi bi-arrow-clockwise"></i> Actualizar
                                     </button>
                                 </div>
                             </div>
@@ -57,7 +57,7 @@
                             <div id="calendar"></div>
                         </div>
                         <div class="overlay" id="loading" style="display: none;">
-                            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                            <i class="fas fa-2x bi bi-arrow-clockwise"></i>
                         </div>
                     </div>
                 </div>
@@ -115,7 +115,7 @@
                 <div class="modal-content">
                     <div class="modal-header bg-success">
                         <h5 class="modal-title">
-                            <i class="fas fa-plus-circle"></i> Nueva Cita Médica
+                            <i class="bi bi-plus-circle"></i> Nueva Cita Médica
                         </h5>
                         <button type="button" class="close" data-dismiss="modal">
                             <span>&times;</span>
