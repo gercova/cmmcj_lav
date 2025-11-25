@@ -60,6 +60,29 @@ Route::middleware(['auth', 'prevent.back'])->group(function(){
     Route::post('/sys/histories/occupation',        [HistoriesController::class, 'searchOccupation']);
     Route::delete('/sys/histories/{history}',       [HistoriesController::class, 'destroy']);
     // Citas
+    Route::get('/sys/appointments',                 [AppointmentsController::class, 'index'])->name('emr.appointments.home');
+    
+    // Obtener datos del calendario (para FullCalendar)
+    Route::get('/appointments/calendar/data',       [AppointmentsController::class, 'getCalendarData'])->name('appointments.calendar.data');
+    
+    // Obtener detalles de una cita específica
+    Route::get('/appointments/{id}/details',        [AppointmentsController::class, 'getAppointmentDetails'])->name('appointments.details');
+    
+    // Obtener estadísticas del día (opcional)
+    Route::get('/appointments/stats/today',         [AppointmentsController::class, 'getTodayStats'])->name('appointments.stats.today');
+    
+    // Buscar pacientes
+    Route::get('/patients/search',                  [AppointmentsController::class, 'searchPatients'])->name('patients.search');
+    
+    // Obtener lista de doctores
+    Route::get('/doctors/list',                     [AppointmentsController::class, 'getDoctorsList'])->name('doctors.list');
+    
+    // Guardar nueva cita
+    Route::post('/appointments',                    [AppointmentsController::class, 'store'])->name('appointments.store');
+    
+    // Ruta de prueba para verificar datos (TEMPORAL - eliminar en producción)
+    Route::get('/appointments/test-data',           [AppointmentsController::class, 'testData'])->name('appointments.test.data');
+
     Route::get('/sys/appointments/home',            [AppointmentsController::class, 'getQuotes']);
     Route::get('/sys/appointments/list',            [AppointmentsController::class, 'list']);
     Route::get('/sys/appointments/listStatus',      [AppointmentsController::class, 'listStatus']);
