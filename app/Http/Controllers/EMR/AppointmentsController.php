@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class AppointmentsController extends Controller {
-    
+
     public function __construct() {
         $this->middleware(['auth', 'prevent.back']);
         $this->middleware('permission:hospitalizacion_acceder')->only('index');
@@ -61,7 +61,7 @@ class AppointmentsController extends Controller {
             // Si NO, usa created_at como fecha de la cita
             if (DB::getSchemaBuilder()->hasColumn('citas', 'fecha_cita')) {
                 $query->addSelect('citas.fecha_cita as appointment_date');
-                
+
                 if (DB::getSchemaBuilder()->hasColumn('citas', 'hora_cita')) {
                     $query->addSelect('citas.hora_cita as appointment_time');
                 }
@@ -106,7 +106,7 @@ class AppointmentsController extends Controller {
                     // Usar created_at si no existe fecha_cita
                     $dateTime = Carbon::parse($appointment->created_at);
                 }
-                
+
                 return [
                     'id'        => $appointment->id,
                     'title'     => $appointment->patient_name . ' - ' . $appointment->status,
@@ -158,11 +158,11 @@ class AppointmentsController extends Controller {
             if (DB::getSchemaBuilder()->hasColumn('citas', 'fecha_cita')) {
                 $query->addSelect('citas.fecha_cita as appointment_date');
             }
-            
+
             if (DB::getSchemaBuilder()->hasColumn('citas', 'hora_cita')) {
                 $query->addSelect('citas.hora_cita as appointment_time');
             }
-            
+
             if (DB::getSchemaBuilder()->hasColumn('citas', 'motivo')) {
                 $query->addSelect('citas.motivo as reason');
             }
@@ -246,39 +246,6 @@ class AppointmentsController extends Controller {
                 ->limit(10)
                 ->get();
 
-            /* 
-            // OPCIÓN 2: Si tienes 'nombre' y 'apellido' separados
-            $patients = DB::table('historias')
-                ->select([
-                    'id',
-                    'dni',
-                    DB::raw("CONCAT(nombre, ' ', apellido) as nombres")
-                ])
-                ->where(function($query) use ($term) {
-                    $query->where('dni', 'LIKE', "%{$term}%")
-                        ->orWhere('nombre', 'LIKE', "%{$term}%")
-                        ->orWhere('apellido', 'LIKE', "%{$term}%");
-                })
-                ->limit(10)
-                ->get();
-            */
-
-            /* 
-            // OPCIÓN 3: Si usas 'documento' en lugar de 'dni'
-            $patients = DB::table('historias')
-                ->select([
-                    'id',
-                    'documento as dni', // Renombrar para mantener consistencia
-                    'nombres'
-                ])
-                ->where(function($query) use ($term) {
-                    $query->where('documento', 'LIKE', "%{$term}%")
-                        ->orWhere('nombres', 'LIKE', "%{$term}%");
-                })
-                ->limit(10)
-                ->get();
-            */
-
             Log::info('Pacientes encontrados', ['count' => $patients->count()]);
 
             return response()->json($patients);
@@ -304,7 +271,7 @@ class AppointmentsController extends Controller {
         try {
             // Verificar estructura de la tabla
             $columns = DB::getSchemaBuilder()->getColumnListing('citas');
-            
+
             // Obtener algunas citas de ejemplo
             $sampleAppointments = DB::table('citas')
                 ->join('historias', 'citas.historia_id', '=', 'historias.id')
@@ -345,7 +312,7 @@ class AppointmentsController extends Controller {
             ->where('fecha', $validated['fecha'])
             ->where('fecha', $validated['hora'])
             ->count();
-		
+
 		if ($validate > 0) {
 			return response()->json([
 				'status' 	=> false,
@@ -441,7 +408,7 @@ class AppointmentsController extends Controller {
         $editUrl = e(route('emr.histories.edit', ['history' => $historyId]));
 
         // Botón de cambiar estado (solo si no está en estado 2)
-        $changeStatusButton = $statusId !== 2 
+        $changeStatusButton = $statusId !== 2
         ? '<button type="button" class="btn btn-sm btn-warning changeStatus btn-md" value="' . $appointmentId . '">
                 <i class="bi bi-check-square"></i> Cambiar estado de cita
            </button>&nbsp;'
