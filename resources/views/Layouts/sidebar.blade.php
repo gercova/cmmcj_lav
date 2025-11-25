@@ -60,14 +60,22 @@
                                     </a>
                                 </li>
                             @endcan
-
+                            @can('hospitalizacion_acceder')
                                 <li class="nav-item">
                                     <a href="{{ route('emr.hospitalizations.home') }}" class="nav-link {{ request()->routeIs('emr.hospitalizations.*') ? 'active' : '' }}">
                                         <i class="bi bi-chevron-right"></i>
                                         <p>Hospitalizaciones</p>
                                     </a>
                                 </li>
-                                
+                            @endcan
+
+                                <li class="nav-item">
+                                    <a href="{{ route('emr.appointments.home') }}" class="nav-link {{ request()->routeIs('emr.appointments.*') ? 'active' : '' }}">
+                                        <i class="bi bi-chevron-right"></i>
+                                        <p>Citas</p>
+                                    </a>
+                                </li>
+
                         </ul>
                     </li>
                 @endcan
@@ -105,14 +113,14 @@
                                     </a>
                                 </li>
                             @endcan
-
+                            @can('cama_acceder')
                                 <li class="nav-item">
                                     <a href="{{ route('maintenance.beds') }}" class="nav-link {{ request()->routeIs('maintenance.beds') ? 'active' : '' }}">
                                         <i class="bi bi-chevron-right"></i>
                                         <p>Camas</p>
                                     </a>
-                                </li>    
-
+                                </li>
+                            @endcan
                         </ul>
                     </li>
                 @endcan
