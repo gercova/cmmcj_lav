@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\Auditable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\Permission\Models\Permission as SpatiePermission;
 
 class Permission extends SpatiePermission {
-    use HasFactory;
+
+    use HasFactory, Auditable;
 
     protected $table    = 'permissions';
     protected $fillable = ['name', 'guard_name', 'submodule_id', 'descripcion'];

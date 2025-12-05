@@ -11,10 +11,13 @@ class AppointmentResource extends JsonResource
         return [
             'id'                => $this->id,
             'historia_id'       => $this->historia_id,
+            'historia'          => HistoryResource::make($this->whenLoaded('historia')),
             'estado_cita_id'    => $this->estado_cita_id,
-            'fecha'             => $this->fecha,
-            'hora'              => $this->hora, 
-            'descripcion'       => $this->descripcion,
+            'user_id'           => $this->user_id,
+            'fecha'             => $this->fecha->format('Y-m-d'),
+            'hora'              => $this->hora->format('H:i'),
+            'motivo_consulta'   => $this->motivo_consulta,
+            'observaciones'     => $this->observaciones,
         ];
     }
 }

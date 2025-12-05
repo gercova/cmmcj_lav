@@ -17,9 +17,14 @@ return new class extends Migration
             $table->foreign('historia_id')->references('id')->on('historias');
             $table->unsignedBigInteger('estado_cita_id');
             $table->foreign('estado_cita_id')->references('id')->on('estados_cita');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->date('fecha');
             $table->time('hora');
-            $table->string('descripcion');
+            $table->string('motivo_consulta')->nullable()->after('hora');
+            $table->string('observaciones')->nullable()->after('motivo_consulta');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
             $table->softDeletes();
         });

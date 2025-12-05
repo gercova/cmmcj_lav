@@ -8,6 +8,7 @@ use App\Http\Resources\AppointmentResource;
 use App\Models\Appointment;
 use App\Models\AppointmentsStatus;
 use App\Models\History;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
@@ -28,24 +29,25 @@ class AppointmentsController extends Controller {
     }
 
     public function index(): View {
-        return view('emr.appointments.index');
+        $ec = AppointmentsStatus::get();
+        return view('emr.appointments.index', compact('ec'));
     }
 
     public function getCalendarData(Request $request): JsonResponse {
         try {
             // Log para debugging
             Log::info('Request calendario recibido', [
-                'start' => $request->input('start'),
-                'end' => $request->input('end'),
-                'status' => $request->input('status')
+                'start'     => $request->input('start'),
+                'end'       => $request->input('end'),
+                'status'    => $request->input('status')
             ]);
 
-            $start = $request->input('start');
-            $end = $request->input('end');
-            $statusFilter = $request->input('status');
+            $start          = $request->input('start');
+            $end            = $request->input('end');
+            $statusFilter   = $request->input('status');
 
             // Verificar estructura de tu tabla primero
-            $query = DB::table('citas')
+            $query = Appointment::query()
                 ->join('historias', 'citas.historia_id', '=', 'historias.id')
                 ->join('estados_cita', 'citas.estado_cita_id', '=', 'estados_cita.id')
                 ->select([
@@ -55,22 +57,24 @@ class AppointmentsController extends Controller {
                     'estados_cita.descripcion as status',
                     'historias.dni',
                     'historias.nombres as patient_name'
-                ]);
+                ])
+                ->whereNull('citas.deleted_at')
+                ->whereNull('historias.deleted_at');
 
             // Si tienes los campos fecha_cita y hora_cita, úsalos
             // Si NO, usa created_at como fecha de la cita
-            if (DB::getSchemaBuilder()->hasColumn('citas', 'fecha_cita')) {
-                $query->addSelect('citas.fecha_cita as appointment_date');
+            if (DB::getSchemaBuilder()->hasColumn('citas', 'fecha')) {
+                $query->addSelect('citas.fecha as appointment_date');
 
-                if (DB::getSchemaBuilder()->hasColumn('citas', 'hora_cita')) {
-                    $query->addSelect('citas.hora_cita as appointment_time');
+                if (DB::getSchemaBuilder()->hasColumn('citas', 'hora')) {
+                    $query->addSelect('citas.hora as appointment_time');
                 }
             }
 
             // Aplicar filtros de fecha
             if ($start && $end) {
-                if (DB::getSchemaBuilder()->hasColumn('citas', 'fecha_cita')) {
-                    $query->whereBetween('citas.fecha_cita', [
+                if (DB::getSchemaBuilder()->hasColumn('citas', 'fecha')) {
+                    $query->whereBetween('citas.fecha', [
                         Carbon::parse($start)->startOfDay(),
                         Carbon::parse($end)->endOfDay()
                     ]);
@@ -144,27 +148,31 @@ class AppointmentsController extends Controller {
             $query = DB::table('citas')
                 ->join('historias', 'citas.historia_id', '=', 'historias.id')
                 ->join('estados_cita', 'citas.estado_cita_id', '=', 'estados_cita.id')
+                ->join('users', 'citas.user_id', '=', 'users.id')
                 ->select([
                     'citas.id',
                     'citas.created_at',
                     'citas.estado_cita_id as status_id',
                     'estados_cita.descripcion as status',
                     'historias.dni',
-                    'historias.nombres as patient_name'
+                    'historias.nombres as patient_name',
+                    'users.name as doctor_name',
+                    'citas.motivo_consulta as reason',
+                    'citas.observaciones as observations'
                 ])
                 ->where('citas.id', $id);
 
             // Agregar campos opcionales si existen
-            if (DB::getSchemaBuilder()->hasColumn('citas', 'fecha_cita')) {
-                $query->addSelect('citas.fecha_cita as appointment_date');
+            if (DB::getSchemaBuilder()->hasColumn('citas', 'fecha')) {
+                $query->addSelect('citas.fecha as appointment_date');
             }
 
-            if (DB::getSchemaBuilder()->hasColumn('citas', 'hora_cita')) {
-                $query->addSelect('citas.hora_cita as appointment_time');
+            if (DB::getSchemaBuilder()->hasColumn('citas', 'hora')) {
+                $query->addSelect('citas.hora as appointment_time');
             }
 
-            if (DB::getSchemaBuilder()->hasColumn('citas', 'motivo')) {
-                $query->addSelect('citas.motivo as reason');
+            if (DB::getSchemaBuilder()->hasColumn('citas', 'motivo_consulta')) {
+                $query->addSelect('citas.motivo_consulta as reason');
             }
 
             if (DB::getSchemaBuilder()->hasColumn('historias', 'telefono')) {
@@ -175,6 +183,14 @@ class AppointmentsController extends Controller {
                 $query->addSelect('historias.email');
             }
 
+            if (DB::getSchemaBuilder()->hasColumn('users', 'name')) {
+                $query->addSelect('users.name as doctor_name');
+            }
+
+            if (DB::getSchemaBuilder()->hasColumn('citas', 'observaciones')) {
+                $query->addSelect('citas.observaciones as observations');
+            }
+
             $appointment = $query->first();
 
             if (!$appointment) {
@@ -183,15 +199,16 @@ class AppointmentsController extends Controller {
 
             // Formatear respuesta
             $response = [
-                'id' => $appointment->id,
-                'patient_name' => $appointment->patient_name,
-                'dni' => $appointment->dni,
-                'phone' => $appointment->phone ?? 'No registrado',
-                'email' => $appointment->email ?? 'No registrado',
-                'status_id' => $appointment->status_id,
-                'status' => $appointment->status,
-                'doctor_name' => 'No asignado',
-                'reason' => $appointment->reason ?? 'Sin especificar',
+                'id'            => $appointment->id,
+                'patient_name'  => $appointment->patient_name,
+                'dni'           => $appointment->dni,
+                'phone'         => $appointment->phone ?? 'No registrado',
+                'email'         => $appointment->email ?? 'No registrado',
+                'status_id'     => $appointment->status_id,
+                'status'        => $appointment->status,
+                'doctor_name'   => $appointment->doctor_name ?? 'No asignado',
+                'reason'        => $appointment->reason ?? 'Sin especificar',
+                'observations'  => $appointment->observations ?? 'Sin observaciones',
             ];
 
             // Formatear fecha y hora
@@ -264,6 +281,11 @@ class AppointmentsController extends Controller {
         }
     }
 
+    public function getDoctorsList(): JsonResponse {
+        $results = User::where('especialidad_id', '2')->get();
+        return response()->json($results, 200);
+    }
+
     /**
      * Método de prueba para verificar datos
      */
@@ -322,7 +344,7 @@ class AppointmentsController extends Controller {
 		}
 
         try {
-            $result = Appointment::updateOrCreate(['id' => $request->input('cita_id')], $validated);
+            $result = Appointment::updateOrCreate(['id' => $request->input('id')], $validated);
             DB::commit();
             return response()->json([
                 'status'    => true,
@@ -349,7 +371,8 @@ class AppointmentsController extends Controller {
 	}
 
     public function show(Appointment $appointment): JsonResponse {
-        return response()->json(AppointmentResource::make($appointment));
+        $appointment->load('historia');
+        return response()->json(AppointmentResource::make($appointment), 200);
     }
 
     public function getQuotes(): JsonResponse  {

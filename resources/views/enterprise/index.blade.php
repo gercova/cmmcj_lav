@@ -1,5 +1,5 @@
 @extends('layouts.skelenton')
-@section('title', config('global.site_name').' - Actualizar Datos de Empresa') <!-- Título dinámico -->
+@section('title', config('global.site_name').' - Empresa') <!-- Título dinámico -->
 @section('content')
 <div class="content-wrapper">
     <div class="content-header">
@@ -35,11 +35,11 @@
                             <div class="col-5 col-sm-3">
                                 <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
                                     <a class="nav-link active" id="vert-tabs-home-tab" data-toggle="pill" href="#vert-tabs-home" role="tab" aria-controls="vert-tabs-home" aria-selected="true">Actualizar información general</a>
-                                    
+
                                     <a class="nav-link" id="vert-tabs-representante-tab" data-toggle="pill" href="#vert-tabs-representante" role="tab" aria-controls="vert-tabs-representante" aria-selected="false">Actualizar foto representante legal</a>
 
                                     <a class="nav-link" id="vert-tabs-logo-tab" data-toggle="pill" href="#vert-tabs-logo" role="tab" aria-controls="vert-tabs-logo" aria-selected="false">Actualizar logo</a>
-                                    
+
                                     <a class="nav-link" id="vert-tabs-logo-min-tab" data-toggle="pill" href="#vert-tabs-logo-min" role="tab" aria-controls="vert-tabs-logo-min" aria-selected="false">Actualizar miniatura</a>
                                 </div>
                             </div>
@@ -158,7 +158,7 @@
                                             </div>
                                         </form>
                                     </div>
-                                    
+
                                     <div class="tab-pane fade" id="vert-tabs-logo" role="tabpanel" aria-labelledby="vert-tabs-logo-tab">
                                         <form id="logoForm" method="post" enctype="multipart/form-data">
                                             @csrf

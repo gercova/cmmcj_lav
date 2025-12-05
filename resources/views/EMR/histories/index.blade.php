@@ -1,5 +1,5 @@
 @extends('layouts.skelenton')
-@section('title', config('global.site_name').' - Actualizar Datos de Empresa')
+@section('title', config('global.site_name').' - Historias')
 @section('content')
 <div class="content-wrapper">
     <div class="content-header">

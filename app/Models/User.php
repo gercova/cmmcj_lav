@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Traits\Auditable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,12 +15,14 @@ use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable {
-    
-    use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes;
 
-    protected $guarded  = [];
-    protected $hidden   = ['password', 'remember_token'];
-    protected $casts    = ['email_verified_at' => 'datetime'];
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes, Auditable;
+
+    protected $table        = 'users';
+    protected $primaryKey   = 'id';
+    protected $fillable     = ['name', 'username', 'avatar', 'email', 'perfil_id', 'especialidad_id'];
+    protected $hidden       = ['password', 'remember_token'];
+    protected $casts        = ['email_verified_at' => 'datetime'];
 
     public function getProfilePhotoUrlAttribute() {
         // URL externa
@@ -36,7 +40,7 @@ class User extends Authenticatable {
     public function getFormattedNameAttribute() {
         if (empty($this->name)) return '';
         $parts = array_filter(explode(' ', $this->name));
-        
+
         switch (count($parts)) {
             case 0:
                 return '';

@@ -1,4 +1,5 @@
 @extends('layouts.skelenton')
+@section('title', config('global.site_name').' - Reportes') <!-- Título dinámico -->
 @section('content')
 <div class="content-wrapper">
     <div class="content-header">
@@ -87,7 +88,7 @@
                         </div>
                         <div class="card-body">
                             <div id="diagnosisByExams" style="margin: 0 auto"></div>
-                        </div>        
+                        </div>
                     </div>
                 </div>
                 <div class="col-6">
@@ -97,7 +98,7 @@
                         </div>
                         <div class="card-body">
                             <div id="medicationsByExams" style="margin: 0 auto"></div>
-                        </div>        
+                        </div>
                     </div>
                 </div>
             </div>
@@ -107,7 +108,7 @@
                         <div class="card-body">
                             <div id="historiesBySex" style="margin: 0 auto"></div>
                         </div>
-                    </div> 
+                    </div>
                 </div>-->
                 <div class="col-4">
                     <div class="card">

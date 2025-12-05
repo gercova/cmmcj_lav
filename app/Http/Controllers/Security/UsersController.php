@@ -30,22 +30,26 @@ class UsersController extends Controller {
         $this->middleware('permission:usuario_guardar')->only('store');
 		$this->middleware('permission:usuario_borrar')->only('destroy');
     }
-    
+
     public function index(): View {
         return view('security.user.index');
     }
 
     public function new(): View {
         $rl = Role::all();
-        $sp = Specialty::all();
+        $sp = Specialty::join('ocupaciones as o', 'especialidades.ocupacion_id', '=', 'o.id')
+            ->selectRaw('especialidades.id, especialidades.descripcion as especialidad, o.descripcion as ocupacion')
+            ->get();
         return view('security.user.new', compact('rl', 'sp'));
     }
 
     public function edit(User $user): View {
         $rl = Role::all();
         $ur = DB::table('model_has_roles')->where('model_id', $user->id)->get();
-        $sp = Specialty::all();
-        return view('security.user.edit', compact('user', 'rl', 'ur', 'sp'));   
+        $sp = Specialty::join('ocupaciones as o', 'especialidades.ocupacion_id', '=', 'o.id')
+            ->selectRaw('especialidades.id, especialidades.descripcion as especialidad, o.descripcion as ocupacion')
+            ->get();
+        return view('security.user.edit', compact('user', 'rl', 'ur', 'sp'));
     }
 
     public function role(User $user): View {
@@ -188,7 +192,7 @@ class UsersController extends Controller {
         $validated      = $request->validated();
         $user->password = Hash::make($validated['password']);
         $user->save();
-        
+
         return response()->json([
             'status'    => true,
             'type'      => 'success',
@@ -202,7 +206,7 @@ class UsersController extends Controller {
         $permissions = $request->permissions ?: [];
         // Sincronizar permisos directos
         $user->syncPermissions($permissions);
-        
+
         return response()->json([
             'success' => true,
             'message' => 'Permisos actualizados correctamente'
@@ -226,7 +230,7 @@ class UsersController extends Controller {
 
     private function cleanFileName($filename) {
         // Remover caracteres especiales y espacios
-        $clean = preg_replace('/[^a-zA-Z0-9._-]/', '_', $filename); 
+        $clean = preg_replace('/[^a-zA-Z0-9._-]/', '_', $filename);
         // Limitar longitud del nombre
         $clean = substr($clean, 0, 100);
         return $clean;
@@ -236,9 +240,9 @@ class UsersController extends Controller {
         $nickname   = '';
         $count      = mb_substr_count($name, ' ');
         $positionW  = explode(' ', $name);
-    
-        if ($count == 1) { 
-            $w = substr($positionW[0], 0, -3); 
+
+        if ($count == 1) {
+            $w = substr($positionW[0], 0, -3);
             $nickname = $w . $positionW[1];
         } elseif ($count == 2) {
             $nickname = $positionW[0][0] . $positionW[1] . $positionW[2][0];

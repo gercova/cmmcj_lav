@@ -53,7 +53,7 @@
                                             <select class="form-control" id="especialidad_id" name="especialidad_id">
                                                 <option value="">-- Seleccione --</option>
                                                 @foreach ($sp as $s)
-                                                    <option value="{{ $s->id }}" {{ old('especialidad_id') == $s->id ? 'selected' : '' }}>{{ $s->descripcion }}</option> 
+                                                    <option value="{{ $s->id }}" {{ old('especialidad_id') == $s->id ? 'selected' : '' }}>{{ $s->especialidad.' - '.$s->ocupacion }}</option> 
                                                 @endforeach
                                             </select>
                                         </div>

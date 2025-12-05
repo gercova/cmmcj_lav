@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Auditable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Diagnosis extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, Auditable;
 
     protected $table        = 'diagnosticos';
     protected $primaryKey   = 'id';
@@ -26,7 +27,7 @@ class Diagnosis extends Model
     public static function getAllDiagnostics($startIndex, $pageSize, $itemSearch) {
         $query = Diagnosis::where('codigo', 'like', "%{$itemSearch}%")
             ->orWhere('descripcion', 'like', "%{$itemSearch}%");
-        
+
         $count      = $query->count();
         $results    = $query->offset($startIndex)
             ->limit($pageSize)

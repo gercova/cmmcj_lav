@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AuditController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Business\EnterpriseController;
 use App\Http\Controllers\EMR\AppointmentsController;
@@ -35,6 +36,14 @@ Route::middleware(['prevent.cache'])->group(function(){
     Route::post('/logout',  [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 });
 
+Route::middleware(['auth'])->group(function () {
+    Route::prefix('audit')->name('audit.')->group(function () {
+        Route::get('/',             [AuditController::class, 'index'])->name('index');
+        Route::get('/{auditLog}',   [AuditController::class, 'show'])->name('show');
+        Route::post('/export',      [AuditController::class, 'export'])->name('export');
+    });
+});
+
 Route::middleware(['auth', 'prevent.back'])->group(function(){
     Route::get('/sys/home',                         [HomeController::class, 'index'])->name('home');
     // Dashboard
@@ -61,25 +70,16 @@ Route::middleware(['auth', 'prevent.back'])->group(function(){
     Route::delete('/sys/histories/{history}',       [HistoriesController::class, 'destroy']);
     // Citas
     Route::get('/sys/appointments',                 [AppointmentsController::class, 'index'])->name('emr.appointments.home');
-    
     // Obtener datos del calendario (para FullCalendar)
-    Route::get('/appointments/calendar/data',       [AppointmentsController::class, 'getCalendarData'])->name('appointments.calendar.data');
-    
+    Route::get('/sys/appointments/calendar/data',   [AppointmentsController::class, 'getCalendarData']);
     // Obtener detalles de una cita específica
-    Route::get('/appointments/{id}/details',        [AppointmentsController::class, 'getAppointmentDetails'])->name('appointments.details');
-    
-    // Obtener estadísticas del día (opcional)
-    Route::get('/appointments/stats/today',         [AppointmentsController::class, 'getTodayStats'])->name('appointments.stats.today');
-    
+    Route::get('/sys/appointments/{id}/details',    [AppointmentsController::class, 'getAppointmentDetails']);
     // Buscar pacientes
-    Route::get('/patients/search',                  [AppointmentsController::class, 'searchPatients'])->name('patients.search');
-    
+    Route::get('/sys/ap/patients-search',           [AppointmentsController::class, 'searchPatients']);
     // Obtener lista de doctores
-    Route::get('/doctors/list',                     [AppointmentsController::class, 'getDoctorsList'])->name('doctors.list');
-    
+    Route::get('/sys/ap/doctors-list',              [AppointmentsController::class, 'getDoctorsList']);
     // Guardar nueva cita
-    Route::post('/appointments',                    [AppointmentsController::class, 'store'])->name('appointments.store');
-    
+    Route::post('/sys/appointments/store',          [AppointmentsController::class, 'store']);
     // Ruta de prueba para verificar datos (TEMPORAL - eliminar en producción)
     Route::get('/appointments/test-data',           [AppointmentsController::class, 'testData'])->name('appointments.test.data');
 
@@ -88,9 +88,10 @@ Route::middleware(['auth', 'prevent.back'])->group(function(){
     Route::get('/sys/appointments/listStatus',      [AppointmentsController::class, 'listStatus']);
     Route::get('/sys/appointments/{appointment}',   [AppointmentsController::class, 'show']);
     Route::post('/sys/appointments/store',          [AppointmentsController::class, 'store']);
+    Route::post('/sys/appointments/{appointment}', [AppointmentsController::class, 'update']); // Con _method=PUT
     Route::get('/sys/appointments/changeStatus/{id}', [AppointmentsController::class, 'checkAppointmentsStatus']);
-    Route::delete('/sys/appointments/destroy',      [AppointmentsController::class, 'destroy']);
-    // Exámenes 
+    Route::delete('/sys/appointments/destroy/{appointment}', [AppointmentsController::class, 'destroy']);
+    // Exámenes
     Route::get('/sys/exams',                        [ExamsController::class, 'index'])->name('emr.exams.home');
     Route::get('/sys/exams/new/{history}',          [ExamsController::class, 'new'])->name('emr.exams.new');
     Route::get('/sys/exams/edit/{exam}',            [ExamsController::class, 'edit'])->name('emr.exams.edit');
@@ -140,7 +141,7 @@ Route::middleware(['auth', 'prevent.back'])->group(function(){
     Route::post('/sys/appx/store',                  [AppointmentsController::class, 'store']);
     Route::post('/sys/appx/list',                   [AppointmentsController::class, 'list']);
     Route::delete('/sys/appx/{appointment}',        [AppointmentsController::class, 'destroy']);
-    // Fármacos 
+    // Fármacos
     Route::get('/sys/drugs',                        [DrugsController::class, 'index'])->name('maintenance.drugs');
     Route::get('/sys/drugs/list',                   [DrugsController::class, 'list']);;
     Route::post('/sys/drugs/store',                 [DrugsController::class, 'store']);

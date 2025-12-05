@@ -11,6 +11,11 @@
         <li class="nav-item">
             <a class="nav-link user-names" href="" role="button"></a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" href="#" role="button">
+                <i class="bi bi-list-columns-reverse"></i> Eventos
+            </a>
+        </li>
     </ul>
 </nav>
 <!-- /.navbar -->

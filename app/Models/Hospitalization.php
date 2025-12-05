@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Auditable;
 use Database\Factories\HospitalizationFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,15 +11,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Hospitalization extends Model {
 
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, Auditable;
 
     protected $table        = 'hospitalizaciones';
     protected $primaryKey   = 'id';
     protected $fillable     = [
-        'historia_id', 
-        'cama_id', 
-        'fc', 
-        't', 
+        'historia_id',
+        'cama_id',
+        'fc',
+        't',
         'so2',
         'fecha_admision',
         'tipo_admision_id',
@@ -46,9 +47,9 @@ class Hospitalization extends Model {
 
     protected $casts = [
         'historia_id'               => 'integer',
-        'cama_id'                   => 'integer', 
-        'fc'                        => 'string', 
-        't'                         => 'string', 
+        'cama_id'                   => 'integer',
+        'fc'                        => 'string',
+        't'                         => 'string',
         'so2'                       => 'string',
         'fecha_admision'            => 'date',
         'tipo_admision_id'          => 'integer',

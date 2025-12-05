@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 
 class AuthController extends Controller {
-    
+
     public function showLoginForm() {
         $enterprise = Enterprise::first();
         return view('auth.login', compact('enterprise'));
@@ -29,8 +29,8 @@ class AuthController extends Controller {
             if (isset($user->is_active) && !$user->is_active) {
                 Auth::logout();
                 return response()->json([
-                    'status' => false,
-                    'message' => 'Tu cuenta está desactivada.'
+                    'status'    => false,
+                    'message'   => 'Tu cuenta está desactivada.'
                 ], 403);
             }
 

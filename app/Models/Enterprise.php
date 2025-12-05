@@ -2,17 +2,18 @@
 
 namespace App\Models;
 
+use App\Traits\Auditable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Enterprise extends Model
 {
-    use HasFactory;
+    use HasFactory, Auditable;
 
     protected $table        = 'empresa';
     protected $primaryKey   = 'id';
     protected $fillable     = ['ruc', 'razon_social', 'nombre_comercial', 'rubro_empresa', 'codigo_pais', 'telefono_comercial', 'email_comercial', 'pais', 'ciudad', 'direccion', 'pagina_web', 'representante_legal', 'foto_representante', 'logo_miniatura', 'logo_principal', 'frase_empresa', 'fecha_creacion'];
-    
+
     protected $casts        = [
         'ruc'                   => 'string',
         'razon_social'          => 'string',

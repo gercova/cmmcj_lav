@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class HospitalizationsController extends Controller {
-    
+
     public function __construct(){
         $this->middleware(['auth', 'prevent.back']);
         $this->middleware([]);
@@ -148,7 +148,7 @@ class HospitalizationsController extends Controller {
     }
 
     public function show(Hospitalization $hospitalization): JsonResponse {
-        $hospitalization->load('historias');
+        $hospitalization->load('historia');
         return response()->json(HospitalizationResource::make($hospitalization), 200);
     }
 
@@ -183,7 +183,7 @@ class HospitalizationsController extends Controller {
                 ]);
 
         $filename = "inform-hospitalizacion-{$id}-" . ".pdf";
-        
+
         return $pdf->stream($filename);
 
     }

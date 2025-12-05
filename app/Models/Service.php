@@ -10,10 +10,10 @@ class Service extends Model
 {
     use HasFactory;
 
-    protected $table = 'servicio';
-    protected $primaryKey = 'id';
-    protected $fillable = ['nombre'];
-    public $timestamps = false;
+    protected $table        = 'servicio';
+    protected $primaryKey   = 'id';
+    protected $fillable     = ['nombre'];
+    public $timestamps      = false;
 
     public function Hospitalizacion(): HasMany {
         return $this->hasMany(Hospitalization::class, 'servicio_id');

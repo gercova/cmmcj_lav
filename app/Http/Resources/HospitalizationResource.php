@@ -15,12 +15,12 @@ class HospitalizationResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'history_id'        => HistoryResource::collection($this->whenLoaded('historias')), 
-            'bed_id'            => BedResource::collection($this->whenLoaded('beds')), 
+            'history_id'        => HistoryResource::collection($this->whenLoaded('historias')),
+            'bed_id'            => BedResource::collection($this->whenLoaded('beds')),
             'fc'                => $this->fc,
-            't'                 => $this->t, 
-            'so2'               => $this->so2, 
-            'vital_functions'   => $this->vital_functions, 
+            't'                 => $this->t,
+            'so2'               => $this->so2,
+            'vital_functions'   => $this->vital_functions,
             'observations'      => $this->observations,
             'others'            => $this->others,
         ];

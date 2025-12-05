@@ -11,10 +11,10 @@ class Profile extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'perfiles';
-    protected $primaryKey = 'id';
-    protected $fillable = ['descrpcion'];
-    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
+    protected $table        = 'perfiles';
+    protected $primaryKey   = 'id';
+    protected $fillable     = ['descrpcion'];
+    protected $dates        = ['created_at', 'updated_at', 'deleted_at'];
 
     public function usuario(): HasMany {
         return $this->hasMany(User::class, 'perfil_id');

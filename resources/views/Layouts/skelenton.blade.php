@@ -99,6 +99,8 @@
         @yield('content')
         <!-- Footer -->
         @include('layouts.footer', $enterprise)
+        <!-- Sidebar right-->
+        @include('layouts.sidebar-dark');
     </div>
     <div class="modal fade" id="modal-default" tabindex="-1" aria-modal="true" role="dialog" data-backdrop="static" aria-labelledby="staticBackdropLabel">
         <div class="modal-dialog modal-lg">
@@ -118,7 +120,7 @@
         </div>
     </div>
     <!-- Modal citas -->
-    <div class="modal fade" id="appointmentModal" tabindex="-1" aria-modal="true" role="dialog" data-backdrop="static" aria-labelledby="staticBackdropLabel">
+    <div class="modal fade" id="appointmenDefaultModal" tabindex="-1" aria-modal="true" role="dialog" data-backdrop="static" aria-labelledby="staticBackdropLabel">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">

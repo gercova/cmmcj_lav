@@ -17,7 +17,7 @@ $(document).ready(function(){
         $('#occupationForm').trigger('reset');
 		$('.form-control').removeClass('is-invalid is-valid');
 		$('.text-danger').remove();
-        $('#ocupationId').val(null);
+        $('#id').val(null);
         $('.modal-title').text('Agregar Ocupación');
         $('#modalOccupation').modal('show');
     });

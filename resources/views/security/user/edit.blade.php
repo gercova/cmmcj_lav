@@ -63,7 +63,7 @@
                                                         <select class="form-control" id="role_id" name="role_id">
                                                             <option value="">-- Seleccione --</option>
                                                             @foreach ($rl as $r)
-                                                                <option value="{{ $r->id }}" {{ $ur[0]->role_id == $r->id ? 'selected' : '' }}>{{ $r->name }}</option> 
+                                                                <option value="{{ $r->id }}" {{ $ur[0]->role_id == $r->id ? 'selected' : '' }}>{{ $r->name }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
@@ -74,7 +74,7 @@
                                                         <select class="form-control" id="especialidad_id" name="especialidad_id">
                                                             <option value="">-- Seleccione --</option>
                                                             @foreach ($sp as $s)
-                                                                <option value="{{ $s->id }}" {{ $user->especialidad_id == $s->id ? 'selected' : '' }}>{{ $s->descripcion }}</option> 
+                                                                <option value="{{ $s->id }}" {{ $user->especialidad_id == $s->id ? 'selected' : '' }}>{{ $s->especialidad.' - '.$s->ocupacion }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
@@ -109,8 +109,8 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <div class="alert alert-warning" role="alert">
-                                                        <i class="bi bi-exclamation-triangle-fill"></i> 
-                                                        <strong>Advertencia:</strong> 
+                                                        <i class="bi bi-exclamation-triangle-fill"></i>
+                                                        <strong>Advertencia:</strong>
                                                         Al cambiar la contraseña, se perderá el acceso al sistema. Por favor, asegúrese de recordar la nueva contraseña.
                                                     </div>
                                                     <label for="password">Nueva contraseña: </label>
