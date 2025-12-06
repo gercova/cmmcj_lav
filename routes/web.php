@@ -31,7 +31,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware(['prevent.cache'])->group(function(){
-    Route::get('/login',    [AuthController::class, 'showLoginForm'])->name('login')->middleware('guest');
+    Route::get('/',         [AuthController::class, 'showLoginForm'])->middleware('guest');
     Route::post('/login',   [AuthController::class, 'login'])->middleware('guest');
     Route::post('/logout',  [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 });
