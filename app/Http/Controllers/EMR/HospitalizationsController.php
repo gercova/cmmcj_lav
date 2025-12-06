@@ -37,7 +37,7 @@ class HospitalizationsController extends Controller {
     }
 
     public function index(): View {
-        return view('EMR.hospitalizations.index');
+        return view('emr.hospitalizations.index');
     }
 
     public function new(History $history): View {
@@ -168,7 +168,7 @@ class HospitalizationsController extends Controller {
         $user       = User::find($hsp->user_id);
         $en         = Enterprise::findOrFail(1);
 
-		$pdf = PDF::loadView('EMR.hospitalizations.pdf-a4', compact('hc', 'hsp', 'user', 'en'));
+		$pdf = PDF::loadView('emr.hospitalizations.pdf-a4', compact('hc', 'hsp', 'user', 'en'));
             $pdf->setPaper('a4', 'portrait')
                 ->setOptions([
                     'margin_top'            => 10,

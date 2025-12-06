@@ -140,7 +140,7 @@ class ExamsController extends Controller {
                 htmlspecialchars(route('emr.exams.edit', ['exam' => $id]), ENT_QUOTES, 'UTF-8')
             );
         }
-        
+
         if ($canDelete) {
             $buttons[] = sprintf(
                 '<button type="button" class="btn btn-danger delete-exam btn-xs" value="%s"><i class="bi bi-trash"></i> Eliminar</button>&nbsp;',
@@ -156,7 +156,7 @@ class ExamsController extends Controller {
                 <ul class="dropdown-menu">'.implode('', $buttonsExtra).'</ul>
             </div>';
         }
-        
+
         return $html;
     }
 
@@ -164,7 +164,7 @@ class ExamsController extends Controller {
         $user       = auth()->user();
         $canEdit    = $user->can('examen_editar');
         $canDelete  = $user->can('examen_borrar');
-        
+
         // Filtrar solo exámenes que tienen examen de sangre
         $results = Exam::with(['examenSangre' => function($query) {
                 $query->whereNull('deleted_at');
@@ -172,11 +172,11 @@ class ExamsController extends Controller {
             ->where('historia_id', $history->id)
             ->whereHas('examenSangre') // ¡ESTA ES LA CLAVE!
             ->get();
-        
+
         $data = $results->map(function($item, $key) use ($canEdit, $canDelete) {
             // Verificar adicionalmente que tenga examenes de sangre
             if ($item->examenSangre->isEmpty()) return null; // Saltar este item
-            
+
             $list = '<table class="table table-sm">';
             foreach ($item->examenSangre as $e) {
                 // Botones para cada examen de sangre con permisos
@@ -185,30 +185,30 @@ class ExamsController extends Controller {
                     '<a href="%s" class="btn btn-sm btn-info btn-sm" target="_blank"><i class="bi bi-file-earmark-pdf"></i></a>&nbsp;',
                     htmlspecialchars(route('emr.exams.print-bt', ['bt' => $e->id]), ENT_QUOTES, 'UTF-8')
                 );
-                
+
                 if ($canEdit) {
                     $actionButtons .= sprintf(
                         '<button class="btn btn-sm btn-warning update-row-bt btn-sm" value="%s"><i class="bi bi-pencil-square"></i></button>&nbsp;',
                         $e->id
                     );
                 }
-                
+
                 if ($canDelete) {
                     $actionButtons .= sprintf(
                         '<button class="btn btn-sm btn-danger delete-bt btn-sm" value="%s"><i class="bi bi-trash"></i></button>',
                         $e->id
                     );
                 }
-                
+
                 $list .= sprintf(
                     '<tr><td><span class="badge badge-success">%s</span></td><td>%s</td></tr>',
                     $e->created_at->format('Y-m-d H:i:s'),
                     $actionButtons
                 );
             }
-            
+
             $list .= '</table>';
-            
+
             return [
                 $key + 1,
                 $list,
@@ -229,7 +229,7 @@ class ExamsController extends Controller {
         $user       = auth()->user();
         $canEdit    = $user->can('examen_editar');
         $canDelete  = $user->can('examen_borrar');
-        
+
         // Filtrar solo exámenes que tienen examen de sangre
         $results = Exam::with(['examenOrina' => function($query) {
                 $query->whereNull('deleted_at');
@@ -237,11 +237,11 @@ class ExamsController extends Controller {
             ->where('historia_id', $history->id)
             ->whereHas('examenOrina') // ¡ESTA ES LA CLAVE!
             ->get();
-        
+
         $data = $results->map(function($item, $key) use ($canEdit, $canDelete) {
             // Verificar adicionalmente que tenga examenes de sangre
             if ($item->examenOrina->isEmpty()) return null; // Saltar este item
-            
+
             $list = '<table class="table table-sm">';
             foreach ($item->examenOrina as $e) {
                 // Botones para cada examen de sangre con permisos
@@ -250,21 +250,21 @@ class ExamsController extends Controller {
                     '<a href="%s" class="btn btn-sm btn-info btn-sm" target="_blank"><i class="bi bi-file-earmark-pdf"></i></a>&nbsp;',
                     htmlspecialchars(route('emr.exams.print-ut', ['ut' => $e->id]), ENT_QUOTES, 'UTF-8')
                 );
-                
+
                 if ($canEdit) {
                     $actionButtons .= sprintf(
                         '<button class="btn btn-sm btn-warning update-row-ut btn-sm" value="%s"><i class="bi bi-pencil-square"></i></button>&nbsp;',
                         $e->id
                     );
                 }
-                
+
                 if ($canDelete) {
                     $actionButtons .= sprintf(
                         '<button class="btn btn-sm btn-danger delete-ut btn-sm" value="%s"><i class="bi bi-trash"></i></button>',
                         $e->id
                     );
                 }
-                
+
                 $list .= sprintf(
                     '<tr>
                         <td><span class="badge badge-success">%s</span></td>
@@ -274,9 +274,9 @@ class ExamsController extends Controller {
                     $actionButtons
                 );
             }
-            
+
             $list .= '</table>';
-            
+
             return [
                 $key + 1,
                 $list,
@@ -297,7 +297,7 @@ class ExamsController extends Controller {
         $user       = auth()->user();
         $canEdit    = $user->can('examen_editar');
         $canDelete  = $user->can('examen_borrar');
-        
+
         // Filtrar solo exámenes que tienen examen de sangre
         $results = Exam::with(['examenHeces' => function($query) {
                 $query->whereNull('deleted_at');
@@ -305,11 +305,11 @@ class ExamsController extends Controller {
             ->where('historia_id', $history->id)
             ->whereHas('examenHeces') // ¡ESTA ES LA CLAVE!
             ->get();
-        
+
         $data = $results->map(function($item, $key) use ($canEdit, $canDelete) {
             // Verificar adicionalmente que tenga examenes de sangre
             if ($item->examenHeces->isEmpty()) return null; // Saltar este item
-            
+
             $list = '<table class="table table-sm">';
             foreach ($item->examenHeces as $e) {
                 // Botones para cada examen de sangre con permisos
@@ -318,30 +318,30 @@ class ExamsController extends Controller {
                     '<a href="%s" class="btn btn-sm btn-info btn-sm" target="_blank"><i class="bi bi-file-earmark-pdf"></i></a>&nbsp;',
                     htmlspecialchars(route('emr.exams.print-st', ['st' => $e->id]), ENT_QUOTES, 'UTF-8')
                 );
-                
+
                 if ($canEdit) {
                     $actionButtons .= sprintf(
                         '<button class="btn btn-sm btn-warning update-row-st btn-sm" value="%s"><i class="bi bi-pencil-square"></i></button>&nbsp;',
                         $e->id
                     );
                 }
-                
+
                 if ($canDelete) {
                     $actionButtons .= sprintf(
                         '<button class="btn btn-sm btn-danger delete-st btn-sm" value="%s"><i class="bi bi-trash"></i></button>',
                         $e->id
                     );
                 }
-                
+
                 $list .= sprintf(
                     '<tr><td><span class="badge badge-success">%s</span></td><td>%s</td></tr>',
                     $e->created_at->format('Y-m-d H:i:s'),
                     $actionButtons
                 );
             }
-            
+
             $list .= '</table>';
-            
+
             return [
                 $key + 1,
                 $list,
@@ -612,19 +612,19 @@ class ExamsController extends Controller {
         );
 
         $data = array_merge($validated, $processedFields);
-        
+
         DB::beginTransaction();
         try {
             $result = BloodTest::updateOrCreate(['id' => $request->input('examen_sangre_id')], $data);
             DB::commit();
-            
+
             return response()->json([
                 'status'    => true,
                 'type'      => 'success',
                 'message'   => $result->wasRecentlyCreated ? 'Examen guardado correctamente' : 'Examen actualizado correctamente',
                 'route_print' => route('emr.exams.print-bt', $result->id),
             ], 200);
-            
+
         } catch (\Exception $th) {
             DB::rollBack();
             return response()->json([
@@ -770,7 +770,7 @@ class ExamsController extends Controller {
         ]);
 
         $filename = "receta-medica-examen-{$id}-" . strtoupper($format) . ".pdf";
-        
+
         return $pdf->stream($filename);
     }
 
@@ -823,7 +823,7 @@ class ExamsController extends Controller {
     public function printBloodTest(BloodTest $bt) {
         $en = Enterprise::findOrFail(1);
         // Configurar PDF según formato
-        $pdf = PDF::loadView('EMR.exams.pdf-bt', compact('bt', 'en'));
+        $pdf = PDF::loadView('emr.exams.pdf-bt', compact('bt', 'en'));
         $pdf->setPaper('a4', 'portrait')
             ->setOptions([
                 'margin_top' 	        => 10,
@@ -836,7 +836,7 @@ class ExamsController extends Controller {
                 'isPhpEnabled'          => false,
                 'chroot'                => realpath(base_path()),
             ]);
-        
+
         $filename = "examen-sangre-{$bt->id}-{$bt->created_at->format('Y-m-d')}.pdf";
         return $pdf->stream($filename);
     }
@@ -844,7 +844,7 @@ class ExamsController extends Controller {
     public function printUrineTest(UrineTest $ut) {
         $en = Enterprise::findOrFail(1);
         // Configurar PDF según formato
-        $pdf = PDF::loadView('EMR.exams.pdf-ut', compact('ut', 'en'));
+        $pdf = PDF::loadView('emr.exams.pdf-ut', compact('ut', 'en'));
         $pdf->setPaper('a4', 'portrait')
             ->setOptions([
                 'fontDefault'           => 'sans-serif',
@@ -853,7 +853,7 @@ class ExamsController extends Controller {
                 'isPhpEnabled'          => false,
                 'chroot'                => realpath(base_path()),
             ]);
-        
+
         $filename = "examen-orina-{$ut->id}-{$ut->created_at->format('Y-m-d')}.pdf";
         return $pdf->stream($filename);
     }
@@ -861,7 +861,7 @@ class ExamsController extends Controller {
     public function printStoolTest(StoolTest $st) {
         $en = Enterprise::findOrFail(1);
         // Configurar PDF según formato
-        $pdf = PDF::loadView('EMR.exams.pdf-st', compact('st', 'en'));
+        $pdf = PDF::loadView('emr.exams.pdf-st', compact('st', 'en'));
         $pdf->setPaper('a4', 'portrait')
             ->setOptions([
                 'fontDefault'           => 'sans-serif',
@@ -870,7 +870,7 @@ class ExamsController extends Controller {
                 'isPhpEnabled'          => false,
                 'chroot'                => realpath(base_path()),
             ]);
-        
+
         $filename = "examen-heces-{$st->id}-{$st->created_at->format('Y-m-d')}.pdf";
         return $pdf->stream($filename);
     }
