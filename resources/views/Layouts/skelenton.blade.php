@@ -68,11 +68,13 @@
     <script src="{{ asset('plugins/datepicker/moment.min.js') }}"></script>
     <script src="{{ asset('plugins/datepicker/es.min.js') }}"></script>
     <script src="{{ asset('plugins/datepicker/tempusdominus-bootstrap-4.min.js') }}"></script>
+    <!-- Nombre del usuario que inició la sesión -->
+    <meta name="user-name" content="{{ auth()->check() ? auth()->user()->name : 'Usuario' }}">
     <script>
-        const API_URL = "{{ url('/') }}";
-        const NAME_ENTERPRISE = "{{ $enterprise->nombre_comercial }}";
-        const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        const anio = new Date().getFullYear();
+        const API_URL           = "{{ url('/') }}";
+        const NAME_ENTERPRISE   = "{{ $enterprise->nombre_comercial }}";
+        const token             = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        const anio              = new Date().getFullYear();
     </script>
     <!-- Hightcharts -->
     <!-- Extras -->

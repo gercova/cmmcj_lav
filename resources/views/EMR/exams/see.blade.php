@@ -59,7 +59,7 @@
                                                 </li>
                                             </ul>
                                         </div>
-                                        
+
                                         <div class="card-body">
                                             <div class="tab-content" id="custom-tabs-one-tabContent">
                                                 <div class="tab-pane fade active show" id="exams" role="tabpanel" aria-labelledby="tab-exams">
@@ -121,7 +121,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                                 <div class="tab-pane fade" id="stooltest" role="tabpanel" aria-labelledby="tab-stooltest">
                                                     <div class="row">
                                                         <div class="col-md-12">
@@ -141,12 +140,11 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>    
+                            </div>
                         </div>
                     </div>
                 </div>

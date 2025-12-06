@@ -51,12 +51,12 @@ function generateExamForm(examType, examData = null) {
             <input type="hidden" name="historia_id" id="historia_id" value="${examData?.historia_id || ''}">
             <input type="hidden" name="examen_id" id="examen_id" value="${examData?.examen_id || ''}">
     `;
-    
+
     // Agregar campos ocultos específicos
     config.hiddenFields.forEach(field => {
         formHTML += `<input type="hidden" name="${field}" id="${field}" value="${examData?.[field] || ''}">`;
     });
-    
+
     // Información del usuario y fecha
     formHTML += `
         <div class="row">
@@ -89,28 +89,28 @@ function generateExamForm(examType, examData = null) {
         <hr>
         <div class="row">
     `;
-    
+
     // Generar campos del formulario según el tipo de examen
     config.fields.forEach(field => {
         const value = examData?.[field] || '';
         const isObservaciones = field === 'observaciones';
         const colClass = isObservaciones ? 'col-md-12' : 'col-md-6';
-        
+
         formHTML += `
             <div class="${colClass}">
                 <div class="form-group">
                     <label for="${field}" class="text-capitalize">${field.replace(/_/g, ' ')}:</label>
-                    <input type="${field.includes('observaciones') ? 'text' : 'number'}" 
+                    <input type="${field.includes('observaciones') ? 'text' : 'number'}"
                         step="${field.includes('observaciones') ? '' : '0.01'}"
-                        class="form-control form-control-sm" 
-                        id="${field}" 
-                        name="${field}" 
+                        class="form-control form-control-sm"
+                        id="${field}"
+                        name="${field}"
                         value="${value}">
                 </div>
             </div>
         `;
     });
-    
+
     formHTML += `
         </div>
         <div class="modal-footer justify-content-between">
@@ -121,37 +121,37 @@ function generateExamForm(examType, examData = null) {
         </div>
     </form>
     `;
-    
+
     return formHTML;
 }
 
 // Función única para manejar agregar exámenes
 $(document).on('click', '#btnAddBloodTest, #btnAddUrineTest, #btnAddStoolTest', async function(e) {
     e.preventDefault();
-    
+
     const examType = this.id.replace('btnAdd', '').replace('Test', '').toLowerCase();
     const examId = $(this).attr('value');
     const config = examConfig[examType];
-    
+
     try {
         const response = await axios.get(`${API_URL}${config.route.view}${examId}`);
         console.log('Response completo:', response);
-        
+
         if (response.status === 200) {
             const examData = response.data; // El examen viene directamente en response.data
             console.log('Datos del examen:', examData);
-            
+
             // Generar y cargar el formulario
             const formHTML = generateExamForm(examType, {
                 historia_id: examData.historia_id, // Ahora sí existe
                 examen_id: examData.id
             });
-            
+
             // Actualizar el modal
             $('.modal-title').text(`Agregar ${config.title}`);
             $('.modal-body').html(formHTML);
             $('#patientInfo').val(`${examData.historia.dni} :: ${examData.historia.nombres}`);
-            
+
             // Mostrar modal
             $('#modal-default').modal('show');
         }
@@ -168,7 +168,7 @@ $(document).on('click', '.update-row-bt, .update-row-ut, .update-row-st', async 
     const buttonClass   = $(this).attr('class');
     let examType        = '';
     let apiRoute        = '';
-    
+
     // Determinar tipo de examen basado en la clase del botón
     if (buttonClass.includes('update-row-bt')) {
         examType = 'blood';
@@ -180,18 +180,18 @@ $(document).on('click', '.update-row-bt, .update-row-ut, .update-row-st', async 
         examType = 'stool';
         apiRoute = `${API_URL}/sys/ex-st/${examId}`;
     }
-    
+
     const config = examConfig[examType];
-    
+
     try {
         const response = await axios.get(apiRoute);
-        
+
         if (response.status === 200) {
             const exam = response.data;
             console.log(exam);
             // Generar y cargar el formulario con datos existentes
             const formHTML = generateExamForm(examType, exam);
-            
+
             // Actualizar el modal
             $('.modal-title').text(`Actualizar ${config.title}`);
             $('.modal-body').html(formHTML);
@@ -208,12 +208,12 @@ $(document).on('click', '.update-row-bt, .update-row-ut, .update-row-st', async 
 // Manejar el envío del formulario dinámico
 $(document).on('submit', '#dynamicExamForm', async function(e) {
     e.preventDefault();
-    const formData = new FormData(this);
-    const examId = $('input[name="examen_id"]').val();
-    const buttonId = $('.btn-primary:focus').attr('id') || '';
-    let examType = '';
-    let storeRoute = '';
-    
+    const formData  = new FormData(this);
+    const examId    = $('input[name="examen_id"]').val();
+    const buttonId  = $('.btn-primary:focus').attr('id') || '';
+    let examType    = '';
+    let storeRoute  = '';
+
     // Determinar tipo de examen basado en los campos presentes
     if (formData.has('examen_sangre_id')) {
         examType = 'blood';
@@ -225,12 +225,12 @@ $(document).on('submit', '#dynamicExamForm', async function(e) {
         examType = 'stool';
         storeRoute = examConfig.stool.route.store;
     }
-    
+
     try {
         const response = await axios.post(`${API_URL}${storeRoute}`, formData, {
             headers: { 'Content-Type': 'multipart/form-data' }
         });
-        
+
         if (response.status === 200) {
             $('#modal-default').modal('hide');
             alert(response.data.message || 'Datos guardados correctamente');
@@ -246,7 +246,7 @@ $(document).on('submit', '#dynamicExamForm', async function(e) {
             const errors = error.response.data.errors;
             $('.is-invalid').removeClass('is-invalid');
             $('.invalid-feedback').remove();
-            
+
             for (const field in errors) {
                 $(`[name="${field}"]`).addClass('is-invalid');
                 $(`[name="${field}"]`).after(`<div class="invalid-feedback">${errors[field][0]}</div>`);
@@ -260,13 +260,13 @@ $(document).on('submit', '#dynamicExamForm', async function(e) {
 // Manejar el envío del formulario dinámico
 $(document).on('submit', '#dynamicExamForm', async function(e) {
     e.preventDefault();
-    
+
     const formData  = new FormData(this);
     const examId    = $('input[name="examen_id"]').val();
     const buttonId  = $('.btn-primary:focus').attr('id') || '';
     let examType    = '';
     let storeRoute  = '';
-    
+
     // Determinar tipo de examen basado en los campos presentes
     if (formData.has('examen_sangre_id')) {
         examType    = 'blood';
@@ -278,14 +278,14 @@ $(document).on('submit', '#dynamicExamForm', async function(e) {
         examType    = 'stool';
         storeRoute  = examConfig.stool.route.store;
     }
-    
+
     try {
         const response = await axios.post(`${API_URL}${storeRoute}`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
         });
-        
+
         if (response.status === 200) {
             $('#modal-default').modal('hide');
             alert(response.data.message || 'Datos guardados correctamente');
@@ -296,13 +296,13 @@ $(document).on('submit', '#dynamicExamForm', async function(e) {
         }
     } catch (error) {
         console.error('Error al guardar:', error);
-        
+
         // Manejar errores de validación
         if (error.response && error.response.status === 422) {
             const errors = error.response.data.errors;
             $('.is-invalid').removeClass('is-invalid');
             $('.invalid-feedback').remove();
-            
+
             for (const field in errors) {
                 $(`[name="${field}"]`).addClass('is-invalid');
                 $(`[name="${field}"]`).after(`<div class="invalid-feedback">${errors[field][0]}</div>`);

@@ -288,7 +288,6 @@
     </section>
 </div>
 
-
 <style>
     .timeline {
         position: relative;
