@@ -23,8 +23,6 @@ return new class extends Migration
             $table->time('hora');
             $table->string('motivo_consulta')->nullable();
             $table->string('observaciones')->nullable();
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
             $table->softDeletes();
         });
