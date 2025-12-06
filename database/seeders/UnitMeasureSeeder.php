@@ -20,7 +20,7 @@ class UnitMeasureSeeder extends Seeder
         UnitofMeasure::create(['descripcion' => 'FRASCO', 'aka' => 'FSCO.']);
         UnitofMeasure::create(['descripcion' => 'SOBRE', 'aka' => 'SOB.']);
         UnitofMeasure::create(['descripcion' => 'SPRAY', 'aka' => 'SPRY.']);
-        UnitofMeasure::create(['descripcion' => 'TRATAMIENTO', 'aka' => 'CAJ']);
+        UnitofMeasure::create(['descripcion' => 'TRATAMIENTO', 'aka' => 'TTO.']);
         UnitofMeasure::create(['descripcion' => 'CREMA', 'aka' => 'CRM.']);
         UnitofMeasure::create(['descripcion' => 'CAJA', 'aka' => 'CAJ.']);
     }

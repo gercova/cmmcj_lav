@@ -164,12 +164,12 @@ class HistoriesController extends Controller
         }
 
         $data = UbigeoDistrict::where(function ($query) use ($q) {
-            $query->where('ur.region', 'like', "%{$q}%")
-                ->orWhere('up.provincia', 'like', "%{$q}%")
-                ->orWhere('ubigeo_distrito.distrito', 'like', "%{$q}%")
+            $query->where('ur.nombre', 'like', "%{$q}%")
+                ->orWhere('up.nombre', 'like', "%{$q}%")
+                ->orWhere('ubigeo_distrito.nombre', 'like', "%{$q}%")
                 ->orWhere('ubigeo_distrito.id', 'like', "%{$q}%");
         })
-            ->selectRaw('ubigeo_distrito.id as id, CONCAT(ubigeo_distrito.id, " | ", ur.region, " | ", up.provincia, " | ", ubigeo_distrito.distrito) as ubigeo')
+            ->selectRaw('ubigeo_distrito.id as id, CONCAT(ubigeo_distrito.id, " | ", ur.nombre, " | ", up.nombre, " | ", ubigeo_distrito.nombre) as ubigeo')
             ->join('ubigeo_provincia as up', 'ubigeo_distrito.provincia_id', '=', 'up.id')
             ->join('ubigeo_region as ur', 'ubigeo_distrito.region_id', '=', 'ur.id')
             ->limit(5)
