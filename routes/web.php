@@ -195,7 +195,7 @@ Route::middleware(['auth', 'prevent.back'])->group(function(){
     Route::get('/sys/permissions',                  [PermissionsController::class, 'index'])->name('security.permissions.home');
     Route::get('/sys/permissions/list',             [PermissionsController::class, 'list']);
     Route::get('/sys/permissions/{permission}',     [PermissionsController::class, 'show']);
-    // Route::post('/sys/permissions/store',           [PermissionsController::class, 'store']);
+    Route::post('/sys/permissions/store',           [PermissionsController::class, 'store']);
     Route::delete('/sys/px/delete/{permission}',    [PermissionsController::class, 'destroy']);
     // Usuarios
     Route::get('/sys/users',                        [UsersController::class, 'index'])->name('security.users.home');

@@ -20,12 +20,10 @@ class AppointmentsController extends Controller {
 
     public function __construct() {
         $this->middleware(['auth', 'prevent.back']);
-        $this->middleware('permission:hospitalizacion_acceder')->only('index');
-		$this->middleware('permission:hospitalizacion_ver')->only('show');
-		//$this->middleware('permission:hospitalizacion_crear')->only('new');
-		//$this->middleware('permission:hospitalizacion_editar')->only('edit');
-        $this->middleware('permission:hospitalizacion_guardar')->only('store');
-		$this->middleware('permission:hospitalizacion_borrar')->only('destroy');
+        $this->middleware('permission:cita_acceder')->only('index');
+		$this->middleware('permission:cita_ver')->only('show');
+        $this->middleware('permission:cita_guardar')->only('store');
+		$this->middleware('permission:cita_borrar')->only('destroy');
     }
 
     public function index(): View {
@@ -140,9 +138,6 @@ class AppointmentsController extends Controller {
         }
     }
 
-    /**
-     * Obtener detalles de una cita específica
-     */
     public function getAppointmentDetails(int $id): JsonResponse {
         try {
             $query = DB::table('citas')
@@ -286,9 +281,6 @@ class AppointmentsController extends Controller {
         return response()->json($results, 200);
     }
 
-    /**
-     * Método de prueba para verificar datos
-     */
     public function testData(): JsonResponse {
         try {
             // Verificar estructura de la tabla

@@ -40,9 +40,9 @@ class PermissionsController extends Controller {
             } else {
                 $submodulesList .= '<span class="badge badge-warning">Sin submódulo</span>';
             }
-            
+
             $submodulesList .= '</div>';
-            
+
             return [
                 $index + 1,
                 ucfirst($item->name),
@@ -56,7 +56,7 @@ class PermissionsController extends Controller {
                         </button>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item update-row" type="button" value="%s"> <i class="bi bi-pencil-square"></i> Editar</a></li>
-                            <li><a class="dropdown-item delete-permission" type="button" value="%s"> <i class="bi bi-trash"></i> Eliminar</a></li>       
+                            <li><a class="dropdown-item delete-permission" type="button" value="%s"> <i class="bi bi-trash"></i> Eliminar</a></li>
                         </ul>
                     </div>',
                     $item->id,
@@ -73,26 +73,8 @@ class PermissionsController extends Controller {
         ]);
     }
 
-    /*public function store(PermissionValidate $request): JsonResponse {
+    public function store(PermissionValidate $request): JsonResponse {
         $validated = $request->validated();
-
-        // Permisos
-        $crudPermissions    = ['acceder', 'ver', 'crear', 'editar', 'guardar', 'borrar'];
-        $crudDescriptions   = [
-
-        ];
-        // foreach($modulos as $m) {
-        //    Permission::create(['name' => $m]);
-        // }
-        
-
-        // foreach ($modules as $module) {
-            foreach ($crudPermissions as $action) {
-
-                Permission::create(['name' => "{$module}_{$action}", 'descripcion' => ""]);
-            }
-        // }
-
         DB::beginTransaction();
         try {
             $result = Permission::updateOrCreate(['id' => $request->input('id')], $validated);
@@ -111,7 +93,7 @@ class PermissionsController extends Controller {
                 'error'     => $th->getMessage(),
             ], 500);
         }
-    }*/
+    }
 
     public function show(Permission $permission): JsonResponse {
         $permission->load(['submodule.module']);
@@ -123,9 +105,9 @@ class PermissionsController extends Controller {
         return response()->json([
             'status'    => (bool) $permission,
             'type'      => $permission ? 'success' : 'error',
-            'message'   => $permission ? 
-                'Permiso eliminado correctamente' : 
-                'Hubo un error al intentar eliminar', 
+            'message'   => $permission ?
+                'Permiso eliminado correctamente' :
+                'Hubo un error al intentar eliminar',
         ], $permission ? 200 : 400);
     }
 }
