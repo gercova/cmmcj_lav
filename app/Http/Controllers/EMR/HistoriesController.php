@@ -34,7 +34,7 @@ class HistoriesController extends Controller
     }
 
     public function index(): View {
-        return view('EMR.histories.index');
+        return view('emr.histories.index');
     }
 
     public function new(): View {
