@@ -32,6 +32,9 @@ class DatabaseSeeder extends Seeder
             DiagnosticSeeder::class,
             DrugSeeder::class,
 
+            // Citas
+            AppointmentsStatusSeeder::class,
+
             //Hospitalizaciones
             HospitalizationStatusSeeder::class,
             AdmissionConditionSeeder::class,

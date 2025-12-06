@@ -21,8 +21,8 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->date('fecha');
             $table->time('hora');
-            $table->string('motivo_consulta')->nullable()->after('hora');
-            $table->string('observaciones')->nullable()->after('motivo_consulta');
+            $table->string('motivo_consulta')->nullable();
+            $table->string('observaciones')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
