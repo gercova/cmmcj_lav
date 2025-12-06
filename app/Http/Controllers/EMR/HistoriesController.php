@@ -43,7 +43,7 @@ class HistoriesController extends Controller
         $gi = DegreesInstruction::all();
         $ec = MaritalStatus::all();
         $ss = Insurance::all();
-        return view('EMR.histories.new', compact('td', 'gs', 'gi', 'ec', 'ss'));
+        return view('emr.histories.new', compact('td', 'gs', 'gi', 'ec', 'ss'));
     }
 
     public function edit(History $history): View {
@@ -55,7 +55,7 @@ class HistoriesController extends Controller
         $un = History::getUBirthByHistoryId($history->id);
         $ur = History::getUResidenceByHistoryId($history->id);
         $oc = History::getOccupationByHistoryId($history->id);
-        return view('EMR.histories.edit', compact('history', 'td', 'gs', 'gi', 'ec', 'ss', 'un', 'ur', 'oc'));
+        return view('emr.histories.edit', compact('history', 'td', 'gs', 'gi', 'ec', 'ss', 'un', 'ur', 'oc'));
     }
 
     public function list(Request $request): JsonResponse {
@@ -79,13 +79,13 @@ class HistoriesController extends Controller
 			$record->Permissions = $permissions; // Agregar permisos al registro
 			return $record;
 		});
-	
+
 		$jTableResult = [
 			'Result'            => 'OK',
 			'Records'           => $data,
 			'TotalRecordCount'  => $count,
 		];
-	
+
 		return response()->json($jTableResult);
 	}
 
@@ -103,7 +103,7 @@ class HistoriesController extends Controller
         ];
 
         $data = array_merge($validated, $proccessFields);
-        
+
         DB::beginTransaction();
         try {
             $result = History::updateOrCreate(['id' => $request->input('id')], $data);
@@ -142,9 +142,9 @@ class HistoriesController extends Controller
 				'Authorization' => 'Bearer ' . $token,
 				'Accept' => 'application/json',
 			])->timeout(30)->get('https://api.decolecta.com/v1/reniec/dni?numero=' . $dni);
-			
+
 			return $response->body();
-			
+
 		} catch (\Exception $e) {
 			return response()->json([
 				'error' => 'Error en la consulta: ' . $e->getMessage()

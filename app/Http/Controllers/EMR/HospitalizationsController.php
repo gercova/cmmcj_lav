@@ -52,7 +52,7 @@ class HospitalizationsController extends Controller {
         $ci = AdmissionCondition::get();
         $dc = DischargeCondition::get();
         $hs = HospitalizationStatus::get();
-        return view('EMR.hospitalizations.new', compact('history', 'beds', 'seguro', 'at', 've', 'ec', 'se', 'ct', 'dt', 'ci', 'dc', 'hs'));
+        return view('emr.hospitalizations.new', compact('history', 'beds', 'seguro', 'at', 've', 'ec', 'se', 'ct', 'dt', 'ci', 'dc', 'hs'));
     }
 
     public  function edit(Hospitalization $hospitalization): View {
@@ -68,11 +68,11 @@ class HospitalizationsController extends Controller {
         $ci = AdmissionCondition::get();
         $dc = DischargeCondition::get();
         $hs = HospitalizationStatus::get();
-        return view('EMR.hospitalizations.edit', compact('hospitalization', 'hc', 'beds', 'seguro', 'at', 've', 'ec', 'se', 'ct', 'dt', 'ci', 'dc', 'hs'));
+        return view('emr.hospitalizations.edit', compact('hospitalization', 'hc', 'beds', 'seguro', 'at', 've', 'ec', 'se', 'ct', 'dt', 'ci', 'dc', 'hs'));
     }
 
     public function see(History $history): View {
-        return view('EMR.hospitalizations.see', compact('history'));
+        return view('emr.hospitalizations.see', compact('history'));
     }
 
     public function listHospitalizations(History $history): JsonResponse {
