@@ -229,7 +229,7 @@
         </div>
     </section>
 </div>
-<link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
+<link rel="stylesheet" href="{{ asset('plugins/fullcalendar/calendar.main.min.css') }}">
 <style>
     #calendar {
         max-width: 100%;
@@ -255,8 +255,8 @@
     }
 </style>
 
-<script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
-<script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales/es.js'></script>
+<script src="{{ asset('plugins/fullcalendar/calendar.main.min.js') }}"></script>
+<script src="{{ asset('plugins/fullcalendar/es.js') }}"></script>
 <script src="{{ asset('js/appointments.js') }}"></script>
 <script src="{{ asset('js/beds.js') }}"></script>
 @endsection

@@ -38,11 +38,11 @@
     <!-- Datepicker -->
     <link href="{{ asset('plugins/datepicker/tempusdominus-bootstrap-4.min.css') }}" rel="stylesheet">
     <!-- Hightcharts -->
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
-    <script src="https://code.highcharts.com/modules/export-data.js"></script>
-    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
-    <script src="https://code.highcharts.com/themes/adaptive.js"></script>
+    <script src="{{ asset('plugins/highcharts/highcharts.js') }}"></script>
+    <script src="{{ asset('plugins/highcharts/exporting.js') }}"></script>
+    <script src="{{ asset('plugins/highcharts/export-data.js') }}"></script>
+    <script src="{{ asset('plugins/highcharts/accessibility.js') }}"></script>
+    <script src="{{ asset('plugins/highcharts/adaptive.js') }}"></script>
     <!-- jQuery -->
     <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
     <!-- Bootstrap 4 -->
