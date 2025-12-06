@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use App\Traits\Auditable;
+use App\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Enterprise extends Model
 {
-    use HasFactory, Auditable;
+    use HasFactory, LogsActivity;
 
     protected $table        = 'empresa';
     protected $primaryKey   = 'id';

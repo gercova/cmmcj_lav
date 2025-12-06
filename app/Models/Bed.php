@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Traits\Auditable;
+use App\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Bed extends Model
 {
-    use HasFactory, SoftDeletes ,Auditable;
+    use HasFactory, SoftDeletes, LogsActivity;
 
     protected $table        = 'habitacion_cama';
     protected $primaryKey   = 'id';

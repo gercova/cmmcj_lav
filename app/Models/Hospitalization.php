@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Traits\Auditable;
+use App\Traits\LogsActivity;
 use Database\Factories\HospitalizationFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Hospitalization extends Model {
 
-    use HasFactory, SoftDeletes, Auditable;
+    use HasFactory, SoftDeletes, LogsActivity;
 
     protected $table        = 'hospitalizaciones';
     protected $primaryKey   = 'id';

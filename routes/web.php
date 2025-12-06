@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\AuditController;
+use App\Http\Controllers\Admin\ActivityLogController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Business\EnterpriseController;
 use App\Http\Controllers\EMR\AppointmentsController;
@@ -37,10 +37,15 @@ Route::middleware(['prevent.cache'])->group(function(){
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::prefix('audit')->name('audit.')->group(function () {
-        Route::get('/',             [AuditController::class, 'index'])->name('index');
-        Route::get('/{auditLog}',   [AuditController::class, 'show'])->name('show');
-        Route::post('/export',      [AuditController::class, 'export'])->name('export');
+    Route::prefix('admin')->group(function () {
+        Route::get('activity-logs/today', [ActivityLogController::class, 'todayActivities'])
+            ->name('activity-logs.today');
+
+        Route::get('activity-logs/user/{user}', [ActivityLogController::class, 'userActivities'])
+            ->name('activity-logs.user');
+
+        Route::get('activity-logs/{id}', [ActivityLogController::class, 'detail'])
+            ->name('activity-logs.detail');
     });
 });
 

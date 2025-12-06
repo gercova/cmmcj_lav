@@ -5,9 +5,3 @@
     <!-- info emrpesa -->
     <strong><a href="#"> Saibatsu &copy; {{ date('Y') }}</a>.</strong> Todos los derechos reservados.
 </footer>
-<script>
-    $(function () {
-        // Summernote
-        $('.summernote').summernote()
-    });
-</script>

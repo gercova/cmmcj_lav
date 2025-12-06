@@ -4,7 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-use App\Traits\Auditable;
+use App\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -16,7 +16,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable {
 
-    use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes, Auditable;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes, LogsActivity;
 
     protected $table        = 'users';
     protected $primaryKey   = 'id';

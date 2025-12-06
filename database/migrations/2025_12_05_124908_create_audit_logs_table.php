@@ -11,30 +11,30 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('audit_logs', function (Blueprint $table) {
+        Schema::create('activity_logs', function (Blueprint $table) {
             $table->id();
-            $table->string('action'); // create, update, delete, login, etc.
-            $table->text('description')->nullable();
-            $table->string('model_type')->nullable(); // Modelo afectado
-            $table->unsignedBigInteger('model_id')->nullable(); // ID del modelo
-            $table->json('old_values')->nullable(); // Valores anteriores
-            $table->json('new_values')->nullable(); // Valores nuevos
-            $table->string('url')->nullable();
-            $table->string('ip_address')->nullable();
-            $table->string('user_agent')->nullable();
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
+            $table->string('action'); // access, create, update, delete
+            $table->string('module');
+            $table->unsignedBigInteger('record_id')->nullable();
+            $table->json('old_data')->nullable();
+            $table->json('new_data')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->string('ip_address', 45)->nullable();
+            $table->text('user_agent')->nullable();
             $table->timestamps();
 
-            $table->index(['created_at', 'user_id']);
-            $table->index('action');
+            $table->index(['user_id', 'created_at']);
+            $table->index(['module', 'created_at']);
+
+            // Foreign key si tu tabla de usuarios se llama 'users'
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
         });
     }
 
     /**
      * Reverse the migrations.
      */
-    public function down(): void
-    {
-        Schema::dropIfExists('audit_logs');
+    public function down(): void {
+        Schema::dropIfExists('activity_logs');
     }
 };

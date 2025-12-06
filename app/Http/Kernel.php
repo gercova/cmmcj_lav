@@ -38,14 +38,13 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\PreventBrowserCacheAfterLogout::class, // Global
             \App\Http\Middleware\CaptureLoginData::class,
-            \App\Http\Middleware\AuditMiddleware::class,
+            \App\Http\Middleware\LogUserActivity::class,
         ],
 
         'api' => [
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            \App\Http\Middleware\AuditMiddleware::class,
         ],
     ];
 
