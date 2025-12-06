@@ -111,9 +111,9 @@ class HistoriesController extends Controller
                 Appointment::create([
                     'historia_id'       => $result->id,
                     'estado_cita_id'    => 1,
+                    'user_id'           => auth()->user()->id,
                     'fecha'             => $result->created_at->format('Y-m-d'),
                     'hora'              => $result->created_at->format('H:i:s'),
-                    //'descripcion'       => $validated['descripcion'],
                 ]);
             }
 
