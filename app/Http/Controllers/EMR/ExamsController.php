@@ -413,33 +413,37 @@ class ExamsController extends Controller {
 		], 200);
     }
 
-    public function validateMatchDx (Request $request): JsonResponse {
+    public function validateMatchDx (Request $request) {
         $request->validate([
             'examId'        => 'required|integer',
             'diagnosticId'  => 'required|integer',
         ]);
 
-        $exists = DiagnosticExam::where('examen_id', $request->examId)->where('diagnostico_id', $request->diagnosticId)->exists();
-
-        return response()->json([
-            'status'    => $exists,
-            'message'   => $exists ? 'El diagnóstico ya se encuentra en la lista' : 'Puede agregarlo',
-            'type'      => $exists ? 'warning' : 'success',
-        ]);
+        if (!empty($request->validate['examId'])) {
+            $exists = DiagnosticExam::where('examen_id', $request->examId)->where('diagnostico_id', $request->diagnosticId)->exists();
+            return response()->json([
+                'status'    => $exists,
+                'message'   => $exists ? 'El diagnóstico ya se encuentra en la lista' : 'Puede agregarlo',
+                'type'      => $exists ? 'warning' : 'success',
+            ]);
+        }
     }
 
-    public function ValidateMatchMx (Request $request): JsonResponse {
+    public function ValidateMatchMx (Request $request) {
         $request->validate([
             'examId'    => 'required|integer',
             'drugId'    => 'required|integer',
         ]);
 
-        $exists = MedicationExam::where('examen_id', $request->examId)->where('farmaco_id', $request->drugId)->exists();
-        return response()->json([
-            'status'    => $exists,
-            'message'   => $exists ? 'El fármaco ya está en la lista' : 'Puede agregarlo',
-            'type'      => $exists ? 'warning' : 'success',
-        ], 200);
+        if (!empty($request->validate['examId'])) {
+
+            $exists = MedicationExam::where('examen_id', $request->examId)->where('farmaco_id', $request->drugId)->exists();
+            return response()->json([
+                'status'    => $exists,
+                'message'   => $exists ? 'El fármaco ya está en la lista' : 'Puede agregarlo',
+                'type'      => $exists ? 'warning' : 'success',
+            ], 200);
+        }
     }
 
     public function listMedications(Exam $exam): JsonResponse {
