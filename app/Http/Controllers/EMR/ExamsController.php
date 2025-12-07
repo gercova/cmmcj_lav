@@ -419,7 +419,7 @@ class ExamsController extends Controller {
             'diagnosticId'  => 'required|integer',
         ]);
 
-        if (!empty($request->validate['examId'])) {
+        if (!empty($request->input('examId'))) {
             $exists = DiagnosticExam::where('examen_id', $request->examId)->where('diagnostico_id', $request->diagnosticId)->exists();
             return response()->json([
                 'status'    => $exists,
@@ -435,8 +435,7 @@ class ExamsController extends Controller {
             'drugId'    => 'required|integer',
         ]);
 
-        if (!empty($request->validate['examId'])) {
-
+        if (!empty($request->input('examId'))) {
             $exists = MedicationExam::where('examen_id', $request->examId)->where('farmaco_id', $request->drugId)->exists();
             return response()->json([
                 'status'    => $exists,
