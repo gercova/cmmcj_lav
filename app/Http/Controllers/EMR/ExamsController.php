@@ -778,7 +778,7 @@ class ExamsController extends Controller {
      * Configura el PDF según el formato especificado
      */
     private function configurePdf(string $format, array $data) {
-        $view   = $format === 'a4' ? 'EMR.exams.pdf-a4' : 'EMR.exams.pdf-a5';
+        $view   = $format === 'a4' ? 'emr.exams.pdf-a4' : 'emr.exams.pdf-a5';
         $pdf    = PDF::loadView($view, $data);
         $config = $this->getPdfConfig($format);
         $pdf->setPaper($config['paper'], 'portrait')->setOptions($config['options']);
