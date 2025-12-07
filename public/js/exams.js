@@ -16,7 +16,7 @@ if(examId){
         diagnosticId: $('#tableDiagnostics').DataTable({ ajax: `${API_URL}/sys/exams/list-dx/${examId}`, searching:false, bLengthChange:false, processing:true, order:[]}),
         //Receta por examen
         examId: $('#tableDrugs').DataTable({ ajax: `${API_URL}/sys/exams/list-mx/${examId}`, searching:false, bLengthChange:false, processing:true, order:[]}),
-        //Tabla de pdf 
+        //Tabla de pdf
         documentId: $('#document_data').DataTable({ ajax: `${API_URL}/sys/exams/list-dc/${examId}`, searching:false, bLengthChange:false, processing:true, order:[]}),
     }
 }
@@ -28,7 +28,7 @@ DeleteHandler.initButtons([
     { selector: '.delete-ut', endpoint: 'ex-ut', table: tables.urineTest },
     { selector: '.delete-st', endpoint: 'ex-st', table: tables.stoolTest },
     { selector: '.delete-diagnostic', endpoint: 'ex-dx', table: tables2.diagnosticId },
-    { selector: '.delete-drug', endpoint: 'ex-mx', table: tables2.examId }, 
+    { selector: '.delete-drug', endpoint: 'ex-mx', table: tables2.examId },
     { selector: '.delete-image', endpoint: 'ex-img', table: tables2.documentId }
 ]);
 
@@ -105,7 +105,7 @@ $('#histories').jtable({
                         </button>&nbsp;
                     `;
                 }
-                
+
                 return buttons;
             }
         },
@@ -116,7 +116,7 @@ $('#histories').jtable({
             let id = $(this).attr('value');
             window.location.href = `${API_URL}/sys/exams/new/${id}`;
         });
-        
+
         $('.view-row').click(function(e) {
             e.preventDefault();
             let id = $(this).attr('value');
@@ -229,7 +229,7 @@ $('#examForm').submit(async function(e){
     }
 });
 
-//Función para buscar  un diagnóstico 
+//Función para buscar  un diagnóstico
 $('#diagnostics').autocomplete({
     source: async function(request, response){
         try {
@@ -357,7 +357,7 @@ $('#btn-add-drug').on('click', async function(){
         } catch (error) {
             Swal.fire('Error', 'Ocurrió un error al validar la coincidencia. Intente nuevamente.', 'error');
         }
-        
+
         if ($(`input[value="${drugId}"]`).length > 0) {
             Swal.fire('¡Duplicado!', 'El fármaco ya está en la lista.', 'warning');
             $('#drugs').val(null);

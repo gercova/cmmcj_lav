@@ -542,7 +542,109 @@ class ExamsController extends Controller {
         MedicationExam::insert($data);
     }
 
+    // Método para guardar documentos
     private function saveDocument($documents, $history, $dni, $nombreDocumento, $fechaDocument, $id): void {
+        // Validar que se recibieron documentos
+        if (!$documents || !is_array($documents)) return;
+
+        // Definir tipos de archivos permitidos
+        $allowedMimeTypes = [
+            'image/jpeg',
+            'image/png',
+            'image/gif',
+            'application/pdf',
+            'application/msword',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'application/vnd.ms-word.document.macroEnabled.12',
+        ];
+
+        // Directorio base
+        $directorio = "pacientes/{$dni}";
+
+        // Crear directorio si no existe
+        if (!Storage::disk('public')->exists($directorio)) {
+            Storage::disk('public')->makeDirectory($directorio, 0755, true); // Crea directorios recursivamente
+        }
+
+        // Procesar cada documento
+        foreach ($documents as $index => $document) {
+            // Validar que el archivo es válido
+            if (!$document || !$document->isValid()) {
+                Log::warning("Archivo no válido en el índice: {$index}");
+                continue;
+            }
+
+            // Validar tipo MIME
+            $mimeType = $document->getMimeType();
+            if (!in_array($mimeType, $allowedMimeTypes)) {
+                Log::warning("Tipo de archivo no permitido: {$mimeType} - Archivo: {$document->getClientOriginalName()}");
+                continue; // Saltar archivo no permitido
+            }
+
+            // Generar nombre único seguro
+            $extension = $document->getClientOriginalExtension();
+            $fileName = uniqid('doc_', true) . '.' . $extension;
+
+            // Ruta relativa para guardar en DB
+            $relativePath = "{$directorio}/{$fileName}";
+
+            try {
+                // Subir el archivo al disco público
+                $uploaded = $document->storeAs($directorio, $fileName, 'public');
+                if (!$uploaded) {
+                    Log::error("Falló la subida del archivo: {$document->getClientOriginalName()}");
+                    continue;
+                }
+
+                // Obtener el nombre y fecha del documento correspondiente
+                $nombreExamen = null;
+                $fechaExamen = null;
+
+                // Verificar si $nombreDocumento y $fechaDocument son arrays y tienen el índice correspondiente
+                if (is_array($nombreDocumento) && isset($nombreDocumento[$index])) {
+                    $nombreExamen = $nombreDocumento[$index];
+                } elseif (is_string($nombreDocumento)) {
+                    // Si es un string único (para un solo documento), usarlo para todos
+                    $nombreExamen = $nombreDocumento;
+                }
+
+                if (is_array($fechaDocument) && isset($fechaDocument[$index])) {
+                    $fechaExamen = $fechaDocument[$index];
+                } elseif (is_string($fechaDocument)) {
+                    // Si es un string único (para un solo documento), usarlo para todos
+                    $fechaExamen = $fechaDocument;
+                }
+
+                // Si no se pudo obtener nombre o fecha, usar valores por defecto
+                if ($nombreExamen === null) {
+                    $nombreExamen = 'Documento sin nombre';
+                }
+                if ($fechaExamen === null) {
+                    $fechaExamen = now()->toDateString();
+                }
+
+                // Guardar en la base de datos
+                DocumentExam::create([
+                    'examen_id'         => $id,
+                    'historia_id'       => $history,
+                    'nombre_examen'     => $nombreExamen,
+                    'documento'         => $relativePath, // Solo la ruta relativa
+                    'fecha_examen'      => $fechaExamen,
+                ]);
+
+                Log::info("Archivo subido y registrado exitosamente: {$fileName}");
+            } catch (\Exception $e) {
+                Log::error("Error al subir o registrar archivo: {$e->getMessage()} - Archivo: {$document->getClientOriginalName()}");
+                // Opcional: Eliminar el archivo si la DB falla
+                if (Storage::disk('public')->exists($relativePath)) {
+                    Storage::disk('public')->delete($relativePath);
+                }
+                continue;
+            }
+        }
+    }
+
+    /*private function saveDocument($documents, $history, $dni, $nombreDocumento, $fechaDocument, $id): void {
         // Validar que se recibieron documentos
         if (!$documents || !is_array($documents)) return;
         // Definir tipos de archivos permitidos
@@ -597,7 +699,7 @@ class ExamsController extends Controller {
                 continue;
             }
         }
-    }
+    }*/
 
     public function storeBloodTest(BloodTestValidate $request): JsonResponse {
         $validated = $request->validated();
@@ -774,9 +876,6 @@ class ExamsController extends Controller {
         return $pdf->stream($filename);
     }
 
-    /**
-     * Configura el PDF según el formato especificado
-     */
     private function configurePdf(string $format, array $data) {
         $view   = $format === 'a4' ? 'emr.exams.pdf-a4' : 'emr.exams.pdf-a5';
         $pdf    = PDF::loadView($view, $data);
@@ -785,9 +884,6 @@ class ExamsController extends Controller {
         return $pdf;
     }
 
-    /**
-     * Obtiene la configuración del PDF según el formato
-     */
     private function getPdfConfig(string $format): array {
         $baseOptions = [
             'fontDefault'           => 'sans-serif',
