@@ -488,7 +488,7 @@ class ExamsController extends Controller {
             // Guardar diagnóstico, medicación y subir documentos si existen
             if ($diagnostics) 	$this->saveDiagnosis($result->id, $result->historia_id, $diagnostics);
             if ($drugs) 		$this->saveMedicacion($result->id, $result->historia_id, $drugs, $descriptions, $dosis);
-            if ($document)      $this->saveDocument($document, $result->historia_id, $history->dni, $nombreDoc, $dateDoc, $id);
+            if ($document)      $this->saveDocument($document, $result->historia_id, $history->dni, $nombreDoc, $dateDoc, $result->id);
             DB::commit();
             return response()->json([
                 'status'    => true,
@@ -535,14 +535,13 @@ class ExamsController extends Controller {
 				'descripcion'   => $description[$i],
                 'dosis'         => $dosis[$i],
                 'created_at'    => now(),
-                'created_at'    => now(),
+                'updated_at'    => now(),
 			];
 		}
 
         MedicationExam::insert($data);
     }
 
-    // Método para guardar documentos
     private function saveDocument($documents, $history, $dni, $nombreDocumento, $fechaDocument, $id): void {
         // Validar que se recibieron documentos
         if (!$documents || !is_array($documents)) return;
@@ -560,7 +559,6 @@ class ExamsController extends Controller {
 
         // Directorio base
         $directorio = "pacientes/{$dni}";
-
         // Crear directorio si no existe
         if (!Storage::disk('public')->exists($directorio)) {
             Storage::disk('public')->makeDirectory($directorio, 0755, true); // Crea directorios recursivamente
@@ -573,18 +571,15 @@ class ExamsController extends Controller {
                 Log::warning("Archivo no válido en el índice: {$index}");
                 continue;
             }
-
             // Validar tipo MIME
             $mimeType = $document->getMimeType();
             if (!in_array($mimeType, $allowedMimeTypes)) {
                 Log::warning("Tipo de archivo no permitido: {$mimeType} - Archivo: {$document->getClientOriginalName()}");
                 continue; // Saltar archivo no permitido
             }
-
             // Generar nombre único seguro
-            $extension = $document->getClientOriginalExtension();
-            $fileName = uniqid('doc_', true) . '.' . $extension;
-
+            $extension  = $document->getClientOriginalExtension();
+            $fileName   = uniqid('doc_', true) . '.' . $extension;
             // Ruta relativa para guardar en DB
             $relativePath = "{$directorio}/{$fileName}";
 
@@ -597,8 +592,8 @@ class ExamsController extends Controller {
                 }
 
                 // Obtener el nombre y fecha del documento correspondiente
-                $nombreExamen = null;
-                $fechaExamen = null;
+                $nombreExamen   = null;
+                $fechaExamen    = null;
 
                 // Verificar si $nombreDocumento y $fechaDocument son arrays y tienen el índice correspondiente
                 if (is_array($nombreDocumento) && isset($nombreDocumento[$index])) {
