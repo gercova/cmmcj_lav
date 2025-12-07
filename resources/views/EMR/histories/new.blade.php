@@ -72,7 +72,7 @@
                                             <option value="F">Femenino</option>
                                         </select>
                                     </div>
-                                </div>  
+                                </div>
                                 <div class="col-2">
                                     <div class="form-group">
                                         <label for="telefono">Celular</label>
@@ -85,7 +85,7 @@
                                         <input type="email" class="form-control form-control-sm" id="email" name="email" value="{{ old('email') }}" required>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-2">
                                     <div class="form-group">
                                         <label for="grupo_sanguineo_id">Grupo sanguíneo</label>
@@ -163,25 +163,25 @@
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label for="acompanante">Acompañante</label>
-                                        <input class="form-control form-control-sm" id="acompanante" name="acompanante" value="{{ old('acompanante') }}" required>
+                                        <input class="form-control form-control-sm" id="acompanante" name="acompanante" value="{{ old('acompanante') }}">
                                     </div>
                                 </div>
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label for="acompanante_telefono">Acompañante teléfono</label>
-                                        <input class="form-control form-control-sm" id="acompanante_telefono" name="acompanante_telefono" value="{{ old('acompanante_telefono') }}" required>
+                                        <input class="form-control form-control-sm" id="acompanante_telefono" name="acompanante_telefono" value="{{ old('acompanante_telefono') }}">
                                     </div>
                                 </div>
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label for="acompanante_direccion">Acompañante dirección</label>
-                                        <input class="form-control form-control-sm" id="acompanante_direccion" name="acompanante_direccion" value="{{ old('acompanante_direccion') }}" required>
+                                        <input class="form-control form-control-sm" id="acompanante_direccion" name="acompanante_direccion" value="{{ old('acompanante_direccion') }}">
                                     </div>
                                 </div>
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label for="vinculo">Vínculo</label>
-                                        <input class="form-control form-control-sm" id="vinculo" name="vinculo" value="{{ old('vinculo') }}" required>
+                                        <input class="form-control form-control-sm" id="vinculo" name="vinculo" value="{{ old('vinculo') }}">
                                     </div>
                                 </div>
                             </div>
@@ -206,40 +206,40 @@
                                 </div>
                             </div>
                             <hr>
-                            
-                            <div class="row">
-                                
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label for="ant_quirurgicos">Antecedentes quirúrgicos</label>
-                                        <textarea class="form-control form-control-sm" name="ant_quirurgicos" id="ant_quirurgicos">{{ old('ant_quirurgicos') }}</textarea>
+                            @role('administrador|especialista')
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="ant_quirurgicos">Antecedentes quirúrgicos</label>
+                                            <textarea class="form-control form-control-sm" name="ant_quirurgicos" id="ant_quirurgicos">{{ old('ant_quirurgicos') }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="ant_patologicos">Antecedentes patológicos</label>
+                                            <input type="text" class="form-control form-control-sm" name="ant_patologicos" id="ant_patologicos" value="{{ old('ant_patologicos') }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="ant_familiares">Antecedentes familiares</label>
+                                            <input type="text" class="form-control form-control-sm" name="ant_familiares" id="ant_familiares" value="{{ old('ant_familiares') }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="ant_medicos">Antecedentes médicos</label>
+                                            <input type="text" class="form-control form-control-sm" name="ant_medicos" id="ant_medicos" value="{{ old('ant_medicos') }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="rams">RAMS</label>
+                                            <textarea class="form-control form-control-sm" name="rams" id="rams">{{ old('rams') }}</textarea>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label for="ant_patologicos">Antecedentes patológicos</label>
-                                        <input type="text" class="form-control form-control-sm" name="ant_patologicos" id="ant_patologicos" value="{{ old('ant_patologicos') }}">
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label for="ant_familiares">Antecedentes familiares</label>
-                                        <input type="text" class="form-control form-control-sm" name="ant_familiares" id="ant_familiares" value="{{ old('ant_familiares') }}">
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label for="ant_medicos">Antecedentes médicos</label>
-                                        <input type="text" class="form-control form-control-sm" name="ant_medicos" id="ant_medicos" value="{{ old('ant_medicos') }}">
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label for="rams">RAMS</label>
-                                        <textarea class="form-control form-control-sm" name="rams" id="rams">{{ old('rams') }}</textarea>
-                                    </div>
-                                </div>
-                            </div>
+                            @endrole
 
                         </div>
                         <div class="card-footer">

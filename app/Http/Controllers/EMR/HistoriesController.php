@@ -103,7 +103,6 @@ class HistoriesController extends Controller
         ];
 
         $data = array_merge($validated, $proccessFields);
-
         DB::beginTransaction();
         try {
             $result = History::updateOrCreate(['id' => $request->input('id')], $data);
