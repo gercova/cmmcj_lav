@@ -20,5 +20,7 @@ class MacSeeder extends Seeder
         ContraceptiveMethod::create(['descripcion' => 'Anillo vaginal']);
         ContraceptiveMethod::create(['descripcion' => 'DIU']);
         ContraceptiveMethod::create(['descripcion' => 'Ligadura de trompas']);
+        ContraceptiveMethod::create(['descripcion' => 'Preservativos']);
+        ContraceptiveMethod::create(['descripcion' => 'N/A']);
     }
 }
