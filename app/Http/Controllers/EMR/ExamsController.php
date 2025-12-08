@@ -436,7 +436,7 @@ class ExamsController extends Controller {
         ]);
     }
 
-    public function ValidateMatchMx (Request $request) {
+    public function validateMatchMx (Request $request) {
         $request->validate([
             'examId'    => 'nullable|integer',
             'drugId'    => 'required|integer',
