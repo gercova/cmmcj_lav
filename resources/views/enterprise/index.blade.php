@@ -149,7 +149,7 @@
                                                         <label for="foto-representante">Seleccionar logo:</label>
                                                         <input type="file" class="form-control foto-representante" id="foto-representante" name="foto-representante" accept="image/*">
                                                         <p class="help-block">Peso máximo de la foto 2MB</p>
-                                                        <img src="{{ asset('storage/img/anonymous.png') }}" class="img-thumbnail preview-representante">
+                                                        <img src="{{ asset('storage/photos/anonymous.png') }}" class="img-thumbnail preview-representante">
                                                     </div>
                                                 </div>
                                             </div>
