@@ -420,8 +420,6 @@ class ExamsController extends Controller {
             'diagnosticId' => 'required|integer',
         ]);
 
-        // 2. Verificamos si examId tiene valor.
-        // Si es null, retornamos false (o lo que prefieras) y evitamos la consulta a la BD.
         if (!$request->examId) {
             return response()->json([
                 'status'  => false,
@@ -444,14 +442,20 @@ class ExamsController extends Controller {
             'drugId'    => 'required|integer',
         ]);
 
-        if (!empty($request->input('examId'))) {
-            $exists = MedicationExam::where('examen_id', $request->examId)->where('farmaco_id', $request->drugId)->exists();
+        if (!$request->examId) {
             return response()->json([
-                'status'    => $exists,
-                'message'   => $exists ? 'El fármaco ya está en la lista' : 'Puede agregarlo',
-                'type'      => $exists ? 'warning' : 'success',
-            ], 200);
+                'status'  => false,
+                'message' => 'No se ha seleccionado un examen.',
+                'type'    => 'info' // Un tipo neutral
+            ]);
         }
+
+        $exists = MedicationExam::where('examen_id', $request->examId)->where('farmaco_id', $request->drugId)->exists();
+        return response()->json([
+            'status'    => $exists,
+            'message'   => $exists ? 'El fármaco ya está en la lista' : 'Puede agregarlo',
+            'type'      => $exists ? 'warning' : 'success',
+        ], 200);
     }
 
     public function listMedications(Exam $exam): JsonResponse {
