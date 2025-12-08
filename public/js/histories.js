@@ -43,7 +43,6 @@ $(document).ready(function(){
         $('.nacional').removeClass('d-none');
         $('.extra').removeClass('d-none');
     });
-
     //tabla index historias
     $('#histories').jtable({
         title       : "HISTORIAS CLÍNICAS",

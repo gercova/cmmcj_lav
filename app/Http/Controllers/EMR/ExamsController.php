@@ -413,25 +413,34 @@ class ExamsController extends Controller {
 		], 200);
     }
 
-    public function validateMatchDx (Request $request) {
+    public function validateMatchDx(Request $request): JsonResponse {
+        // 1. Cambiamos 'required' por 'nullable' en examId
         $request->validate([
-            'examId'        => 'required|integer',
-            'diagnosticId'  => 'required|integer',
+            'examId'       => 'nullable|integer',
+            'diagnosticId' => 'required|integer',
         ]);
 
-        if (!empty($request->input('examId'))) {
-            $exists = DiagnosticExam::where('examen_id', $request->examId)->where('diagnostico_id', $request->diagnosticId)->exists();
+        // 2. Verificamos si examId tiene valor.
+        // Si es null, retornamos false (o lo que prefieras) y evitamos la consulta a la BD.
+        if (!$request->examId) {
             return response()->json([
-                'status'    => $exists,
-                'message'   => $exists ? 'El diagnóstico ya se encuentra en la lista' : 'Puede agregarlo',
-                'type'      => $exists ? 'warning' : 'success',
+                'status'  => false,
+                'message' => 'No se ha seleccionado un examen.',
+                'type'    => 'info' // Un tipo neutral
             ]);
         }
+
+        $exists = DiagnosticExam::where('examen_id', $request->examId)->where('diagnostico_id', $request->diagnosticId)->exists();
+        return response()->json([
+            'status'  => $exists,
+            'message' => $exists ? 'El diagnóstico ya se encuentra en la lista' : 'Puede agregarlo',
+            'type'    => $exists ? 'warning' : 'success',
+        ]);
     }
 
     public function ValidateMatchMx (Request $request) {
         $request->validate([
-            'examId'    => 'required|integer',
+            'examId'    => 'nullable|integer',
             'drugId'    => 'required|integer',
         ]);
 

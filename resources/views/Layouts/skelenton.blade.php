@@ -80,7 +80,6 @@
     <!-- Extras -->
     <script src="{{ asset('js/lodash.min.js') }}"></script>
     <script src="{{ asset('js/slimselect.min.js') }}"></script>
-    <script src="{{ asset('plugins/summernote/summernote-bs4.min.js') }}"></script>
     <script src="{{ asset('js/axios.min.js') }}"></script>
     <script src="{{ asset('js/funciones.js') }}"></script>
     <script src="{{ asset('js/modalDetails.js') }}"></script>

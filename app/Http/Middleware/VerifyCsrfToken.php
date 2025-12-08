@@ -19,5 +19,7 @@ class VerifyCsrfToken extends Middleware
         '/sys/ex-dx/validate-match',
         '/sys/ex-mx/validate-match',
         '/sys/diagnostics/list',
+        '/sys/diagnostics/search',
+        '/sys/drugs/search'
     ];
 }

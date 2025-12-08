@@ -133,7 +133,7 @@
                                         </div>
                                         </div>
                                     </div>
-                                </div>    
+                                </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="card card-info">
@@ -158,7 +158,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            
+
                                             <div class="col-md-2">
                                                 <div class="form-group row">
                                                     <label class="col-sm-2 col-form-label" for="g">G:</label>
@@ -413,7 +413,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            
+
                                             <div class="col-md-3">
                                                 <div class="form-group row">
                                                     <label class="col-sm-3 col-form-label" for="mf">MF:</label>
@@ -549,13 +549,8 @@
                                                 <div class="form-group row">
                                                     <label class="col-sm-3 col-form-label" for="diagnostics">Buscar:</label>
                                                     <div class="col-sm-9">
-                                                        <input type="text" class="form-control form-control-sm" id="diagnostics" placeholder="Buscar por código o nombre">
+                                                        <input type="text" class="form-control form-control-sm .searchDiagnosis" id="diagnostics" placeholder="Buscar por código o nombre">
                                                     </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group row">
-                                                    <button id="btn-add-diagnostic" type="button" class="btn btn-primary btn-block"><i class="bi bi-plus-circle"></i> Agregar diagnóstico</button>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">

@@ -130,7 +130,7 @@
                                         </div>
                                         </div>
                                     </div>
-                                </div>    
+                                </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="card card-info">
@@ -155,7 +155,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            
+
                                             <div class="col-md-2">
                                                 <div class="form-group row">
                                                     <label class="col-sm-2 col-form-label" for="g">G:</label>
@@ -284,7 +284,7 @@
                                                     <label class="col-sm-2 col-form-label" for="abdomen">Abdomen:</label>
                                                     <div class="col-sm-10">
                                                         <textarea class="form-control form-control-sm" id="abdomen" name="abdomen" rows="1"></textarea>
-                                                        
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -411,7 +411,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            
+
                                             <div class="col-md-3">
                                                 <div class="form-group row">
                                                     <label class="col-sm-3 col-form-label" for="mf">MF:</label>
@@ -547,13 +547,8 @@
                                                 <div class="form-group row">
                                                     <label class="col-sm-3 col-form-label" for="diagnostics">Buscar:</label>
                                                     <div class="col-sm-9">
-                                                        <input type="text" class="form-control form-control-sm" id="diagnostics" placeholder="Buscar por código o nombre">
+                                                        <select type="text" class="form-control form-control-sm searchDiagnosis" id="diagnostics" placeholder="Buscar por código o nombre"></select>
                                                     </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group row">
-                                                    <button id="btn-add-diagnostic" type="button" class="btn btn-primary btn-block"><i class="bi bi-plus-circle"></i> Agregar diagnóstico</button>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
@@ -583,13 +578,8 @@
                                                 <div class="form-group row">
                                                     <label class="col-sm-3 col-form-label" for="drugs">Buscar:</label>
                                                     <div class="col-sm-9">
-                                                        <input type="text" class="form-control form-control-sm" id="drugs" placeholder="Buscar por descripción">
+                                                        <select type="text" class="form-control form-control-sm searchDrug" id="drugs" placeholder="Buscar por descripción"></select>
                                                     </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group row">
-                                                    <button id="btn-add-drug" type="button" class="btn btn-primary btn-block"><i class="bi bi-plus-circle"></i> Agregar fármaco</button>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">

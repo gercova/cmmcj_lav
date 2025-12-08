@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class DiagnosticsController extends Controller {
-    
+
     public function __construct() {
         $this->middleware(['auth', 'prevent.back']);
         $this->middleware('permission:diagnostico_acceder')->only('index');
@@ -27,7 +27,6 @@ class DiagnosticsController extends Controller {
     }
 
     public function list(Request $request): JsonResponse {
-
 		$startIndex = $request->input('jtStartIndex', 0);
 		$pageSize 	= $request->input('jtPageSize', 10);
 		$itemSearch = $request->input('search');
@@ -40,13 +39,13 @@ class DiagnosticsController extends Controller {
 			$record->Permissions = $permissions;
 			return $record;
 		});
-	
+
 		$jTableResult = [
 			'Result'            => 'OK',
 			'Records'           => $data,
 			'TotalRecordCount'  => $count,
 		];
-	
+
 		return response()->json($jTableResult);
 	}
 
@@ -84,11 +83,23 @@ class DiagnosticsController extends Controller {
     }
 
     public function search (Request $request) {
-        $diagnostics = Diagnosis::where('descripcion', 'like', '%'.$request->input('q').'%')
-            ->orWhere('codigo', 'like', '%'.$request->input('q').'%')
+        $request->validate([
+            'q' => 'nullable|string|max:100'
+        ]);
+
+        $q = $request->input('q');
+
+        if (empty(trim($q)) || strlen(trim($q)) < 2) {
+            return response()->json([]);
+        }
+
+        $diagnostics = Diagnosis::where('descripcion', 'like', "%{$q}%")
+            ->selectRaw('id, codigo, CONCAT(codigo, " - ", descripcion) as text')
+            ->orWhere('codigo', 'like', "%{$q}%")
             ->limit(5)
-            ->get();
-        return DiagnosisResource::collection($diagnostics);
+            ->get()
+            ->toArray();
+        return response()->json($diagnostics, 200);
     }
 
     public function generateCode(): string {

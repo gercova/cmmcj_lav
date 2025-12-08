@@ -33,7 +33,7 @@ class DrugsController extends Controller {
         $user       = auth()->user();
         $canEdit    = $user->can('farmaco_editar');
         $canDelete  = $user->can('farmaco_borrar');
-        
+
         $data = $results->map(function ($item, $index) use ($canEdit, $canDelete) {
             return [
                 $index + 1,
@@ -54,12 +54,12 @@ class DrugsController extends Controller {
 
     protected function buildActionDropdown($id, $canEdit, $canDelete): string {
         if (!$canEdit && !$canDelete) return '<span class="text-muted">Sin acciones</span>';
-        
+
         $buttons = [];
         if ($canEdit) $buttons[] = '<li><a class="dropdown-item update-row" type="button" value="'.e($id).'"><i class="bi bi-pencil-square"></i> Editar</a></li>';
-        
+
         if ($canDelete) $buttons[] = '<li><a class="dropdown-item delete-drug" type="button" value="'.e($id).'"><i class="bi bi-trash"></i> Eliminar</a></li>';
-        
+
         return '<div class="btn-group">
             <button class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">Acciones</button>
             <ul class="dropdown-menu">'.implode('', $buttons).'</ul>
@@ -95,11 +95,11 @@ class DrugsController extends Controller {
 
     public function search(Request $request) {
         $drugs = Drug::where('farmacos.descripcion', 'like', '%'.$request->input('q').'%')
-            ->join('unidad_medida', 'unidad_medida.id', '=', 'farmacos.unidad_medida_id')
-            ->selectRaw('farmacos.id, UPPER(farmacos.descripcion) farmaco, UPPER(unidad_medida.descripcion) as unidad')
+            ->selectRaw('farmacos.id, UPPER(farmacos.descripcion) text')
             ->limit(5)
-            ->get();
-        return DrugResource::collection($drugs);
+            ->get()
+            ->toArray();
+        return response()->json($drugs);
     }
 
     public function destroy(Drug $drug): JsonResponse {

@@ -16,8 +16,7 @@ class DiagnosisResource extends JsonResource
     {
         return [
             'id'    => $this->id,
-            'cod'   => $this->codigo,
-            'label' => $this->codigo.' - '.$this->descripcion,
+            'text'  => $this->codigo.' - '.$this->descripcion,
         ];
     }
 }
