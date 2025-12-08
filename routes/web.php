@@ -120,9 +120,9 @@ Route::middleware(['auth', 'prevent.back'])->group(function(){
     Route::get('/sys/ex-ut/{ut}',                   [ExamsController::class, 'showUrineTest']);
     Route::get('/sys/ex-st/{st}',                   [ExamsController::class, 'showStoolTest']);
     Route::delete('/sys/ex/delete/{exam}',          [ExamsController::class, 'destroy']);
-    Route::delete('/sys/ex-dc/delete/{id}',         [ExamsController::class, 'destroyDocuments']);
-    Route::delete('/sys/ex-dx/delete/{id}',         [ExamsController::class, 'destroyDiagnostics']);
-    Route::delete('/sys/ex-mx/delete/{id}',         [ExamsController::class, 'destroyMedications']);
+    Route::delete('/sys/ex-dc/delete/{doc}',         [ExamsController::class, 'destroyDocument']);
+    Route::delete('/sys/ex-dx/delete/{dx}',         [ExamsController::class, 'destroyDiagnostic']);
+    Route::delete('/sys/ex-mx/delete/{mx}',         [ExamsController::class, 'destroyMedication']);
     Route::delete('/sys/ex-bt/delete/{bt}',         [ExamsController::class, 'destroyBloodTest']);
     Route::delete('/sys/ex-ut/delete/{ut}',         [ExamsController::class, 'destroyUrineTest']);
     Route::delete('/sys/ex-st/delete/{st}',         [ExamsController::class, 'destroyStoolTest']);

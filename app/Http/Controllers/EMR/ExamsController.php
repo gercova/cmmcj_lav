@@ -833,7 +833,7 @@ class ExamsController extends Controller {
         ], 200);
     }
 
-    public function destroyDiagnostics(DiagnosticExam $dx): JsonResponse {
+    public function destroyDiagnostic(DiagnosticExam $dx): JsonResponse {
         $dx->delete();
         return response()->json([
             'status'    => (bool) $dx,
@@ -842,7 +842,7 @@ class ExamsController extends Controller {
         ], $dx ? 200 : 400);
     }
 
-    public function destroyMedications(MedicationExam $mx): JsonResponse {
+    public function destroyMedication(MedicationExam $mx): JsonResponse {
         $mx->delete();
         return response()->json([
             'status'    => (bool) $mx,

@@ -72,575 +72,578 @@
                             </div>
                         </div>
                         <hr>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="card card-info">
-                                    <div class="card-header">
-                                        <h5 class="card-title">Funciones vitales</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row">
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <label for="pa">P.A</label>
-                                                <input type="text" class="form-control form-control-sm" id="pa" name="pa">
-                                            </div>
+                        @haspermission('examen_crear')
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card card-info">
+                                        <div class="card-header">
+                                            <h5 class="card-title">Funciones vitales</h5>
                                         </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <label for="fc">FC</label>
-                                                <input type="text" class="form-control form-control-sm" id="fc" name="fc">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <label for="fr">FR</label>
-                                                <input type="text" class="form-control form-control-sm" id="fr" name="fr">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <label for="t">T</label>
-                                                <input type="text" class="form-control form-control-sm" id="t" name="t">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-1">
-                                            <div class="form-group">
-                                                <label for="peso">Peso (kg)</label>
-                                                <input type="text" class="form-control form-control-sm" id="peso" name="peso">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-1">
-                                            <div class="form-group">
-                                                <label for="talla">Talla (cm)</label>
-                                                <input type="text" class="form-control form-control-sm" id="talla" name="talla">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-1">
-                                            <div class="form-group">
-                                                <label for="imc">IMC: </label>
-                                                <input type="text" class="form-control form-control-sm" id="imc" name="imc" step="0.01" onkeypress="return imc(event);" readonly>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label>Motivo consulta</label>
-                                                <input type="text" class="form-control form-control-sm" id="motivo_consulta" name="motivo_consulta">
-                                            </div>
-                                        </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="card card-info">
-                                    <div class="card-header">
-                                        <h5 class="card-title">Antecedentes fisiológicos</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row">
+                                        <div class="card-body">
+                                            <div class="row">
                                             <div class="col-md-2">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-3 col-form-label" for="m">M:</label>
-                                                    <div class="col-sm-9">
-                                                        <input type="text" class="form-control form-control-sm" id="m" name="m">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-3 col-form-label" for="rc">RC:</label>
-                                                    <div class="col-sm-9">
-                                                        <input type="text" class="form-control form-control-sm" id="rc" name="rc">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-2">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-2 col-form-label" for="g">G:</label>
-                                                    <div class="col-sm-10">
-                                                        <input type="text" class="form-control form-control-sm date" id="g" name="g">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-2 col-form-label" for="p">P:</label>
-                                                    <div class="col-sm-10">
-                                                        <input type="text" class="form-control form-control-sm date" id="p" name="p">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-5 col-form-label" for="u-parto">U. PARTO:&nbsp;
-                                                        <div class="icheck-primary d-inline">
-                                                            <input type="radio" id="radioPrimary1" name="r1" value="V">
-                                                            <label for="radioPrimary1">(V)</label>
-                                                        </div>
-                                                        <div class="icheck-primary d-inline">
-                                                            <input type="radio" id="radioPrimary2" name="r1" value="C">
-                                                            <label for="radioPrimary2">(C)</label>
-                                                        </div>
-                                                    </label>
-                                                    <div class="col-sm-7">
-                                                        <input type="text" class="form-control form-control-sm" id="u-parto" name="u-parto">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-4 col-form-label" for="u-pap">U. PAP:</label>
-                                                    <div class="col-sm-8">
-                                                        <input type="text" class="form-control form-control-sm date" id="u-pap" name="u-pap">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-4 col-form-label" for="u-ivaa">U. IVAA:</label>
-                                                    <div class="col-sm-8">
-                                                        <input type="text" class="form-control form-control-sm date" id="u-ivaa" name="u-ivaa">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-3 col-form-label" for="mac_id">MAC:</label>
-                                                    <div class="col-sm-9">
-                                                        <select class="form-control form-control-sm" name="mac_id" id="mac_id">
-                                                            <option value="">-- Seleccione --</option>
-                                                            @foreach($mac as $m)
-                                                                <option value="{{ $m->id }}">{{ $m->descripcion }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="card card-info">
-                                    <div class="card-header">
-                                        <h5 class="card-title">Exámenes físico</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="fum">Fecha última regla:</label>
-                                                    <input type="date" class="form-control form-control-sm" onchange="getFpp(this.value);" id="fum" name="fum">
+                                                    <label for="pa">P.A</label>
+                                                    <input type="text" class="form-control form-control-sm" id="pa" name="pa">
                                                 </div>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-2">
                                                 <div class="form-group">
-                                                    <label for="fpp">Fecha estimada del parto:</label>
-                                                    <input type="text" class="form-control form-control-sm" id="fpp" name="fpp">
+                                                    <label for="fc">FC</label>
+                                                    <input type="text" class="form-control form-control-sm" id="fc" name="fc">
                                                 </div>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-2">
                                                 <div class="form-group">
-                                                    <label for="edad_gestacional">Edad gestacional:</label>
-                                                    <input type="text" class="form-control form-control-sm" id="edad_gestacional" name="edad_gestacional">
+                                                    <label for="fr">FR</label>
+                                                    <input type="text" class="form-control form-control-sm" id="fr" name="fr">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label for="t">T</label>
+                                                    <input type="text" class="form-control form-control-sm" id="t" name="t">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <div class="form-group">
+                                                    <label for="peso">Peso (kg)</label>
+                                                    <input type="text" class="form-control form-control-sm" id="peso" name="peso">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <div class="form-group">
+                                                    <label for="talla">Talla (cm)</label>
+                                                    <input type="text" class="form-control form-control-sm" id="talla" name="talla">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <div class="form-group">
+                                                    <label for="imc">IMC: </label>
+                                                    <input type="text" class="form-control form-control-sm" id="imc" name="imc" step="0.01" onkeypress="return imc(event);" readonly>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-2 col-form-label" for="apreciacion_general">Apreciación general:</label>
-                                                    <div class="col-sm-10">
-                                                        <textarea class="form-control form-control-sm" id="apreciacion_general" name="apreciacion_general" rows="1"></textarea>
+                                                <div class="form-group">
+                                                    <label>Motivo consulta</label>
+                                                    <input type="text" class="form-control form-control-sm" id="motivo_consulta" name="motivo_consulta">
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="card card-info">
+                                        <div class="card-header">
+                                            <h5 class="card-title">Antecedentes fisiológicos</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-2">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-3 col-form-label" for="m">M:</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="text" class="form-control form-control-sm" id="m" name="m">
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-2 col-form-label" for="piel_mucosas">Piel y mucosas:</label>
-                                                    <div class="col-sm-10">
-                                                        <textarea class="form-control form-control-sm" id="piel_mucosas" name="piel_mucosas" rows="1"></textarea>
+                                                <div class="col-md-2">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-3 col-form-label" for="rc">RC:</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="text" class="form-control form-control-sm" id="rc" name="rc">
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-2 col-form-label" for="aparato_respiratorio">Aparato respiratorio:</label>
-                                                    <div class="col-sm-10">
-                                                        <textarea class="form-control form-control-sm" id="aparato_respiratorio" name="aparato_respiratorio" rows="1"></textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-2 col-form-label" for="cardio_vascular">Cardio-vascular:</label>
-                                                    <div class="col-sm-10">
-                                                        <textarea class="form-control form-control-sm" id="cardio_vascular" name="cardio_vascular" rows="1"></textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-2 col-form-label" for="abdomen">Abdomen:</label>
-                                                    <div class="col-sm-10">
-                                                        <textarea class="form-control form-control-sm" id="abdomen" name="abdomen" rows="1"></textarea>
 
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-2 col-form-label" for="genito_urinario">Génito urinario:</label>
-                                                    <div class="col-sm-10">
-                                                        <textarea class="form-control form-control-sm" id="genito_urinario" name="genito_urinario" rows="1"></textarea>
-                                                        <hr>
-                                                        <div class="col-md-12 row">
-                                                            <div class="col-md-3">
-                                                                <div class="form-group row">
-                                                                    <label class="col-sm-2 col-form-label" for="d_abm">D:</label>
-                                                                    <div class="col-sm-8">
-                                                                        <input type="text" class="form-control form-control-sm" id="d_abm" name="d_abm">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="form-group row">
-                                                                    <label class="col-sm-2 col-form-label" for="i_abm">I:</label>
-                                                                    <div class="col-sm-8">
-                                                                        <input type="text" class="form-control form-control-sm" id="i_abm" name="i_abm">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="form-group row">
-                                                                    <label class="col-sm-2 col-form-label" for="ap_abm">AP:</label>
-                                                                    <div class="col-sm-8">
-                                                                        <input type="text" class="form-control form-control-sm" id="ap_abm" name="ap_abm">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="form-group row">
-                                                                    <label class="col-sm-2 col-form-label" for="c_abm">C:</label>
-                                                                    <div class="col-sm-8">
-                                                                        <input type="text" class="form-control form-control-sm" id="c_abm" name="c_abm">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="form-group row">
-                                                                    <label class="col-sm-2 col-form-label" for="p_abm">P:</label>
-                                                                    <div class="col-sm-8">
-                                                                        <input type="text" class="form-control form-control-sm" id="p_abm" name="p_abm">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <div class="form-group row">
-                                                                    <label class="col-sm-2 col-form-label" for="mo_abm">MO:</label>
-                                                                    <div class="col-sm-8">
-                                                                        <input type="text" class="form-control form-control-sm" id="mo_abm" name="mo_abm">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <div class="form-group row">
-                                                                    <div class="icheck-primary d-inline">
-                                                                        <input type="radio" id="io_ro1" name="io_ro_abm" value="io">
-                                                                        <label for="io_ro1">IO</label>
-                                                                    </div>
-                                                                    &nbsp;&nbsp;&nbsp;
-                                                                    <div class="icheck-primary d-inline">
-                                                                        <input type="radio" id="io_ro2" name="io_ro_abm" value="ro">
-                                                                        <label for="io_ro2">RO</label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                <div class="col-md-2">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-2 col-form-label" for="g">G:</label>
+                                                        <div class="col-sm-10">
+                                                            <input type="text" class="form-control form-control-sm date" id="g" name="g">
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-2 col-form-label" for="neurologico">Neurológico:</label>
-                                                    <div class="col-sm-10">
-                                                        <textarea class="form-control form-control-sm" id="neurologico" name="neurologico" rows="1"></textarea>
+                                                <div class="col-md-2">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-2 col-form-label" for="p">P:</label>
+                                                        <div class="col-sm-10">
+                                                            <input type="text" class="form-control form-control-sm date" id="p" name="p">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-5 col-form-label" for="u-parto">U. PARTO:&nbsp;
+                                                            <div class="icheck-primary d-inline">
+                                                                <input type="radio" id="radioPrimary1" name="r1" value="V">
+                                                                <label for="radioPrimary1">(V)</label>
+                                                            </div>
+                                                            <div class="icheck-primary d-inline">
+                                                                <input type="radio" id="radioPrimary2" name="r1" value="C">
+                                                                <label for="radioPrimary2">(C)</label>
+                                                            </div>
+                                                        </label>
+                                                        <div class="col-sm-7">
+                                                            <input type="text" class="form-control form-control-sm" id="u-parto" name="u-parto">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-4 col-form-label" for="u-pap">U. PAP:</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control form-control-sm date" id="u-pap" name="u-pap">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-4 col-form-label" for="u-ivaa">U. IVAA:</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control form-control-sm date" id="u-ivaa" name="u-ivaa">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-3 col-form-label" for="mac_id">MAC:</label>
+                                                        <div class="col-sm-9">
+                                                            <select class="form-control form-control-sm" name="mac_id" id="mac_id">
+                                                                <option value="">-- Seleccione --</option>
+                                                                @foreach($mac as $m)
+                                                                    <option value="{{ $m->id }}">{{ $m->descripcion }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="card card-info">
-                                    <div class="card-header">
-                                        <h5 class="card-title">Examen obstétrico</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-3 col-form-label" for="au">AU:</label>
-                                                    <div class="col-sm-9">
-                                                        <input type="text" class="form-control form-control-sm" id="au" name="au">
+                                <div class="col-md-12">
+                                    <div class="card card-info">
+                                        <div class="card-header">
+                                            <h5 class="card-title">Exámenes físico</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="fum">Fecha última regla:</label>
+                                                        <input type="date" class="form-control form-control-sm" onchange="getFpp(this.value);" id="fum" name="fum">
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-4 col-form-label" for="spp">SPP:</label>
-                                                    <div class="col-sm-8">
-                                                        <input type="text" class="form-control form-control-sm" id="spp" name="spp">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="fpp">Fecha estimada del parto:</label>
+                                                        <input type="text" class="form-control form-control-sm" id="fpp" name="fpp">
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-3 col-form-label" for="lcf">LCF:</label>
-                                                    <div class="col-sm-9">
-                                                        <input type="text" class="form-control form-control-sm" id="lcf" name="lcf">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="edad_gestacional">Edad gestacional:</label>
+                                                        <input type="text" class="form-control form-control-sm" id="edad_gestacional" name="edad_gestacional">
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-3 col-form-label" for="du">DU:</label>
-                                                    <div class="col-sm-9">
-                                                        <input type="text" class="form-control form-control-sm" id="du" name="du">
+                                                <div class="col-md-12">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-2 col-form-label" for="apreciacion_general">Apreciación general:</label>
+                                                        <div class="col-sm-10">
+                                                            <textarea class="form-control form-control-sm" id="apreciacion_general" name="apreciacion_general" rows="1"></textarea>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-2 col-form-label" for="piel_mucosas">Piel y mucosas:</label>
+                                                        <div class="col-sm-10">
+                                                            <textarea class="form-control form-control-sm" id="piel_mucosas" name="piel_mucosas" rows="1"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-2 col-form-label" for="aparato_respiratorio">Aparato respiratorio:</label>
+                                                        <div class="col-sm-10">
+                                                            <textarea class="form-control form-control-sm" id="aparato_respiratorio" name="aparato_respiratorio" rows="1"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-2 col-form-label" for="cardio_vascular">Cardio-vascular:</label>
+                                                        <div class="col-sm-10">
+                                                            <textarea class="form-control form-control-sm" id="cardio_vascular" name="cardio_vascular" rows="1"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-2 col-form-label" for="abdomen">Abdomen:</label>
+                                                        <div class="col-sm-10">
+                                                            <textarea class="form-control form-control-sm" id="abdomen" name="abdomen" rows="1"></textarea>
 
-                                            <div class="col-md-3">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-3 col-form-label" for="mf">MF:</label>
-                                                    <div class="col-sm-9">
-                                                        <input type="text" class="form-control form-control-sm" id="mf" name="mf">
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-2 col-form-label" for="oh">Otros hallazgos:</label>
-                                                    <div class="col-sm-10">
-                                                        <textarea class="form-control form-control-sm" id="oh" name="oh" rows="2"></textarea>
+                                                <div class="col-md-12">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-2 col-form-label" for="genito_urinario">Génito urinario:</label>
+                                                        <div class="col-sm-10">
+                                                            <textarea class="form-control form-control-sm" id="genito_urinario" name="genito_urinario" rows="1"></textarea>
+                                                            <hr>
+                                                            <div class="col-md-12 row">
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group row">
+                                                                        <label class="col-sm-2 col-form-label" for="d_abm">D:</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="text" class="form-control form-control-sm" id="d_abm" name="d_abm">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group row">
+                                                                        <label class="col-sm-2 col-form-label" for="i_abm">I:</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="text" class="form-control form-control-sm" id="i_abm" name="i_abm">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group row">
+                                                                        <label class="col-sm-2 col-form-label" for="ap_abm">AP:</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="text" class="form-control form-control-sm" id="ap_abm" name="ap_abm">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group row">
+                                                                        <label class="col-sm-2 col-form-label" for="c_abm">C:</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="text" class="form-control form-control-sm" id="c_abm" name="c_abm">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group row">
+                                                                        <label class="col-sm-2 col-form-label" for="p_abm">P:</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="text" class="form-control form-control-sm" id="p_abm" name="p_abm">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group row">
+                                                                        <label class="col-sm-2 col-form-label" for="mo_abm">MO:</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="text" class="form-control form-control-sm" id="mo_abm" name="mo_abm">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group row">
+                                                                        <div class="icheck-primary d-inline">
+                                                                            <input type="radio" id="io_ro1" name="io_ro_abm" value="io">
+                                                                            <label for="io_ro1">IO</label>
+                                                                        </div>
+                                                                        &nbsp;&nbsp;&nbsp;
+                                                                        <div class="icheck-primary d-inline">
+                                                                            <input type="radio" id="io_ro2" name="io_ro_abm" value="ro">
+                                                                            <label for="io_ro2">RO</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="card card-info">
-                                    <div class="card-header">
-                                        <h5 class="card-title">Atención integral</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-12 col-form-label">Psicoprofilaxis:&nbsp;
-                                                        <div class="icheck-primary d-inline">
-                                                            <input type="checkbox" id="psc_prox_1" name="psc_prox_1" value="ok">
-                                                            <label for="cpsc_prox_1"></label>
+                                                <div class="col-md-12">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-2 col-form-label" for="neurologico">Neurológico:</label>
+                                                        <div class="col-sm-10">
+                                                            <textarea class="form-control form-control-sm" id="neurologico" name="neurologico" rows="1"></textarea>
                                                         </div>
-                                                        <div class="icheck-primary d-inline">
-                                                            <input type="checkbox" id="psc_prox_2" name="psc_prox_2" value="ok">
-                                                            <label for="psc_prox_2"></label>
-                                                        </div>
-                                                        <div class="icheck-primary d-inline">
-                                                            <input type="checkbox" id="psc_prox_3" name="psc_prox_3" value="ok">
-                                                            <label for="psc_prox_3"></label>
-                                                        </div>
-                                                        <div class="icheck-primary d-inline">
-                                                            <input type="checkbox" id="psc_prox_4" name="psc_prox_4" value="ok">
-                                                            <label for="psc_prox_4"></label>
-                                                        </div>
-                                                        <div class="icheck-primary d-inline">
-                                                            <input type="checkbox" id="psc_prox_5" name="psc_prox_5" value="ok">
-                                                            <label for="psc_prox_5"></label>
-                                                        </div>
-                                                        <div class="icheck-primary d-inline">
-                                                            <input type="checkbox" id="psc_prox_6" name="psc_prox_6" value="ok">
-                                                            <label for="psc_prox_6"></label>
-                                                        </div>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-12 col-form-label" for="nutricion">Nutrición:&nbsp;
-                                                        <div class="icheck-primary d-inline">
-                                                            <input type="checkbox" id="nutricion" name="nutricion" value="ok">
-                                                            <label for="nutricion"></label>
-                                                        </div>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-12 col-form-label">Psicología:&nbsp;
-                                                        <div class="icheck-primary d-inline">
-                                                            <input type="checkbox" id="psicologia_1" name="psicologia_1" value="ok">
-                                                            <label for="psicologia_1"></label>
-                                                        </div>
-                                                        <div class="icheck-primary d-inline">
-                                                            <input type="checkbox" id="psicologia_2" name="psicologia_2" value="ok">
-                                                            <label for="psicologia_2"></label>
-                                                        </div>
-                                                        <div class="icheck-primary d-inline">
-                                                            <input type="checkbox" id="psicologia_3" name="psicologia_3" value="ok">
-                                                            <label for="psicologia_3"></label>
-                                                        </div>
-                                                        <div class="icheck-primary d-inline">
-                                                            <input type="checkbox" id="psicologia_4" name="psicologia_4" value="ok">
-                                                            <label for="psicologia_4"></label>
-                                                        </div>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-12 col-form-label">Odonto:&nbsp;
-                                                        <div class="icheck-primary d-inline">
-                                                            <input type="checkbox" id="odonto" name="odonto" value="ok">
-                                                            <label for="odonto"></label>
-                                                        </div>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-12 col-form-label">Pezones:&nbsp;
-                                                        <img width="50" class="img-fluid img-thumbnail" src="{{ asset('storage/enterprise/p-1.svg') }}">
-                                                        <div class="icheck-primary d-inline">
-                                                            <input type="radio" id="pezon1" name="pezon" value="okp1">
-                                                            <label for="pezon1"></label>
-                                                        </div>
-                                                        <img width="50" class="img-fluid img-thumbnail" src="{{ asset('storage/enterprise/p-2.svg') }}">
-                                                        <div class="icheck-primary d-inline">
-                                                            <input type="radio" id="pezon2" name="pezon" value="okp2">
-                                                            <label for="pezon2"></label>
-                                                        </div>
-                                                        <img width="50" class="img-fluid img-thumbnail" src="{{ asset('storage/enterprise/p-3.svg') }}">
-                                                        <div class="icheck-primary d-inline">
-                                                            <input type="radio" id="pezon3" name="pezon" value="okp3">
-                                                            <label for="pezon3"></label>
-                                                        </div>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="card card-info">
-                                    <div class="card-header">
-                                        <h5 class="card-title">Diagnósticos</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-8">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-3 col-form-label" for="diagnostics">Buscar:</label>
-                                                    <div class="col-sm-9">
-                                                        <select type="text" class="form-control form-control-sm searchDiagnosis" id="diagnostics" placeholder="Buscar por código o nombre"></select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <table id="tableDiagnostics" class="table table-hover">
-                                                    <thead>
-                                                        <tr>
-                                                            <th style="width:10%;">Código</th>
-                                                            <th style="width:90%;">Diagnóstico</th>
-                                                            <th style="width:10%;"></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody></tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="card card-info">
-                                    <div class="card-header">
-                                        <h5 class="card-title">Tratamiento</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-8">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-3 col-form-label" for="drugs">Buscar:</label>
-                                                    <div class="col-sm-9">
-                                                        <select type="text" class="form-control form-control-sm searchDrug" id="drugs" placeholder="Buscar por descripción"></select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <table id="tableDrugs" class="table table-hover">
-                                                    <thead>
-                                                        <tr>
-                                                            <th style="width:30%;">Fármaco</th>
-                                                            <th style="width:45%;">Receta</th>
-                                                            <th style="width:25%">Dosis</th>
-                                                            <th style="width:10%;"></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody></tbody>
-                                                </table>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-2 col-form-label" for="recom">Recomendaciones:</label>
-                                                    <div class="col-sm-10">
-                                                        <textarea class="form-control form-control-sm" id="recom" name="recom" rows="2"></textarea>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="card card-info">
-                                    <div class="card-header">
-                                        <h5 class="card-title">Exámenes auxiliares</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <div class="form-group row">
-                                                    <button id="btn-add-test" type="button" class="btn btn-primary btn-block"><i class="bi bi-plus-circle"></i> Agregar campo</button>
+                                <div class="col-md-12">
+                                    <div class="card card-info">
+                                        <div class="card-header">
+                                            <h5 class="card-title">Examen obstétrico</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-2">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-3 col-form-label" for="au">AU:</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="text" class="form-control form-control-sm" id="au" name="au">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-4 col-form-label" for="spp">SPP:</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control form-control-sm" id="spp" name="spp">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-3 col-form-label" for="lcf">LCF:</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="text" class="form-control form-control-sm" id="lcf" name="lcf">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-3 col-form-label" for="du">DU:</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="text" class="form-control form-control-sm" id="du" name="du">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-3 col-form-label" for="mf">MF:</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="text" class="form-control form-control-sm" id="mf" name="mf">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-2 col-form-label" for="oh">Otros hallazgos:</label>
+                                                        <div class="col-sm-10">
+                                                            <textarea class="form-control form-control-sm" id="oh" name="oh" rows="2"></textarea>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-12">
-                                                <table id="tableTest" class="table table-hover">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Nombre examen</th>
-                                                            <th>Examen</th>
-                                                            <th>Fecha</th>
-                                                            <th>Resultado</th>
-                                                            <th></th>
-                                                        </tr>
-                                                    <thead>
-                                                    <tbody></tbody>
-                                                </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="card card-info">
+                                        <div class="card-header">
+                                            <h5 class="card-title">Atención integral</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-12 col-form-label">Psicoprofilaxis:&nbsp;
+                                                            <div class="icheck-primary d-inline">
+                                                                <input type="checkbox" id="psc_prox_1" name="psc_prox_1" value="ok">
+                                                                <label for="cpsc_prox_1"></label>
+                                                            </div>
+                                                            <div class="icheck-primary d-inline">
+                                                                <input type="checkbox" id="psc_prox_2" name="psc_prox_2" value="ok">
+                                                                <label for="psc_prox_2"></label>
+                                                            </div>
+                                                            <div class="icheck-primary d-inline">
+                                                                <input type="checkbox" id="psc_prox_3" name="psc_prox_3" value="ok">
+                                                                <label for="psc_prox_3"></label>
+                                                            </div>
+                                                            <div class="icheck-primary d-inline">
+                                                                <input type="checkbox" id="psc_prox_4" name="psc_prox_4" value="ok">
+                                                                <label for="psc_prox_4"></label>
+                                                            </div>
+                                                            <div class="icheck-primary d-inline">
+                                                                <input type="checkbox" id="psc_prox_5" name="psc_prox_5" value="ok">
+                                                                <label for="psc_prox_5"></label>
+                                                            </div>
+                                                            <div class="icheck-primary d-inline">
+                                                                <input type="checkbox" id="psc_prox_6" name="psc_prox_6" value="ok">
+                                                                <label for="psc_prox_6"></label>
+                                                            </div>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-12 col-form-label" for="nutricion">Nutrición:&nbsp;
+                                                            <div class="icheck-primary d-inline">
+                                                                <input type="checkbox" id="nutricion" name="nutricion" value="ok">
+                                                                <label for="nutricion"></label>
+                                                            </div>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-12 col-form-label">Psicología:&nbsp;
+                                                            <div class="icheck-primary d-inline">
+                                                                <input type="checkbox" id="psicologia_1" name="psicologia_1" value="ok">
+                                                                <label for="psicologia_1"></label>
+                                                            </div>
+                                                            <div class="icheck-primary d-inline">
+                                                                <input type="checkbox" id="psicologia_2" name="psicologia_2" value="ok">
+                                                                <label for="psicologia_2"></label>
+                                                            </div>
+                                                            <div class="icheck-primary d-inline">
+                                                                <input type="checkbox" id="psicologia_3" name="psicologia_3" value="ok">
+                                                                <label for="psicologia_3"></label>
+                                                            </div>
+                                                            <div class="icheck-primary d-inline">
+                                                                <input type="checkbox" id="psicologia_4" name="psicologia_4" value="ok">
+                                                                <label for="psicologia_4"></label>
+                                                            </div>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-12 col-form-label">Odonto:&nbsp;
+                                                            <div class="icheck-primary d-inline">
+                                                                <input type="checkbox" id="odonto" name="odonto" value="ok">
+                                                                <label for="odonto"></label>
+                                                            </div>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-12 col-form-label">Pezones:&nbsp;
+                                                            <img width="50" class="img-fluid img-thumbnail" src="{{ asset('storage/enterprise/p-1.svg') }}">
+                                                            <div class="icheck-primary d-inline">
+                                                                <input type="radio" id="pezon1" name="pezon" value="okp1">
+                                                                <label for="pezon1"></label>
+                                                            </div>
+                                                            <img width="50" class="img-fluid img-thumbnail" src="{{ asset('storage/enterprise/p-2.svg') }}">
+                                                            <div class="icheck-primary d-inline">
+                                                                <input type="radio" id="pezon2" name="pezon" value="okp2">
+                                                                <label for="pezon2"></label>
+                                                            </div>
+                                                            <img width="50" class="img-fluid img-thumbnail" src="{{ asset('storage/enterprise/p-3.svg') }}">
+                                                            <div class="icheck-primary d-inline">
+                                                                <input type="radio" id="pezon3" name="pezon" value="okp3">
+                                                                <label for="pezon3"></label>
+                                                            </div>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="card card-info">
+                                        <div class="card-header">
+                                            <h5 class="card-title">Diagnósticos</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-3 col-form-label" for="diagnostics">Buscar:</label>
+                                                        <div class="col-sm-9">
+                                                            <select type="text" class="form-control form-control-sm searchDiagnosis" id="diagnostics" placeholder="Buscar por código o nombre"></select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <table id="tableDiagnostics" class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th style="width:10%;">Código</th>
+                                                                <th style="width:90%;">Diagnóstico</th>
+                                                                <th style="width:10%;"></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="card card-info">
+                                        <div class="card-header">
+                                            <h5 class="card-title">Tratamiento</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-3 col-form-label" for="drugs">Buscar:</label>
+                                                        <div class="col-sm-9">
+                                                            <select type="text" class="form-control form-control-sm searchDrug" id="drugs" placeholder="Buscar por descripción"></select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <table id="tableDrugs" class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th style="width:30%;">Fármaco</th>
+                                                                <th style="width:45%;">Receta</th>
+                                                                <th style="width:25%">Dosis</th>
+                                                                <th style="width:10%;"></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-2 col-form-label" for="recom">Recomendaciones:</label>
+                                                        <div class="col-sm-10">
+                                                            <textarea class="form-control form-control-sm" id="recom" name="recom" rows="2"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="card card-info">
+                                        <div class="card-header">
+                                            <h5 class="card-title">Exámenes auxiliares</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group row">
+                                                        <button id="btn-add-test" type="button" class="btn btn-primary btn-block"><i class="bi bi-plus-circle"></i> Agregar campo</button>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <table id="tableTest" class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Nombre examen</th>
+                                                                <th>Examen</th>
+                                                                <th>Fecha</th>
+                                                                <th>Resultado</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        <thead>
+                                                        <tbody></tbody>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        @endhaspermission
                     </div>
                     <div class="card-footer">
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{{ route('emr.exams.see', ['history' => $exam->history_id]) }}" class="btn btn-secondary">Regresar</a>
                             <button type="submit" class="btn btn-primary">Guardar</button>
                         </div>
                     </div>

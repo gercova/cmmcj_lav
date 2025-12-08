@@ -30,7 +30,7 @@ $(document).ready(function(){
         { selector: '.delete-st', endpoint: 'ex-st', table: tables.stoolTest },
         { selector: '.delete-diagnostic', endpoint: 'ex-dx', table: tables2.diagnosticId },
         { selector: '.delete-drug', endpoint: 'ex-mx', table: tables2.examId },
-        { selector: '.delete-image', endpoint: 'ex-img', table: tables2.documentId }
+        { selector: '.delete-doc', endpoint: 'ex-dc', table: tables2.documentId }
     ]);
 
     //remover modulos filas de la tabla
@@ -374,27 +374,6 @@ $(document).ready(function(){
             return data.text || data.id;
         },
     });
-    /*$('#drugs').autocomplete({
-        source: async function (request, response) {
-            try {
-                // Realizar la solicitud con Axios
-                const result = await axios.post(`${API_URL}/sys/drugs/search`, {
-                    q: request.term // Término de búsqueda
-                });
-                // Procesar la respuesta y pasar los datos al autocomplete
-                response(result.data.data);
-            } catch (error) {
-                console.error('Error en la búsqueda:', error);
-                response([]); // Enviar un array vacío en caso de error
-            }
-        },
-        minLength: 2, // Mínimo de caracteres para iniciar la búsqueda
-        select: function (event, ui) {
-            // Lógica cuando se selecciona un elemento
-            const data = `${ui.item.id}*${ui.item.label}`;
-            $('#btn-add-drug').val(data);
-        }
-    });*/
 
     $('#drugs').on('select2:select', async function (e) {
         // Obtenemos el objeto completo del diagnóstico seleccionado
@@ -457,68 +436,6 @@ $(document).ready(function(){
         $('#drugs').val(null).trigger('change');
         alertNotify('success', `<h5><b>${formattedName}</b> agregado</h5>`);
     });
-
-    //Función para agregar el diagnóstico a la lista
-    /*$('#btn-add-drug').on('click', async function(){
-        data = $(this).val();
-        if(data){
-            const drug = data.split('*');
-            const drugId = drug[0];
-            const drugName = drug[1];
-
-            const dataMatch = {
-                examId: examId,
-                drugId: drugId,
-            }
-
-            try {
-                const validateMatch = await axios.post(`${API_URL}/sys/ex-mx/validate-match`, dataMatch);
-
-                if (validateMatch.status === 200 && validateMatch.data.status === true) {
-                    Swal.fire({
-                        title: '¡Duplicado!',
-                        text: validateMatch.data.message,
-                        icon: 'warning',
-                        confirmButtonText: 'Aceptar'
-                    });
-
-                    $('#drugs, #btn-add-drug').val(null);
-                    return;
-                }
-            } catch (error) {
-                Swal.fire('Error', 'Ocurrió un error al validar la coincidencia. Intente nuevamente.', 'error');
-            }
-
-            if ($(`input[value="${drugId}"]`).length > 0) {
-                Swal.fire('¡Duplicado!', 'El fármaco ya está en la lista.', 'warning');
-                $('#drugs').val(null);
-                return;
-            }
-
-            const html_data = `
-                <tr>
-                    <td><input type="hidden" name="drug_id[]" value="${drugId}">${drugName}</td>
-                    <td><input type="text" class="form-control" name="description[]" placeholder="Ingrese descripción"></td>
-                    <td><input type="text" class="form-control" name="dosis[]" placeholder="Ingrese dosis"></td>
-                    <td><button type="button" class="btn btn-danger btn-xs btn-remove-drug" value="${drugId}"><i class="bi bi-trash"></i></button></td>
-                </tr>
-            `;
-
-            if(examId == null){
-                $('#tableDrugs').addClass('hide');
-                $('#tableDrugs2').removeClass('hide');
-            } else {
-
-            }
-
-            $('#tableDrugs tbody').append(html_data);
-            $('#drugs').val(null);
-            $('#btn-add-drug').val(null);
-            alertNotify('success', `<h5>${drug[1]} agregado</h5>`);
-        }else{
-            Swal.fire('¡Vacío!', 'Escribe algo', 'error');
-        }
-    });*/
 
     //Función para quitar las filas de la table de recetas
     $(document).on('click','.btn-remove-drug', function(){
