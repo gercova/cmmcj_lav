@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class EnterpriseController extends Controller {
-    
+
     public function __construct() {
         $this->middleware(['auth', 'prevent.back']);
         $this->middleware('permission:empresa_acceder')->only('index');
@@ -29,11 +29,11 @@ class EnterpriseController extends Controller {
         $op = $request->input('op');
         $enterprise = Enterprise::where('id', $request->input('id'))->first();
         if (!$enterprise) return response()->json([
-            'status'    => false, 
-            'type'      => 'error', 
+            'status'    => false,
+            'type'      => 'error',
             'message'  => 'Empresa no encontrada'
         ], 404);
-        
+
         $response = ['status' => false, 'type' => 'error', 'message' => 'No se pudo actualizar'];
         DB::beginTransaction();
         try {
@@ -44,7 +44,7 @@ class EnterpriseController extends Controller {
                     $data['razon_social']           = trim(request('razon_social') ?? '');
                     $data['representante_legal']    = trim(request('representante_legal') ?? '');
                     $data['rubro_empresa']          = trim(request('rubro') ?? '');
-    
+
                     if ($enterprise->update($data)) $response = ['status' => true, 'type' => 'success', 'message' => 'Actualizado correctamente'];
                     break;
 
@@ -54,21 +54,21 @@ class EnterpriseController extends Controller {
                         $response = ['status' => true, 'type' => 'success', 'message' => 'Foto actualizada correctamente'];
                     }
                     break;
-    
+
                 case 3:
                     if ($request->hasFile('logo')) {
                         $this->uploadFile($enterprise, 'logo_principal', $request->file('logo'));
                         $response = ['status' => true, 'type' => 'success', 'message' => 'Logo actualizado correctamente'];
                     }
                     break;
-    
+
                 case 4:
                     if ($request->hasFile('mini-logo')) {
                         $this->uploadFile($enterprise, 'logo_miniatura', $request->file('mini-logo'));
                         $response = ['status' => true, 'type' => 'success', 'message' => 'Mini-logo actualizado correctamente', 'route' => route('business.enterprise') ];
                     }
                     break;
-    
+
                 default: $response = ['status' => false, 'type' => 'error', 'message' => 'Operación no válida'];
             }
 
@@ -83,7 +83,7 @@ class EnterpriseController extends Controller {
                 'error'     => $th->getMessage(),
             ];
         }
-        
+
         return response()->json($response, 200);
     }
 
@@ -92,7 +92,7 @@ class EnterpriseController extends Controller {
         $filename       = Str::random(10).'.'.$file->extension();
         $path           = $file->storeAs('/photos', $filename, 'public');
         $model->update([$field => $path]);
-        
+
         if ($previousPath) Storage::delete($previousPath);
         return $path;
     }

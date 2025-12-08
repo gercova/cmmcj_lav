@@ -1,10 +1,34 @@
-
+//crear nuevo logo
+$(".foto-representante").change(function(){
+    let imagen = this.files[0];
+    if(imagen["type"] != "image/jpeg" && imagen["type"] != "image/png"){
+        $(".foto-representante").val("");
+        swal.fire({
+            title: "Error al subir la imagen",
+            text: "¡La imagen debe estar en formato JPG o PNG!",
+            type: "error",
+            confirmButtonText: "¡Cerrar!"
+        });
+    }else if(imagen["size"] > 2000000){
+        $(".foto-representante").val("");
+        swal.fire({
+            title: "Error al subir la imagen",
+            text: "¡La imagen no debe pesar más de 2MB!",
+            type: "error",
+            confirmButtonText: "¡Cerrar!"
+        });
+    }else{
+        let datosImagen = new FileReader;
+        datosImagen.readAsDataURL(imagen);
+        $(datosImagen).on("load", function(event){
+            let rutaImagen = event.target.result;
+            $(".preview-representante").attr("src", rutaImagen);
+        })
+    }
+})
 //crear nuevo logo
 $('.mini-logo').change(function(){
     let imagen = this.files[0];
-    /*=============================================
-    VALIDAMOS EL FORMATO DE LA IMAGEN SEA JPG O PNG
-    =============================================*/
     if(imagen["type"] != "image/jpeg" && imagen["type"] != "image/png"){
         $(".mini-logo").val("");
         swal.fire({
@@ -33,9 +57,6 @@ $('.mini-logo').change(function(){
 //crear nuevo logo
 $(".logo").change(function(){
     let imagen = this.files[0];
-    /*=============================================
-    VALIDAMOS EL FORMATO DE LA IMAGEN SEA JPG O PNG
-    =============================================*/
     if(imagen["type"] != "image/jpeg" && imagen["type"] != "image/png"){
         $(".logo").val("");
         swal.fire({
@@ -61,37 +82,7 @@ $(".logo").change(function(){
         })
     }
 });
-//crear nuevo logo
-$(".logo-receta").change(function(){
-    let imagen = this.files[0];
-    /*=============================================
-    VALIDAMOS EL FORMATO DE LA IMAGEN SEA JPG O PNG
-    =============================================*/
-    if(imagen["type"] != "image/jpeg" && imagen["type"] != "image/png"){
-        $(".logo-receta").val("");
-        swal.fire({
-            title: "Error al subir la imagen",
-            text: "¡La imagen debe estar en formato JPG o PNG!",
-            type: "error",
-            confirmButtonText: "¡Cerrar!"
-        });
-    }else if(imagen["size"] > 2000000){
-        $(".logo-receta").val("");
-        swal.fire({
-            title: "Error al subir la imagen",
-            text: "¡La imagen no debe pesar más de 2MB!",
-            type: "error",
-            confirmButtonText: "¡Cerrar!"
-        });
-    }else{
-        let datosImagen = new FileReader;
-        datosImagen.readAsDataURL(imagen);
-        $(datosImagen).on("load", function(event){
-            let rutaImagen = event.target.result;
-            $(".preview-logo-receta").attr("src", rutaImagen);
-        })
-    }
-})
+
 //Funcion para validar datos antes de ser enviados al controlador para guardar o actualizar un examen
 $('#enterpriseForm').submit(async function(e){
     e.preventDefault();
@@ -200,8 +191,8 @@ async function loadImages(){
         const response = await axios.get(`${API_URL}/sys/enterprise/images`);
         if(response.status == 200 && response.data.status == true){
             $('.preview-representante').attr('src', response.data.foto_representante);
-            $('.preview-logo').attr('src', response.data.logo_principal);
-            $('.preview-mini-logo').attr('src', response.data.logo_miniatura);
+            $('.preview-logo').attr('src', response.data.logo);
+            $('.preview-mini-logo').attr('src', response.data.logo_mini);
         };
     } catch(error) {
         console.log(error);
