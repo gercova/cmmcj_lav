@@ -24,6 +24,12 @@
                         </select>
                     </div>
                     <div class="form-group">
+                        <label for="user_id">Selecciona un especialista:</label>
+                        <select id="user_id" name="user_id" class="form-control" required>
+                            <option value="">-- Selecciona --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label for="fecha">Fecha:</label>
                         <div class="input-group date" id="datepickerFecha" data-target-input="nearest">
                             <input type="text" class="form-control datetimepicker-input" name="fecha" id="fecha" data-target="#datepickerFecha"  placeholder="Seleccione fecha" readonly>

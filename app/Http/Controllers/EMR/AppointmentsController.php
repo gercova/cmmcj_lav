@@ -277,7 +277,7 @@ class AppointmentsController extends Controller {
     }
 
     public function getDoctorsList(): JsonResponse {
-        $results = User::where('especialidad_id', '2')->get();
+        $results = User::whereIn('especialidad_id', ['2', '1'])->get();
         return response()->json($results, 200);
     }
 

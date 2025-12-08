@@ -92,11 +92,31 @@ $(document).ready(function(){
                 edit:false,
                 create:false,
                 display: (data) => {
-                    return `
-                        <button type="button" class="btn btn-info add-quote btn-xs" value="${data.record.id}"><i class="bi bi-card-list"></i></i> Atender</button>&nbsp;
-                        <button type="button" class="btn btn-warning edit-row btn-xs" value="${data.record.id}"><i class="bi bi-pencil-square"></i> Editar</button>&nbsp;
-                        <button type="button" class="btn btn-danger delete-row btn-xs" data-id="${data.record.id}" value="${data.record.id}"><i class="bi bi-trash"></i> Eliminar</button>
-                    `;
+                    const permissions = data.record.Permissions || {}; // Obtenemos los permisos del registro
+                    let buttons = '';
+                    if (permissions.add_appx) {
+                        buttons += `
+                            <button type="button" class="btn btn-info add-quote btn-xs" value="${data.record.id}">
+                                <i class="bi bi-card-list"></i> Atender
+                            </button>&nbsp;
+                        `;
+                    }
+                    if (permissions.update_hc) {
+                        buttons += `
+                            <button type="button" class="btn btn-warning edit-row btn-xs" value="${data.record.id}">
+                                <i class="bi bi-pencil-square"></i> Editar
+                            </button>&nbsp;
+                        `;
+                    }
+                    if (permissions.delete_hc) {
+                        buttons += `
+                            <button type="button" class="btn btn-danger delete-row btn-xs" data-id="${data.record.id}" value="${data.record.id}">
+                                <i class="bi bi-trash"></i> Eliminar
+                            </button>
+                        `;
+                    }
+
+                    return buttons;
                 }
             }
         },

@@ -67,6 +67,7 @@ class HistoriesController extends Controller
 		// Agregar permisos al resultado para el frontend
         $permissions = [];
 		$permissions = [
+            'add_appx'  => auth()->user()->can('cita_crear'), 		        // añadir una nueva cita
 			'update_hc' => auth()->user()->can('historia_editar'), 	        // actualizar una historia
 			'delete_hc' => auth()->user()->can('historia_borrar'), 		    // borrar una historia
 			'add_exm' 	=> auth()->user()->can('examen_crear'), 		    // añadir un nuevo examen

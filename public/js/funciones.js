@@ -16,7 +16,25 @@ $(document).ready(function() {
         });
     }
 
+    function cargarEspecialistas() {
+        axios.get('/sys/ap/doctors-list').then(function(response) {
+            const results = response.data;
+            const select = $('#user_id');
+            select.empty().append('<option value="">-- Selecciona --</option>');
+            results.forEach(function(res) {
+                select.append(
+                    `<option value="${res.id}">${res.name}</option>`
+                );
+            });
+        })
+        .catch(function(error) {
+            console.error('Error cargando los especialistas:', error);
+            alert('Error al cargar los especialistas');
+        });
+    }
+
     cargarEstados();
+    cargarEspecialistas();
 
     moment.locale('es');
 
@@ -72,12 +90,12 @@ $(document).ready(function() {
 
     $('#appointmentForm').submit(async function(e){
         e.preventDefault();
-        
+
         // Limpiar errores previos
         $('.form-control').removeClass('is-invalid is-valid');
         $('.invalid-feedback').remove(); // Eliminar mensajes de error previos
         $('.text-danger').remove(); // Por si había alguno con clase diferente
-        
+
         const formData = $(this).serialize();
 
         const submitButton = $(this).find('button[type="submit"]');
@@ -86,36 +104,36 @@ $(document).ready(function() {
 
         try {
             const response = await axios.post(`${API_URL}/sys/appointments/store`, formData);
-            
+
             if(response.status == 200 && response.data.status == true){
                 console.log(response);
                 $('#appointmentForm').trigger('reset');
-                $('#appointmentModal').modal('hide');
+                $('#appointmenDefaultModal').modal('hide');
                 $('#quotes_data').DataTable().ajax.reload();
                 alertNotify(response.data.type, response.data.message);
             } else if(response.data.status == false){
                 alertNotify(response.data.type, response.data.message);
             }
-            
+
         } catch(error) {
             if(error.response && error.response.data.errors){
                 $.each(error.response.data.errors, function(key, value) {
                     // Buscar el input por su atributo name
                     let inputElement = $('[name="' + key + '"]');
-                    
+
                     if(inputElement.length > 0){
                         // Agregar clase is-invalid al input
                         inputElement.addClass('is-invalid');
-                        
+
                         // Buscar el form-group padre
                         let formGroup = inputElement.closest('.form-group');
-                        
+
                         // Crear el mensaje de error con la clase de Bootstrap
                         let errorMessage = '<div class="invalid-feedback d-block">' + value[0] + '</div>';
-                        
+
                         // Agregar el mensaje al final del form-group
                         formGroup.append(errorMessage);
-                        
+
                         // Hacer scroll al primer error (opcional)
                         if(formGroup.is(':first-child') || $('.invalid-feedback').length === 1){
                             $('html, body').animate({
@@ -124,7 +142,7 @@ $(document).ready(function() {
                         }
                     }
                 });
-                
+
                 // Mostrar notificación general (opcional)
                 alertNotify('error', 'Por favor corrige los errores en el formulario.');
             } else {
@@ -154,7 +172,7 @@ function alertNotify(icon, messages){
             toast.addEventListener('mouseenter', Swal.stopTimer)
             toast.addEventListener('mouseleave', Swal.resumeTimer)
         }
-    })  
+    })
     Toast.fire({
         icon: icon,
         title: messages,
