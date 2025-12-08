@@ -42,7 +42,7 @@ class ReportsController extends Controller {
         $cd             = History::whereNull('deleted_at')->whereDate('created_at', $fechaActual)->count();
         $dx             = DiagnosticExam::whereNull('deleted_at')->count();
         $mx             = MedicationExam::whereNull('deleted_at')->count();
-        return response()->json(compact('hc', 'ex', 'ap', 'cd', 'dx', 'mx'), 200);    
+        return response()->json(compact('hc', 'ex', 'ap', 'cd', 'dx', 'mx'), 200);
     }
 
     public function getMonthlyCountsByYear($year, $model, $name) {
@@ -134,13 +134,6 @@ class ReportsController extends Controller {
         ]);
     }
 
-    /*public function getHistoriesBySex(){
-        return History::selectRaw('s.descripcion as sexo, COUNT(historias.id_sexo) as cantidad')
-            ->join('sexo as s', 's.id', '=', 'historias.id_sexo')
-            ->groupBy('sexo')
-            ->get();
-    }*/
-
     public function getHistoriesByMaritalStatus(){
         $maritalStatus = History::selectRaw('e.descripcion as name, COUNT(historias.estado_civil_id) as y')
             ->join('estado_civil as e', 'e.id', '=', 'historias.estado_civil_id')
@@ -151,15 +144,15 @@ class ReportsController extends Controller {
         // Transforma los resultados al formato que Highcharts espera
         $data = $maritalStatus->map(function ($item) {
             return [
-                'name' => $item->name,
-                'y' => (int) $item->y, // Asegura que sea número entero
+                'name'  => $item->name,
+                'y'     => (int) $item->y, // Asegura que sea número entero
             ];
         })->toArray();
 
         return response()->json([
             'series' => [
                 [
-                    'name' => 'Estado',
+                    'name' => 'Estado Civil',
                     'data' => $data
                 ]
             ]
@@ -167,7 +160,7 @@ class ReportsController extends Controller {
     }
 
     public function getHistoriesByBloodingGroup(){
-        $bloodingGroups = History::selectRaw('gs.descripcion as name, COUNT(historias.grupo_sanguineo_id) as y')
+        $bloodingGroups = History::selectRaw('gs.nombre as name, COUNT(historias.grupo_sanguineo_id) as y')
             ->join('grupos_sanguineos as gs', 'gs.id', '=', 'historias.grupo_sanguineo_id')
             ->groupBy('name')
             ->having('y', '>', '0')
@@ -192,7 +185,7 @@ class ReportsController extends Controller {
     }
 
     public function getHistoriesByDegreeIntruction(){
-        $degreesInstruccion = History::selectRaw('di.descripcion as name, COUNT(historias.grado_instruccion_id) as y')
+        $degreesInstruccion = History::selectRaw('di.nombre as name, COUNT(historias.grado_instruccion_id) as y')
             ->join('grados_instruccion as di', 'di.id', '=', 'historias.grado_instruccion_id')
             ->groupBy('name')
             ->having('y', '>', 0)
@@ -209,7 +202,7 @@ class ReportsController extends Controller {
         return response()->json([
             'series' => [
                 [
-                    'name' => 'Grado',
+                    'name' => 'Grado Instrucción',
                     'data' => $data
                 ]
             ]
